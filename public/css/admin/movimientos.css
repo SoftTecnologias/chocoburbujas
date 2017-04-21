@@ -1,0 +1,18 @@
+td.details-control {
+    background: url('../../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../../images/details_close.png') no-repeat center center;
+}
+
+
+td.entrada{
+    background-color: #c4aa76;
+}
+td.salida{
+    background-color: #9f8fc7;
+}
+td.cancel{
+    background-color: #edb39b;
+}

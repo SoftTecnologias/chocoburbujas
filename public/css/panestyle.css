@@ -1,0 +1,11 @@
+html, body{
+     background:#fff;
+     background-image: url("../images/circles.png");
+     background-size: auto auto;
+
+ }
+
+.logo-lg, .logo-mini{
+    width: 100px;
+    height: 50px;
+}
