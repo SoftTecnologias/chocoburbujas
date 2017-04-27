@@ -14,4 +14,6 @@ class Producto extends Model
     ];
 
     protected $hidden=[];
+
+    public $timestamps = false;
 }

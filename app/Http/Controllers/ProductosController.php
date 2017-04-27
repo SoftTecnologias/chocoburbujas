@@ -77,7 +77,6 @@ class ProductosController extends Controller
                 "unidad_id"     => $request->input('unidad_id')   ,
                 "stock_max"     => $request->input('maximo')   ,
                 "stock_min"     => $request->input('minimo')   ,
-                "stock"         => $request->input('actual')   ,
                 "precio1"       => $request->input('precio1')   ,
                 "precio2"       => $request->input('precio2')   ,
                 "img1"          => "producto.png"   ,
