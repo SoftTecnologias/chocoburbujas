@@ -14,12 +14,12 @@
         crossorigin="anonymous"></script>
     {{ Html::style('css/style.css') }}
     {{ Html::style('css/jquery.countdown.css') }}
-    {{Html::script('js/plugins/jquery.easydropdown.js')}}
+    {{ Html::script('js/plugins/jquery.easydropdown.js') }}
     {{ Html::style('css/megamenu.css') }}
-    {{Html::script('js/plugins/megamenu.js')}}
-    {{Html::script('js/plugins/responsiveslides.min.js')}}
-    {{Html::script('js/plugins/jquery.countdown.js')}}
-    {{Html::script('js/script.js')}}
+    {{ Html::script('js/plugins/megamenu.js') }}
+    {{ Html::script('js/plugins/responsiveslides.min.js') }}
+    {{ Html::script('js/plugins/jquery.countdown.js') }}
+    {{ Html::script('js/script.js') }}
     @yield('styles')
 </head>
 <body>
