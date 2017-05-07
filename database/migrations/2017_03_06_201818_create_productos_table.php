@@ -24,6 +24,8 @@ class CreateProductosTable extends Migration
             $table->integer('stock_max');
             $table->integer('stock_min');
             $table->integer('stock');
+            $table->integer('vendidos')->default(0);
+            $table->boolean('promocion')->default(false);
             $table->float('precio1');
             $table->float('precio2');
             $table->string('img1');

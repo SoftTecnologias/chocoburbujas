@@ -16,6 +16,7 @@
     {{ Html::style('css/jquery.countdown.css') }}
     {{ Html::script('js/plugins/jquery.easydropdown.js') }}
     {{ Html::style('css/megamenu.css') }}
+    {{ Html::style('css/stylecart.css') }}
     {{ Html::script('js/plugins/megamenu.js') }}
     {{ Html::script('js/plugins/responsiveslides.min.js') }}
     {{ Html::script('js/plugins/jquery.countdown.js') }}
@@ -24,7 +25,7 @@
 </head>
 <body>
     @include('partials.header')
-    @include('partials.menu')
+    @yield('menu')
     @yield('content')
     @include('partials.footer')
 

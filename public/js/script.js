@@ -42,10 +42,10 @@ $(function(){
     });
 
     $("#flexiselDemo3").flexisel({
-        visibleItems: 6,
-        animationSpeed: 1000,
+        visibleItems: 5,
+        animationSpeed: 1800,
         autoPlay: true,
-        autoPlaySpeed: 3000,
+        autoPlaySpeed:1500,
         pauseOnHover: true,
         enableResponsiveBreakpoints: true,
         responsiveBreakpoints: {
@@ -63,5 +63,83 @@ $(function(){
             }
         }
     });
+
+    $("#cart").on("click", function() {
+        $.ajax({
+           url:"showItems",
+           type:'GET'
+        }).done(function(json){
+            if(json.code === 200){
+                $('#detalles').empty();
+                $.each(json.msg['productos'],function(index, row){
+                    $('<li>',{
+                        class:'clearfix'
+                    }).append($('<img>',{
+                        src : 'images/productos/'+row.item['img1'],
+                        alt:'item'+(index+1),
+                        style:'height: 75px; width: 50px;'
+                    })).append($('<span>',{
+                        class:'item-name',
+                        text:row.item['nombre']
+                    })).append($('<span>',{
+                        class:'item-price',
+                        text:'$'+row.item['precio1']
+                    })).append($('<span>',{
+                        class:'item-quantity',
+                        text: 'Cantidad: '+ row.cantidad
+                    })).append($('<a>',{
+                        class:'close',
+                        text:'x',
+                        'data-value': row.item['id']
+                    })).appendTo('#detalles');
+                });
+            }
+        }).fail(function(){
+
+        });
+        $("#modalCart").modal();
+    });
+
+    function removeCart(id){
+        $.ajax({
+           url:' removeProduct/'+id,
+           type: 'GET',
+        }).done(function(json) {
+            if(json.code === 200){
+                $('#detalles').empty();
+                $.each(json.msg['productos'],function(index, row){
+                    $('<li>',{
+                        class:'clearfix'
+                    }).append($('<img>',{
+                        src : 'images/productos/'+row.item['img1'],
+                        alt:'item'+(index+1),
+                        style:'height: 75px; width: 50px;'
+                    })).append($('<span>',{
+                        class:'item-name',
+                        text:row.item['nombre']
+                    })).append($('<span>',{
+                        class:'item-price',
+                        text:'$'+row.item['precio1']
+                    })).append($('<span>',{
+                        class:'item-quantity',
+                        text: 'Cantidad: '+ row.cantidad
+                    })).append($('<a>',{
+                        class:'close rmCart',
+                        text:'x',
+
+                    })).appendTo('#detalles');
+                });
+                $(".rmCart").on('click',function(){
+                    $.ajax({
+                        url:'removeProduct/'+this.data('value'),
+                        type:'GET'
+                    })
+                });
+            }
+        }).fail({
+
+        });
+    }
+
 
 });

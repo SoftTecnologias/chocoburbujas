@@ -164,6 +164,40 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
         'middleware'=>'auth:cliente'
     ]);
 
+    Route::get('/categorias/{id}',[
+        'uses' => 'ClientesController@getCategorias',
+        'as' => 'shop.categoria'
+    ]);
+    Route::get('/productos/{id}',[
+        'uses' => 'ClientesController@getCategorias',
+        'as' => 'shop.detalle'
+    ]);
+    Route::get('/shoppingCart',[
+        'uses' => 'ProductosController@getCarrito',
+        'as' => 'shop.carrito'
+    ]);
+
+    Route::get('/checkout',[
+        'uses' => 'ProductosController@Checkout',
+        'as' => 'checkout'
+    ]);
+    Route::post('/checkout',[
+        'uses' => 'ProductosController@postCheckout',
+        'as' => 'checkout'
+    ]);
+    Route::get('/addProduct/{id}',[
+        'uses' => 'ProductosController@addCarrito',
+        'as' => 'Producto.addCarrito'
+    ]);
+    Route::get('/removeProduct/{id}',[
+        'uses' => 'ProductosController@removeCarrito',
+        'as' => 'Producto.removeCarrito'
+    ]);
+    Route::get('/showItems',[
+        'uses' => 'ProductosController@getItems',
+        'as' => 'Producto.showCarrito'
+    ]);
+
 });
 
 

@@ -16,6 +16,7 @@ class CreateCategoriasTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('nombre');
+            $table->integer('vendidos')->default(0);
         });
     }
 

@@ -39,14 +39,16 @@
             </div>
         </div>
     </div>
-
     <!-- Logo, busqueda, y carrito de compra-->
     <div class="header_bottom">
         <div class="container">
             <div class="header_bottom-box">
                 <div class="header_bottom_left">
                     <div class="logo">
-                        <a href="index.html"><img src="images/logo.png" class="logo" /></a>
+                        <a href="{{route('shop.index')}}">
+                            {{ HTML::image('images/logo.png', "Logo", array('class' => 'logo')) }}
+                        </a>
+
                     </div>
                     <ul class="clock">
                         <i class="clock_icon"> </i>
@@ -62,10 +64,12 @@
                       </form>
                     </div>
                     <ul class="bag">
-                        <a href="#"><i class="bag_left "> </i></a>
-                        <a href="#">
+                        <a href="#" id="cart">
+                            <i class="bag_left ">  <span class="badge badge-info">  {{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}}  </span></i>
+                        </a>
+                        <a href="{{route('shop.carrito')}}">
                             <li class="bag_right">
-                                <p>0.00 $</p>
+                                <p>$ {{Session::has('carrito') ? Session::get('carrito')->total : '0.00'}} </p>
                             </li>
                         </a>
                         <div class="clearfix"> </div>
@@ -73,5 +77,26 @@
                 </div>
                 <div class="clearfix"> </div>
             </div>
+
+            <div class="modal" id="modalCart">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Tu Carrito de compra $ {{Session::has('carrito') ? Session::get('carrito')->total : '0.00'}}</h4>
+                        </div>
+                        <div class="modal-body" id="filasDetalle">
+                            <ul id="detalles">
+
+                            </ul>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="button">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>

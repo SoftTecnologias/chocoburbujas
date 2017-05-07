@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Carrito;
 use \App\Products;
 use \App\Producto;
 use Exception;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Session;
 
 class ProductosController extends Controller
 {
@@ -315,5 +317,52 @@ class ProductosController extends Controller
         return Response::json($respuesta);
     }
 
+    public function addCarrito(Request $request, $id){
+        $producto = Producto::find($id);
+        $oldCart = Session::has('carrito') ? Session::get('carrito') : null;
+        $cart = new Carrito($oldCart);
+        $cart->add($producto, $producto->id);
+        $request->session()->put('carrito',$cart);
+        return back();
+    }
 
+    public function removeCarrito(Request $request, $id){
+        if(!Session::has('carrito')){
+            return view('shop.carrito');
+        }
+        $oldCart = Session::has('carrito') ? Session::get('carrito'):null;
+        $cart = new Carrito($oldCart);
+        $cart->remove($id);
+        $request->session()->put('carrito',$cart);
+        return back();
+    }
+
+    public function getCarrito(){
+        if(!Session::has('carrito')){
+            return view('shop.carrito',['products'=> null]);
+        }
+        $oldCart = Session::get('carrito');
+        $cart = new Carrito($oldCart);
+        $categorias = DB::table('categorias')->take(10)->get();
+        return view('shop.carrito',['products' => $cart->productos, 'total' =>$cart->total,'categorias' => $categorias]);
+    }
+
+    public function Checkout(){
+        if(!Session::has('carrito')){
+            return view('shop.carrito');
+        }
+        $oldCart = Session::get('carrito');
+        $cart = new Carrito($oldCart);
+        $total = $cart->total;
+        $categorias = DB::table('categorias')->take(10)->get();
+        return view('shop.checkout',['total' => $total, 'categorias'=> $categorias]);
+    }
+
+    public function getItems(){
+        $oldCart = Session::get('carrito');
+        $cart = new Carrito($oldCart);
+
+        $respuesta = ['code' => 200, 'msg'=>$cart];
+        return Response::json($respuesta);
+    }
 }
