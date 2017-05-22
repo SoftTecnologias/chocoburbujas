@@ -19,15 +19,15 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ route('panel.area') }}"><i class='fa fa-link'></i> <span>Inicio</span></a></li>
-            <li><a href="{{route('panel.brand')}}"><i class='fa fa-link'></i> <span>Marcas</span></a></li>
-            <li><a href="{{route('panel.category')}}"><i class='fa fa-link'></i> <span>Categorias</span></a></li>
-            <li><a href="{{route('panel.product')}}"><i class='fa fa-link'></i> <span>Productos</span></a></li>
+            <li class="active"><a href="{{ route('panel.area') }}"><i class='fa fa-dashboard'></i> <span>Inicio</span></a></li>
+            <li><a href="{{route('panel.brand')}}"><i class='fa fa-tag'></i> <span>Marcas</span></a></li>
+            <li><a href="{{route('panel.category')}}"><i class='fa fa-book'></i> <span>Categorias</span></a></li>
+            <li><a href="{{route('panel.product')}}"><i class='fa fa-paw'></i> <span>Productos</span></a></li>
             @if(auth()->guard()->user()->rol == 1)
-            <li><a href="{{route('panel.user')}}"><i class='fa fa-link'></i><span>Usuarios</span></a></li>
+            <li><a href="{{route('panel.user')}}"><i class='fa fa-users'></i><span>Usuarios</span></a></li>
+            <li><a href="{{route('panel.movements')}}"><i class='fa fa-archive'></i> <span>Movimientos de almacén</span></a></li>
             @endif
-            <li><a href="{{route('panel.provider')}}"><i class='fa fa-link'></i> <span>Proveedores</span></a></li>
-            <li><a href="{{route('panel.movements')}}"><i class='fa fa-link'></i> <span>Movimientos de almacén</span></a></li>
+            <li><a href="{{route('panel.provider')}}"><i class='fa fa-truck'></i> <span>Proveedores</span></a></li>
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

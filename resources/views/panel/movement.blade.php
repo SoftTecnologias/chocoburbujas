@@ -11,7 +11,7 @@
             <h1>Movimientos </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="#"><i class="ionicons ion-android-clipboard">Movimientos</i></a></li>
+                <li><a href="#"><i class="fa fa-archive"> Movimientos</i></a></li>
             </ol>
         </section>
         <section class="content">

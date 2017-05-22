@@ -13,7 +13,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="#"><i class="ionicons ion-android-clipboard">Usuarios</i></a></li>
+                <li><a href="#"><i class="fa fa-users"> Usuarios</i></a></li>
             </ol>
         </section>
         <!-- Formularios y mas -->

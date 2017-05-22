@@ -200,6 +200,7 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
 
 });
 
+Route::resource('api/Usuario', 'UsuarioController');
 
 
 

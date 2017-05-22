@@ -13,7 +13,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="#"><i class="ionicons ion-android-clipboard">Productos</i></a></li>
+                <li><a href="#"><i class="fa fa-paw"> Productos</i></a></li>
             </ol>
         </section>
         <section class="content">

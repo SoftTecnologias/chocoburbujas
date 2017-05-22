@@ -9,7 +9,7 @@
             <h1>Proveedores </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="#"><i class="ionicons ion-android-clipboard">Proveedores</i></a></li>
+                <li><a href="#"><i class="fa fa-truck"> Proveedores</i></a></li>
             </ol>
         </section>
         <section class="content">
