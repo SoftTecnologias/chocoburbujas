@@ -15,7 +15,7 @@ $(function(){
         'scrollY':'500px',
         'ajax':{
             url: 'api/productos',
-            dataSrc: function (json) {
+            dataSrc: function (json){
                 return json;
             }
         },

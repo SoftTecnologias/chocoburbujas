@@ -79,6 +79,9 @@ class UsersController extends Controller
         $proveedores =DB::table('proveedores')->select('id','nombre')->get();
         return view('panel.movement',['proveedores' => $proveedores, 'productos' => $productos]);
     }
+    public function showBlogForm(){
+        return view('panel.blog');
+    }
 
     public function email($email){
         $em=DB::table('users')->select("email")->where("email","=",$email);

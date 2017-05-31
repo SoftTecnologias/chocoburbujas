@@ -15,7 +15,6 @@
 /*Para Los administradores */
 Route::group(['prefix'=>'panel'],function (){
 
-    /*Area del login */
     Route::get('/login',[
         'uses'=>'UsersController@showLoginForm',
         'as' => 'user.login',
@@ -26,7 +25,6 @@ Route::group(['prefix'=>'panel'],function (){
         'as' => 'user.login',
         'middleware' => 'guest:web'
     ]);
-    /*Area de Registro*/
     Route::get('/registro',[
         'uses'=>'UsersController@showRegistrationForm',
         'as' => 'user.register',
@@ -37,44 +35,38 @@ Route::group(['prefix'=>'panel'],function (){
         'as'=> 'user.register',
         'middleware' => 'auth'
         ]);
-    /*Logout*/
     Route::get('/logout',[
         'uses'=>'UsersController@logout',
         'as' =>'user.logout',
         'middleware'=>['auth','is_admin']
     ]);
-    /*Usuario logueado*/
     Route::get('/area',['uses'=>'UsersController@index',
         'as' =>'panel.area',
         'middleware'=>'auth:web']);
-
     Route::get('/brands',['uses'=>'UsersController@showBrandForm',
         'as' =>'panel.brand',
         'middleware'=>'auth:web']);
-
     Route::get('/categories',['uses'=>'UsersController@showCategoryForm',
         'as' =>'panel.category',
         'middleware'=>'auth:web']);
-
     Route::get('/products',['uses'=>'UsersController@showProductForm',
         'as' =>'panel.product',
         'middleware'=>'auth:web']);
-
     Route::get('/providers',['uses'=>'UsersController@showProviderForm',
         'as' =>'panel.provider',
         'middleware'=>'auth:web']);
-
     Route::get('/profile',['uses'=>'UsersController@showProfileForm',
         'as' =>'user.profile',
         'middleware'=>'auth:web']);
-
     Route::get('/users',['uses'=>'UsersController@showUserForm',
         'as' =>'panel.user',
         'middleware'=>['auth:web','is_admin']]);
     Route::get('/movements',['uses'=>'UsersController@showMovementForm',
         'as' =>'panel.movements',
         'middleware'=>['auth:web','is_admin']]);
-
+    Route::get('/blogs',['uses'=>'UsersController@showBlogForm',
+        'as' =>'panel.blogs',
+        'middleware'=>['auth:web','is_admin']]);
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/categorias','CategoriasController');
@@ -82,6 +74,7 @@ Route::group(['prefix'=>'panel'],function (){
     Route::resource('/api/productos',"ProductosController");
     Route::resource('/api/usuarios',"UsuariosController");
     Route::resource('/api/proveedores','ProveedoresController');
+    Route::resource('/api/blogs','BlogsController');
     Route::get("/api/usuarios/email/{email}","UsersController@email");
     Route::get("/api/usuarios/username/{username}","UsersController@username");
     Route::post("/api/usuarios/{id}","UsuariosController@update");
@@ -89,6 +82,7 @@ Route::group(['prefix'=>'panel'],function (){
     Route::post("/api/productos/{id}","ProductosController@update");
     Route::get("/api/municipios/{id}", 'ProveedoresController@municipios');
     Route::post("/api/municipios/{id}", 'ProveedoresController@update');
+    Route::post('/api/blogs/{id}','BlogsController@update');
     //Movimientos y sus detalles
     //mostrar movimientos con detalles
     Route::get("/api/movimientos",[
@@ -121,7 +115,6 @@ Route::group(['prefix'=>'panel'],function (){
         'uses'=>'MovimientosController@removeDetail',
         'as' => 'panel.api.movimientos.remove'
     ]);
-
 });
 
 
@@ -200,7 +193,6 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
 
 });
 
-Route::resource('api/Usuario', 'UsuarioController');
 
 
 

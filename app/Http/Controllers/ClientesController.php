@@ -16,7 +16,7 @@ class ClientesController extends Controller
     public function index(){
         $topselling = DB::table('productos')->take(4)->orderBy('vendidos', 'asc')->get();
         $promociones = DB::table('productos')->take(10)->where('promocion',1)->orderBy('precio1', 'asc')->get();
-        $blogs = DB::table('blog')->take(4)->orderBy('fecha','asc')->get();
+        $blogs = DB::table('blogs')->take(4)->orderBy('fecha','desc')->get();
         $categorias = DB::table('categorias')->take(4)->get();
         $menu = array();
         foreach ($categorias as $categoria){

@@ -182,7 +182,7 @@
                     @foreach($blogs as $blog)
                     <div class="a-top">
                         <div class="left-grid">
-                            <img src="images/{{$blog->img}}" class="img-responsive" alt="" />
+                            <img src="images/blogs/{{$blog->img}}" class="img-responsive" alt="" />
                         </div>
                         <div class="right-grid">
                             <h4><a href="#">{{$blog->titulo}}</a></h4>
