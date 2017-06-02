@@ -3,7 +3,7 @@
     Chocoburbujas: Estetica Canina, Boutique y Veterinaria
 @endsection
 @section('menu')
-    @include('partials.menu',array('categorias'=>$categorias))
+    @include('partials.menu',['categorias'=>$categorias])
 @endsection
 <script>
     $(".megamenu").megamenu();
@@ -86,28 +86,28 @@
                     <div class="clearfix"></div>
                 </div>
                 @foreach(array_chunk($productos->getCollection()->all(),3) as $row)
-                <div class="span_2">
-                    @foreach($row as $item)
-                    <div class="col_1_of_single1 span_1_of_single1 row">
+                    <div class="span_2">
+                        @foreach($row as $item)
+                            <div class="col_1_of_single1 span_1_of_single1 row">
 
-                            <img src="../images/productos/{{$item->img1}}" class="img-responsive" alt="" style="height: 250px; width: 200px;"/>
-                            <h3>{{$item->nombre}}</h3>
-                            <p>{{$item->descripcion}}</p>
-                            <h4>${{$item->precio1}}</h4>
-                            <ul class="list2">
-                                <li class="list2_left"><span class="m_1"><a href="{{route('Producto.addCarrito',['id'=> $item->id,'ref'=>2])}}" class="link"
-                                                                            data-value="{{$item->id}}">Añadir al carrito</a></span>
-                                </li>
-                                <li class="list2_right"><span class="m_2"><a href="#" class="link1"
-                                                                             onclick="verProducto({{$item->id}})">ver más</a></span>
-                                </li>
-                                <div class="clearfix"></div>
-                            </ul>
+                                <img src="images/productos/{{$item->img1}}" class="img-responsive" alt="" style="height: 250px; width: 200px;"/>
+                                <h3>{{$item->nombre}}</h3>
+                                <p>{{$item->descripcion}}</p>
+                                <h4>${{$item->precio1}}</h4>
+                                <ul class="list2">
+                                    <li class="list2_left"><span class="m_1"><a href="{{route('Producto.addCarrito',['id'=> $item->id,'ref'=>2])}}" class="link"
+                                                                                data-value="{{$item->id}}">Añadir al carrito</a></span>
+                                    </li>
+                                    <li class="list2_right"><span class="m_2"><a href="#" class="link1"
+                                                                                 onclick="verProducto({{$item->id}})">ver más</a></span>
+                                    </li>
+                                    <div class="clearfix"></div>
+                                </ul>
 
+                            </div>
+                        @endforeach
+                        <div class="clearfix"></div>
                     </div>
-                    @endforeach
-                    <div class="clearfix"></div>
-                </div>
                 @endforeach
                 <div class="row center">
                     {{$productos->links()}}

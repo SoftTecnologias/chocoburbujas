@@ -58,9 +58,9 @@
                 </div>
                 <div class="header_bottom_right">
                     <div class="search">
-                      <form class="" action="index.html" method="post">
-                        <input type="text" value="Busca tus productos favoritos aquí!" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Busca tus productos favoritos aquí!';}">
-                        <input type="submit" value="">
+                      <form action="search" method="get">
+                        <input type="text" name="search" placeholder="Busca tus productos favoritos aquí!" >
+                        <input type="submit" id="busqueda" value="">
                       </form>
                     </div>
                     <ul class="bag">

@@ -365,4 +365,15 @@ class ProductosController extends Controller
         $respuesta = ['code' => 200, 'msg'=>$cart];
         return Response::json($respuesta);
     }
+
+    public function search(Request $request){
+        $busqueda= $request->query();
+        $categorias = DB::table('categorias')->take(10)->get();
+        $resultado = DB::table('productos')
+                     ->where('nombre','like','%'.$busqueda['search'].'%')
+                     ->orWhere('descripcion','like','%'.$busqueda['search'].'%')
+                     ->orWhere('codigo','like','%'.$busqueda['search'].'%')
+                     ->paginate(9);
+        return view('shop.busqueda',['categorias'=>$categorias,'productos'=> $resultado]);
+    }
 }

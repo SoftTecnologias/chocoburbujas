@@ -191,6 +191,10 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
         'as' => 'Producto.showCarrito'
     ]);
 
+    Route::get('/search',[
+        'uses'=>'ProductosController@search',
+        'as' => 'Producto.search'
+    ]);
 });
 
 
