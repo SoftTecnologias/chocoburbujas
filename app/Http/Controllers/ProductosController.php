@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use phpDocumentor\Reflection\Types\Integer;
 use Session;
 
 class ProductosController extends Controller
@@ -368,12 +369,165 @@ class ProductosController extends Controller
 
     public function search(Request $request){
         $busqueda= $request->query();
+
+        /*
+         * filtros que podemos recibir
+         * Search = nombre del producto!
+         * precio = 1-5 ciertos filtros. cualquier otro filtro será +500
+         * marca = se hará la busqueda por nombre para recuperar el id de la marca (si existe)
+         * */
+        if(!array_key_exists('search',$busqueda)){ //Si no existe el parametro search ni para que -.-
+            $topselling = DB::table('productos')->take(4)->orderBy('vendidos', 'asc')->get();
+            $promociones = DB::table('productos')->take(10)->where('promocion',1)->orderBy('precio1', 'asc')->get();
+            $blogs = DB::table('blogs')->take(4)->orderBy('fecha','desc')->get();
+            $categorias = DB::table('categorias')->take(4)->get();
+            $menu = array();
+            $marcas = DB::table('marcas')
+                ->orderBy('nombre','asc')
+                ->get();
+            foreach ($categorias as $categoria){
+                $productos = DB::table('productos')->take(9)->where('categoria_id',$categoria->id)->orderBy('vendidos',1)->get();
+                array_push($menu,[$categoria->id => $productos]);
+            }
+            return view('shop.index',['topselling'=>$topselling,
+                'promociones'=>$promociones,
+                'blogs' => $blogs,
+                'categorias'=>$categorias,
+                'marcas' => $marcas
+            ]);
+        }
+        $search = $busqueda['search'];
+        $marcas = DB::table('marcas')
+            ->select(DB::raw("id, nombre,(
+		                      SELECT COUNT(*)
+		                      FROM [laravel_chocoburbujas].[dbo].[productos] p
+		                      where p.marca_id = marcas.id AND (p.nombre like '%$search%' OR p.descripcion like '%$search%' OR p.codigo like '%$search%')
+                             ) as total "))
+            ->orderBy('nombre','asc')
+            ->get();
         $categorias = DB::table('categorias')->take(10)->get();
-        $resultado = DB::table('productos')
-                     ->where('nombre','like','%'.$busqueda['search'].'%')
-                     ->orWhere('descripcion','like','%'.$busqueda['search'].'%')
-                     ->orWhere('codigo','like','%'.$busqueda['search'].'%')
-                     ->paginate(9);
-        return view('shop.busqueda',['categorias'=>$categorias,'productos'=> $resultado]);
+        //search existe, pero no existe los parametros precio ni busqueda
+        if(!array_key_exists('precio',$busqueda) && !array_key_exists('marca',$busqueda) ) { //no existen ambos filtros
+            $resultado = DB::table('productos')
+                ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                ->paginate(9);
+        }
+        else{
+            //revisamos si existen los dos o solo alguno
+            if(array_key_exists('precio', $busqueda) && array_key_exists('marca', $busqueda)){ //existen ambas y por tanto se hace la consulta
+                $marca_id = DB::table('marcas')->select('id')->where('nombre',$busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
+                try {
+                    //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                    if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                        switch ((Integer) $busqueda['precio']) {
+                            case 1:
+                                $precio = array(0, 99.99);
+                                break;
+                            case 2:
+                                $precio = array(100, 199.99);
+                                break;
+                            case 3:
+                                $precio = array(200, 299.99);
+                                break;
+                            case 4:
+                                $precio = array(300, 399.99);
+                                break;
+                            case 5:
+                                $precio = array(400, 499.99);
+                                break;
+                        }
+                        $resultado = DB::table('productos')
+                            ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                            ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                            ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                            ->where('marca_id','=',$marca_id->id)
+                            ->whereBetween('precio1',$precio)
+                            ->paginate(9);
+
+                    } else { // se tomará automaticamente +500
+                        $resultado = DB::table('productos')
+                            ->where([
+                                ['nombre', 'like', '%' . $busqueda['search'] . '%'],
+                                ['precio1','>',500]
+                            ])
+                            ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                            ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                            ->paginate(9);
+                    }
+                }catch(Exception $e){
+                    //ignoramos entonces el criterio de busqueda y lo tomamos a +500
+                    $resultado = DB::table('productos')
+                        ->where([
+                            ['nombre', 'like', '%' . $busqueda['search'] . '%'],
+                            ['precio1','>',500]
+                        ])
+                        ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                        ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                        ->paginate(9);
+                }
+            }else{ // solo existe una
+                if(array_key_exists('precio', $busqueda)){
+                    try {
+
+                        //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                        if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                            switch ((Integer)$busqueda['precio']) {
+                                case 1:
+                                    $precio = array(0, 99.99);
+                                    break;
+                                case 2:
+                                    $precio = array(100, 199.99);
+                                    break;
+                                case 3:
+                                    $precio = array(200, 299.99);
+                                    break;
+                                case 4:
+                                    $precio = array(300, 399.99);
+                                    break;
+                                case 5:
+                                    $precio = array(400, 499.99);
+                                    break;
+                            }
+                            $resultado = DB::table('productos')
+                                ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                                ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                                ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                                ->whereBetween('precio1',$precio)
+                                ->paginate(9);
+
+                        } else { // se tomará automaticamente +500
+                            $resultado = DB::table('productos')
+                                ->where('precio1','>',500)
+                                ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                                ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                                ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                                ->paginate(9);
+                        }
+                    }catch(Exception $e){
+                        //ignoramos entonces el criterio de busqueda y lo tomamos a +500
+                        $resultado = DB::table('productos')
+                            ->where('precio1','>',500)
+                            ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                            ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                            ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                            ->paginate(9);
+                    }
+                }elseif (array_key_exists('marca', $busqueda)){
+                    $marca_id = DB::table('marcas')->select('id')->where('nombre',$busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
+                    $resultado = DB::table('productos')
+                        ->where('nombre', 'like', '%' . $busqueda['search'] . '%')
+                        ->orWhere('descripcion', 'like', '%' . $busqueda['search'] . '%')
+                        ->orWhere('codigo', 'like', '%' . $busqueda['search'] . '%')
+                        ->where('marca_id','=',$marca_id->id)
+                        ->paginate(9);
+                }
+
+            }
+        }
+        return view('shop.busqueda',['categorias'=>$categorias,'productos'=> $resultado, 'marcas' => $marcas]);
     }
+
+
 }

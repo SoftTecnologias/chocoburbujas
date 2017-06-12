@@ -4,7 +4,7 @@
     Chocoburbujas: Estetica Canina, Boutique y Veterinaria
 @endsection
 @section('menu')
-   @include('partials.menu',['categorias'=>$categorias])
+   @include('partials.menu',['categorias'=>$categorias, 'marcas' => $marcas])
 @endsection
 @section('content')
     <!-- Esta parte es la que siempre va a variar

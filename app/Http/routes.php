@@ -161,6 +161,11 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
         'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.categoria'
     ]);
+    Route::get('/marcas/{id}',[
+        'uses' => 'ClientesController@getMarcas',
+        'as' => 'shop.marca'
+    ]);
+
     Route::get('/productos/{id}',[
         'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.detalle'

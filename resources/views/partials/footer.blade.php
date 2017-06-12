@@ -1,7 +1,7 @@
 
 <div class="footer">
     <div class="container">
-        <img src="images/pay.png" class="img-responsive" alt="" />
+        <img src="{{asset('images/pay.png')}}" class="img-responsive" alt="" />
         <ul class="footer_nav">
             <li><a href="#">Inicio</a></li>
             <li><a href="#">Blog</a></li>

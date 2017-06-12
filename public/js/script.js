@@ -1,6 +1,5 @@
 $(function(){
-	
-	var note = $('#note'),
+    var note = $('#note'),
 		ts = new Date(2012, 0, 1),
 		newYear = true;
 	
@@ -99,47 +98,49 @@ $(function(){
         });
         $("#modalCart").modal();
     });
-
-    function removeCart(id){
-        $.ajax({
-           url:' removeProduct/'+id,
-           type: 'GET',
-        }).done(function(json) {
-            if(json.code === 200){
-                $('#detalles').empty();
-                $.each(json.msg['productos'],function(index, row){
-                    $('<li>',{
-                        class:'clearfix'
-                    }).append($('<img>',{
-                        src : 'images/productos/'+row.item['img1'],
-                        alt:'item'+(index+1),
-                        style:'height: 75px; width: 50px;'
-                    })).append($('<span>',{
-                        class:'item-name',
-                        text:row.item['nombre']
-                    })).append($('<span>',{
-                        class:'item-price',
-                        text:'$'+row.item['precio1']
-                    })).append($('<span>',{
-                        class:'item-quantity',
-                        text: 'Cantidad: '+ row.cantidad
-                    })).append($('<a>',{
-                        class:'close rmCart',
-                        text:'x',
-
-                    })).appendTo('#detalles');
-                });
-                $(".rmCart").on('click',function(){
-                    $.ajax({
-                        url:'removeProduct/'+this.data('value'),
-                        type:'GET'
-                    })
-                });
-            }
-        }).fail({
-
-        });
-    }
-
-
 });
+function removeCart(id){
+    $.ajax({
+        url:' removeProduct/'+id,
+        type: 'GET',
+    }).done(function(json) {
+        if(json.code === 200){
+            $('#detalles').empty();
+            $.each(json.msg['productos'],function(index, row){
+                $('<li>',{
+                    class:'clearfix'
+                }).append($('<img>',{
+                    src : 'images/productos/'+row.item['img1'],
+                    alt:'item'+(index+1),
+                    style:'height: 75px; width: 50px;'
+                })).append($('<span>',{
+                    class:'item-name',
+                    text:row.item['nombre']
+                })).append($('<span>',{
+                    class:'item-price',
+                    text:'$'+row.item['precio1']
+                })).append($('<span>',{
+                    class:'item-quantity',
+                    text: 'Cantidad: '+ row.cantidad
+                })).append($('<a>',{
+                    class:'close rmCart',
+                    text:'x',
+
+                })).appendTo('#detalles');
+            });
+            $(".rmCart").on('click',function(){
+                $.ajax({
+                    url:'removeProduct/'+this.data('value'),
+                    type:'GET'
+                })
+            });
+        }
+    }).fail({
+
+    });
+}
+
+function searchProduct(producto){
+
+}
+

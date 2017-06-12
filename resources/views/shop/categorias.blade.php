@@ -17,59 +17,44 @@
                         <strong><span>Comprar por</span></strong>
                     </div>
                     <div class="block-content">
-
                         <dl id="narrow-by-list">
                             <dt class="odd">Precios</dt>
                             <dd class="odd">
                                 <ol>
                                     <li>
-                                        <a href="#"><span class="price1">$&nbsp;0,00</span> - <span class="price1">$&nbsp;99,99</span></a>
-
+                                        <a href="#" data-val="1" class="fprice"><span class="price1">$&nbsp;0,00</span> - <span class="price1">$&nbsp;99,99</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="price1">$&nbsp;100,00</span> - <span class="price1">$&nbsp;199,99</span></a>
-
+                                        <a href="#" data-val="2" class="fprice"><span class="price1">$&nbsp;100,00</span> - <span class="price1">$&nbsp;199,99</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="price1">$&nbsp;200,00</span> - <span class="price1">$&nbsp;299,99</span></a>
-
+                                        <a href="#" data-val="3" class="fprice"><span class="price1">$&nbsp;200,00</span> - <span class="price1">$&nbsp;299,99</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="price1">$&nbsp;400,00</span> - <span class="price1">$&nbsp;499,99</span></a>
-
+                                        <a href="#" data-val="4" class="fprice"><span class="price1">$&nbsp;300,00</span> - <span class="price1">$&nbsp;399,99</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="price1">+ $&nbsp;800,00</span></a>
+                                        <a href="#" data-val="5" class="fprice"><span class="price1">$&nbsp;400,00</span> - <span class="price1">$&nbsp;499,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="6" class="fprice"><span class="price1">+ $&nbsp;500,00</span></a>
                                     </li>
                                 </ol>
                             </dd>
                             <dt class="even">Marcas</dt>
                             <dd class="even">
                                 <ol>
-                                    <li>
-                                        <a href="#">Calvin Klein</a>
-                                        (2)
-                                    </li>
-                                    <li>
-                                        <a href="#">Diesel</a>
-                                        (1)
-                                    </li>
-                                    <li>
-                                        <a href="#">Polo</a>
-                                        (1)
-                                    </li>
-                                    <li>
-                                        <a href="#">Tommy Hilfiger</a>
-                                        (1)
-                                    </li>
-                                    <li>
-                                        <a href="#">Versace</a>
-                                        (1)
-                                    </li>
+                                    @foreach($marcas as $marca)
+                                        @if($marca->total > 0)
+                                            <li>
+                                                <a href="#" data-val="{{$marca->nombre}}" class="fbrand">{{"$marca->nombre ($marca->total)"}}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+
                                 </ol>
                             </dd>
                         </dl>
-
                     </div>
                 </div>
                 <div class="block block-cart">
@@ -110,12 +95,23 @@
                 </div>
                 @endforeach
                 <div class="row center">
-                    {{$productos->links()}}
+                    <?php
+                    $link = [];
+                    if(isset($_GET['precio']))
+                        $link['precio'] = $_GET['precio'];
+                    if(isset($_GET['marca']))
+                        $link['marca'] = $_GET['marca'];
+
+                    ?>
+                    {{$productos->appends($link)->links()}}
                 </div>
             </div>
 
         </div>
     </div>
 
+@endsection
+@section('scripts')
+    {{Html::script('js/shop/categorias.js')}}
 @endsection
 @section('partials.footer')

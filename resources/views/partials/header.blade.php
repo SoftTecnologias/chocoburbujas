@@ -58,8 +58,8 @@
                 </div>
                 <div class="header_bottom_right">
                     <div class="search">
-                      <form action="search" method="get">
-                        <input type="text" name="search" placeholder="Busca tus productos favoritos aquí!" >
+                      <form action="{{route('Producto.search')}}" method="get">
+                        <input type="text" name="search" placeholder="Busca por nombre, descripcion o codigo " >
                         <input type="submit" id="busqueda" value="">
                       </form>
                     </div>
