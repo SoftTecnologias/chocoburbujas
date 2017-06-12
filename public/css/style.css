@@ -12,9 +12,9 @@ html, body{
 	font-family: 'Raleway', sans-serif;
 	font-size: 100%;
 	background:#fff;
-	background-image: url("../images/circles.png");
-	background-size: auto auto;
-
+	background-image: url("../images/bc.png");
+	background-size: contain;
+	background-repeat: repeat-y;
 }
 body a{
 	transition: 0.5s all;
@@ -294,7 +294,7 @@ ul.clock li.clock_desc{
 	-webkit-appearance: none;
 }
 .search input[type="submit"] {
-	background: url('../images/search.png') no-repeat 24px 10px #e05b5b;
+	background: url('../images/search.png') no-repeat 24px 10px #974478;
 	padding: 12.5px 38px;
 	border: none;
 	cursor: pointer;
@@ -320,12 +320,12 @@ ul.bag a:hover li p{
 i.bag_left{
 	width: 80px;
 	height: 46px;
-	background: url(../images/img-sprite.png)no-repeat -32px 3px #e05b5b;
+	background: url(../images/img-sprite.png)no-repeat -32px 3px #974478;
 	float: left;
 	border-right: 1px solid #fff;
 }
 ul.bag li.bag_right{
-	background:#e05b5b;
+	background:#974478;
 	padding:16px 10px;
 	overflow:hidden;
 }
@@ -334,7 +334,7 @@ ul.bag li.bag_right p{
 	color:#fff;
 }
 .menu {
-	border-bottom:3px solid #e05b5b;
+	border-bottom:3px solid #974478;
 }
 .h_nav ul li a {
 	display: block;
@@ -350,7 +350,7 @@ ul.bag li.bag_right p{
 }
 .h_nav ul li a:hover{
 	text-decoration:none;
-	color:#f84545;
+	color:#974478;
 }
 .h_nav h4 {
 	font-size: 1em;
@@ -372,16 +372,16 @@ ul.bag li.bag_right p{
 }
 .p_right h4 a:hover, .small:hover{
 	text-decoration:none;
-	color: #f84545;
+	color: #974478;
 }
 span.price{
-	color: #f84545;
+	color: #974478;
 }
 span.item-cat{
 	color:#999;
 }
 span.item-cat:hover{
-	color: #f84545;
+	color: #974478;
 }
 /*--slider--*/
 /*--- slider-css --*/
@@ -634,24 +634,24 @@ span.m_1{
 	padding:10px 0;
 }
 span.m_1:hover{
-	background: #e05a5a;
-	background: -moz-linear-gradient(top,  #e05a5a 0%, #dd5555 47%, #db5050 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e05a5a), color-stop(47%,#dd5555), color-stop(100%,#db5050));
-	background: -webkit-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -o-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -ms-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: linear-gradient(to bottom,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
+	background: #974478;
+	background: -moz-linear-gradient(top,  #974478 0%, #974478 47%, #974478 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#974478), color-stop(47%,#974478), color-stop(100%,#974478));
+	background: -webkit-linear-gradient(top,  #974478 0%,#974478 47%,#974478 100%);
+	background: -o-linear-gradient(top,  #974478 0%,#974478 47%,#974478 100%);
+	background: -ms-linear-gradient(top,  #974478 0%,#974478 47%,#974478 100%);
+	background: linear-gradient(to bottom,  #974478 0%,#974478 47%,#974478 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e05a5a', endColorstr='#db5050',GradientType=0 );
 }
 span.m_2{
-	background: #e05a5a;
-	background: -moz-linear-gradient(top,  #e05a5a 0%, #dd5555 47%, #db5050 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e05a5a), color-stop(47%,#dd5555), color-stop(100%,#db5050));
-	background: -webkit-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -o-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -ms-linear-gradient(top,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: linear-gradient(to bottom,  #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e05a5a', endColorstr='#db5050',GradientType=0 );
+	background: #974478;
+	background: -moz-linear-gradient(top, #974478 0%,#974478 47%,#974478 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#974478), color-stop(47%,#974478), color-stop(100%,#974478));
+	background: -webkit-linear-gradient(top,  #974478 0%,#974478 47%,#974478 100%);
+	background: -o-linear-gradient(top, #974478 0%,#974478 47%,#974478 100%);
+	background: -ms-linear-gradient(top, #974478 0%,#974478 47%,#974478 100%);
+	background: linear-gradient(to bottom,  #974478 0%,#974478 47%,#974478 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#974478', endColorstr='#db5050',GradientType=0 );
 	padding:10px 0;
 }
 span.m_2:hover{
@@ -825,14 +825,14 @@ i.promote_icon{
 	color: #fff;
 }
 .m_3:hover{
-	background: #e05a5a;
-	background: -moz-linear-gradient(top, #e05a5a 0%, #dd5555 47%, #db5050 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e05a5a), color-stop(47%,#dd5555), color-stop(100%,#db5050));
-	background: -webkit-linear-gradient(top, #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -o-linear-gradient(top, #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: -ms-linear-gradient(top, #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	background: linear-gradient(to bottom, #e05a5a 0%,#dd5555 47%,#db5050 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e05a5a', endColorstr='#db5050',GradientType=0 );
+	background: #974478;
+	background: -moz-linear-gradient(top, #974478 0%, #974478 47%, #974478 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#974478), color-stop(47%,#974478), color-stop(100%,#974478));
+	background: -webkit-linear-gradient(top,  #974478 0%, #974478 47%, #974478 100%);
+	background: -o-linear-gradient(top, #974478 0%, #974478 47%, #974478 100%);
+	background: -ms-linear-gradient(top,  #974478 0%, #974478 47%, #974478 100%);
+	background: linear-gradient(to bottom, #974478 0%, #974478 47%, #974478 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#974478', endColorstr='#db5050',GradientType=0 );
 }
 a.link2:hover{
 	color:#fff;
@@ -994,7 +994,7 @@ i.paperclip{
 .right-grid p{
 	font-size:0.85em;
 	line-height:1.5em;
-	color:#8E7558;
+	color: #8e6d35;
 }
 .but{
 	float: right;
@@ -1035,7 +1035,7 @@ i.mail{
 .span_1 p{
 	font-size: 0.8125em;
 	line-height: 1.5em;
-	color: #8E7558;
+	color: #8e7347;
 	font-weight:500;
 }
 .span_1 p a{
@@ -1148,7 +1148,7 @@ p.copy a{
 	padding:10px;
 	font-weight: bold;
 	text-transform: capitalize;
-	color:#1bccf7;
+	color: #824584;
 }
 .block-layered-nav dd ol{
 	padding:0;
