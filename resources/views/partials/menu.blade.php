@@ -7,16 +7,18 @@
                     <li><a class="color10" href="#">Categorias</a>
                         <div class="megapanel">
                             <div class="row">
-                                <div class="col1">
-                                    <div class="h_nav">
-                                        <ul>
-                                            @foreach($categorias as $categoria)
-                                                <li><a href="{{route('shop.categoria',['id' > $categoria->id])}}">{{$categoria->nombre}}</a></li>
-                                            @endforeach
-                                        </ul>
+                                @foreach(array_chunk($categorias,6) as $row)
+                                    <div class="col1">
+                                        <div class="h_nav">
+                                            <h4></h4>
+                                            <ul>
+                                                @foreach($row as $item)
+                                                    <li><a href="{{route('shop.categoria',['id' => $item->id])}}">{{$item->nombre}}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-
+                                @endforeach
                             </div>
                         </div>
                     </li>
