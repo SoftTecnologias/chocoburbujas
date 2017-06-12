@@ -3,93 +3,69 @@
     Chocoburbujas: Estetica Canina, Boutique y Veterinaria
 @endsection
 @section('menu')
-    @include('partials.menu',array('categorias'=>$categorias))
+    @include('partials.menu',['categorias'=>$categorias, 'marcas' => $marcas])
 @endsection
 @section('content')
-    <div class="container">
-        @if(Session::has('carrito'))
-            <div class="row">
-                <div class="col-sm-11 col-md-offset-1">
-                    <table id="productTable"
-                           class=" table table-bordered table-hover table-striped table-condensed table-responsive "
-                           role="grid" aria-describedby="productos_info" width="100%">
-                        <thead>
-                        <tr role="row">
-                            <th class="sorting " tabindex="0" aria-controls="productTable"
-                                rowspan="1" colspan="1" aria-sort="ascending" aria-label="Muestra: Imagen del producto">
-                                Imagen del producto
-                            </th>
-                            <th class="sorting_asc" tabindex="0"
-                                aria-controls="productTable"
-                                rowspan="1" colspan="1" aria-sort="ascending"
-                                aria-label="codigo">
-                                Nombre
-                            </th>
-                            <th class="sorting_asc " tabindex="0"
-                                aria-controls="productTable"
-                                rowspan="1" colspan="1" aria-sort="ascending"
-                                aria-label="Nombre">
-                                Cantidad
-                            </th>
-                            <th class="sorting_asc " tabindex="0"
-                                aria-controls="productTable"
-                                rowspan="1" colspan="1" aria-sort="ascending"
-                                aria-label="Nombre">
-                                Precio
-                            </th>
-                            <th class="sorting_asc " tabindex="0"
-                                aria-controls="productTable"
-                                rowspan="1" colspan="1" aria-sort="ascending"
-                                aria-label="Marca">
-                                Importe
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($products as $product)
-                            <tr>
-                                <td class="col-md-3">
-                                    <img src="images/productos/{{$product['item']['img1']}}" class="img-responsive"
-                                         style="height: 100px; width: 75px;"/>
-                                </td>
-                                <td class="col-md-3">
-                                    {{$product['item']['nombre']}}
-                                </td>
-                                <td class="col-md-2">
-                                    <div class="col-md-12">
-                                        <input type="number" value="{{$product['cantidad']}}" >
-                                    </div>
-                                </td>
-                                <td>
-                                   $ {{$product['item']['precio1']}}
-                                </td>
-                                <td>
-                                   $ {{$product['total']}}
-                                </td>
-                                <td>
-                                    <a  class="close" data-dismiss="modal" href="{{route('Producto.removeCarrito',['id'=> $product['item']['id']])}}">&times;</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="row">
-                        <div class="col-md-6 pull-left">
-                            <h1> <strong>Total: $ {{$total}}</strong></h1>
-                        </div>
-                        <div class="col-md-6 pull-right">
-                            <a type="button " href="{{route('checkout')}}" class="btn btn-success">CheckOut</a>
-                        </div>
-                    </div>
-                </div>
-                @else
-                    <div class="col-md-6">
-                        <h2>No hay items en el carrito!</h2>
-                    </div>
+    <!-- Esta parte es la que siempre va a variar
+      Pero por ahora dejaré el index fijo
+ -->
+    <div id="contenido">
 
-                @endif
+        <div class="container">
+            <div class="row">
+                <h3>Tu carrito de compras contiene: <span>{{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}} Productos</span></h3>
+                <hr>
             </div>
+            <div class="container">
+                <table id="cart" class="table table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th style="width:50%">Producto</th>
+                        <th style="width:10%">Precio</th>
+                        <th style="width:8%">Cantidad</th>
+                        <th style="width:22%" class="text-center">Subtotal</th>
+                        <th style="width:10%"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php $total = 0  ?>
+                    @foreach($products as $product)
+                    <tr>
+                        <td data-th="Producto">
+                            <div class="row">
+                                <div class="col-sm-2 hidden-xs"><img src="{{asset("images/productos/".$product['item']['img1'])}}" alt="Producto{{$product['item']['id']}}" class="img-responsive"/></div>
+                                <div class="col-sm-10">
+                                    <h4 class="nomargin">{{$product['item']['nombre']}}</h4>
+                                    <p>{{$product['item']['descripcion']}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-th="Price">$ {{$product['item']['precio1']}}</td>
+                        <td data-th="Quantity">
+                            <input type="number" class="form-control text-center" value="{{$product['cantidad']}}">
+                        </td>
+                        <td data-th="Subtotal" class="text-center">$ {{$product['total']}}</td>
+                        <td class="actions" data-th="">
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                        <?php $total += $product['total'];?>
+                    @endforeach
+                    </tbody>
+                    <tfoot>
+                    <tr class="visible-xs">
+                        <td class="text-center"><strong>Total: {{$total}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td><a href="{{route('shop.index')}}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continuar comprando</a></td>
+                        <td colspan="2" class="hidden-xs"></td>
+                        <td class="hidden-xs text-center"><strong>Total ${{$total}}</strong></td>
+                        <td><a href="{{route('checkout')}}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
-<hr>
 @endsection
 @section('partials.footer')

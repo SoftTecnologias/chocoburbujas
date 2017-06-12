@@ -11,6 +11,10 @@
   white-space: nowrap;
 }
 
+ul{
+  list-style: none;
+}
+
 .shopping-cart-header {
   border-bottom: 1px solid #E8E8E8;
   padding-bottom: 15px;
@@ -23,6 +27,9 @@
 }
 .shopping-cart-items li {
   margin-bottom: 18px;
+  border: 1px;
+  border-bottom-color: #9491c4;
+  border-bottom-style:  solid;
 }
 .shopping-cart-items img {
   float: left;
@@ -79,3 +86,12 @@
   display: table;
   clear: both;
 }
+
+#modalCart .modal-header {
+ border: none;
+}
+#modalCart .modal-footer{
+border: none;
+}
+
+

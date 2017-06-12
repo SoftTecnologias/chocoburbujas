@@ -14,7 +14,7 @@ html, body{
 	background:#fff;
 	background-image: url("../images/bc.png");
 	background-size: contain;
-	background-repeat: repeat-y;
+	background-repeat: repeat-y ;
 }
 body a{
 	transition: 0.5s all;
@@ -238,6 +238,7 @@ body a{
 	background:#ee4a02;
 	color: #fff;
 }
+
 .header_bottom{
 	padding:1em 0 1em;
 }
@@ -304,6 +305,57 @@ ul.clock li.clock_desc{
 .search input[type="submit"]:hover{
 	background: url('../images/search.png') no-repeat 24px 10px #1bccf7;
 }
+
+.close3 {
+	background: url('../images/close.png') no-repeat 0px 0px;
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	right: 15px;
+	top: -13px;
+	-webkit-transition: color 0.2s ease-in-out;
+	-moz-transition: color 0.2s ease-in-out;
+	-o-transition: color 0.2s ease-in-out;
+	transition: color 0.2s ease-in-out;
+}
+/*tabla de checkout*/
+.table>tbody>tr>td, .table>tfoot>tr>td{
+	vertical-align: middle;
+}
+@media screen and (max-width: 600px) {
+	table#cart tbody td .form-control{
+		width:20%;
+		display: inline !important;
+	}
+	.actions .btn{
+		width:36%;
+		margin:1.5em 0;
+	}
+
+	.actions .btn-info{
+		float:left;
+	}
+	.actions .btn-danger{
+		float:right;
+	}
+
+	table#cart thead { display: none; }
+	table#cart tbody td { display: block; padding: .6rem; min-width:320px;}
+	table#cart tbody tr td:first-child { background: #333; color: #fff; }
+	table#cart tbody td:before {
+		content: attr(data-th); font-weight: bold;
+		display: inline-block; width: 8rem;
+	}
+
+
+
+	table#cart tfoot td{display:block; }
+	table#cart tfoot td .btn{display:block;}
+
+}
+
+/* *************** */
 ul.bag{
 	padding:0;
 	list-style:none;

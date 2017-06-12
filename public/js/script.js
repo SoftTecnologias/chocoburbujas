@@ -1,68 +1,4 @@
 $(function(){
-    var note = $('#note'),
-		ts = new Date(2012, 0, 1),
-		newYear = true;
-	
-	if((new Date()) > ts){
-		// The new year is here! Count towards something else.
-		// Notice the *1000 at the end - time must be in milliseconds
-		ts = (new Date()).getTime() + 10*24*60*60*1000;
-		newYear = false;
-	}
-		
-	$('#countdown').countdown({
-		timestamp	: ts,
-		callback	: function(days, hours, minutes, seconds){
-			
-			var message = "";
-			
-			message += days + " day" + ( days==1 ? '':'s' ) + ", ";
-			message += hours + " hour" + ( hours==1 ? '':'s' ) + ", ";
-			message += minutes + " minute" + ( minutes==1 ? '':'s' ) + " and ";
-			message += seconds + " second" + ( seconds==1 ? '':'s' ) + " <br />";
-			
-			if(newYear){
-				message += "left until the new year!";
-			}
-			else {
-				message += "left to 10 days from now!";
-			}
-			
-			note.html(message);
-		}
-	});
-
-    $("#slider").responsiveSlides({
-        auto: true,
-        nav: false,
-        speed: 500,
-        namespace: "callbacks",
-        pager: true,
-    });
-
-    $("#flexiselDemo3").flexisel({
-        visibleItems: 5,
-        animationSpeed: 1800,
-        autoPlay: true,
-        autoPlaySpeed:1500,
-        pauseOnHover: true,
-        enableResponsiveBreakpoints: true,
-        responsiveBreakpoints: {
-            portrait: {
-                changePoint: 480,
-                visibleItems: 1
-            },
-            landscape: {
-                changePoint: 640,
-                visibleItems: 2
-            },
-            tablet: {
-                changePoint: 768,
-                visibleItems: 3
-            }
-        }
-    });
-
     $("#cart").on("click", function() {
         $.ajax({
            url:"showItems",
@@ -92,6 +28,7 @@ $(function(){
                         'data-value': row.item['id']
                     })).appendTo('#detalles');
                 });
+                $("#check").text('$ '+json.msg['total']);
             }
         }).fail(function(){
 
@@ -124,16 +61,18 @@ function removeCart(id){
                     text: 'Cantidad: '+ row.cantidad
                 })).append($('<a>',{
                     class:'close rmCart',
-                    text:'x',
-
+                    text:'x'
                 })).appendTo('#detalles');
             });
+
+
             $(".rmCart").on('click',function(){
                 $.ajax({
                     url:'removeProduct/'+this.data('value'),
                     type:'GET'
                 })
             });
+
         }
     }).fail({
 
@@ -144,3 +83,35 @@ function searchProduct(producto){
 
 }
 
+//se creará un nuevo parametro y si ya está el parametró se actualizará
+function toUrlParameters(name,value) {
+    var url = document.location.pathname;
+    var searchurl = document.location.search;
+    var parametros = searchurl.split('?')[1].split('&');
+    var index =  -1;
+
+    for(i = 0 ; i < parametros.length; i++){
+        if(parametros[i].split('=')[0] == name){
+            index = i ;
+            break;
+        }
+
+    }
+    if (index != -1) { // si existe el parametro
+        var cv = parametros[index].split('=');  //obtenemos la clave valor
+        cv[1] = value; //asignamos el valor
+        parametros[index] = cv[0] + '=' + cv[1]  //reasignamos el parametro al arreglo
+    } else {
+        parametros.push(name + '=' + value);
+    }
+
+    //reformamos la url de busqueda
+    searchurl = ""; //limpiamos la url
+    parametros.forEach( function (row,i) {
+        console.log('index: '+i);
+        console.log('row: '+row);
+        searchurl += row + '&';
+    });
+
+   document.location.href = url + '?' + searchurl.substr(0,searchurl.length-1);
+}

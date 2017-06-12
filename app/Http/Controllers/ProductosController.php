@@ -11,9 +11,10 @@ use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use phpDocumentor\Reflection\Types\Integer;
-use Session;
+
 
 class ProductosController extends Controller
 {
@@ -339,13 +340,17 @@ class ProductosController extends Controller
     }
 
     public function getCarrito(){
+        $categorias = DB::table('categorias')->take(10)->get();
+        $marcas = DB::table('marcas')
+            ->orderBy('nombre','asc')
+            ->get();
         if(!Session::has('carrito')){
-            return view('shop.carrito',['products'=> null]);
+            return view('shop.carrito',['products'=> null,'categorias' => $categorias, 'marcas'=> $marcas]);
         }
+
         $oldCart = Session::get('carrito');
         $cart = new Carrito($oldCart);
-        $categorias = DB::table('categorias')->take(10)->get();
-        return view('shop.carrito',['products' => $cart->productos, 'total' =>$cart->total,'categorias' => $categorias]);
+        return view('shop.carrito',['products' => $cart->productos, 'total' =>$cart->total,'categorias' => $categorias, 'marcas'=> $marcas]);
     }
 
     public function Checkout(){
@@ -356,7 +361,10 @@ class ProductosController extends Controller
         $cart = new Carrito($oldCart);
         $total = $cart->total;
         $categorias = DB::table('categorias')->take(10)->get();
-        return view('shop.checkout',['total' => $total, 'categorias'=> $categorias]);
+        $marcas = DB::table('marcas')
+            ->orderBy('nombre','asc')
+            ->get();
+        return view('shop.checkout',['total' => $total, 'categorias'=> $categorias,'marcas' => $marcas]);
     }
 
     public function getItems(){

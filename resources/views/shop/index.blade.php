@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('title')
     Chocoburbujas: Estetica Canina, Boutique y Veterinaria
 @endsection
@@ -250,5 +249,8 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    {{Html::script('js/shop/index.js')}}
 @endsection
 @section('partials.footer')

@@ -9,9 +9,10 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
 		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 		 crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     {{ Html::style('css/style.css') }}
     {{ Html::style('css/jquery.countdown.css') }}
     {{ Html::script('js/plugins/jquery.easydropdown.js') }}
@@ -28,8 +29,6 @@
     @yield('menu')
     @yield('content')
     @include('partials.footer')
-
-{{Html::script('js/plugins/js.cookie.js')}}
-@yield('scripts') 
+    @yield('scripts')
 </body>
 </html>

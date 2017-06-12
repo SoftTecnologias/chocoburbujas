@@ -2,7 +2,6 @@
  * Created by fenix on 11/06/2017.
  */
 $(function(){
-    console.log("url busqueda:" + document.location.search);
     $('.fprice').on('click',function(){
         toUrlParameters('precio', $(this).data('val'));
     });
@@ -16,9 +15,7 @@ $(function(){
 //se creará un nuevo parametro y si ya está el parametró se actualizará
 function toUrlParameters(name,value) {
     var url = document.location.pathname;
-    console.log("direccion: "+ url);
     var searchurl = document.location.search;
-    console.log("busqueda:" + searchurl);
     var parametros = (searchurl!= "" )? searchurl.split('?')[1].split('&'): [];
     var index =  -1;
 
