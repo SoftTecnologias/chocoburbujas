@@ -90,7 +90,7 @@
                                     <h3>{{$product->nombre}}</h3>
                                     <h4>$ {{$product->precio1}}</h4>
                                     <ul class="list2">
-                                        <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto({{$product->codigo}})" class="link product addToCart">Añadir al carrito</a></span>
+                                        <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
                                         </li>
                                         <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
                                                                                      onclick="verProducto({{$product->codigo}})">ver más</a></span>
