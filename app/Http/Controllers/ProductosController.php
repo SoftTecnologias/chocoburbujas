@@ -330,18 +330,26 @@ class ProductosController extends Controller
     }
     //llamada con ajax
     public function  addToCart(Request $request){
-        //Buscamos el producto por codigo 'En teoria tiene que ser unico '
-        $producto = Producto::where('codigo','=',$request->input('codigo'))->first();
-        $oldCart=Session::has('carrito') ? Session::get('carrito') : null;
-        $cart = new Carrito($oldCart);
-        $cart->add($producto,$producto->id);
-        $request->session()->put('carrito',$cart);
+        try {
+            //Buscamos el producto por codigo 'En teoria tiene que ser unico '
+            $producto = Producto::where('codigo', '=', $request->input('codigo'))->first();
+            $oldCart = Session::has('carrito') ? Session::get('carrito') : null;
+            $cart = new Carrito($oldCart);
+            $cart->add($producto, $producto->id);
+            $request->session()->put('carrito', $cart);
 
-        return Response::json([
-            'code' => 200,
-            'msg' => $cart,
-            'detail' => 'OK'
-        ]);
+            return Response::json([
+                'code' => 200,
+                'msg' => $cart,
+                'detail' => 'OK'
+            ]);
+        }catch(Exception $e){
+            return Response::json([
+                'code' => 500,
+                'msg' => $e->getMessage(),
+                'detail' => 'error'
+            ]);
+        }
     }
 
     public function removeCarrito(Request $request, $id){

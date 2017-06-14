@@ -81,7 +81,7 @@
                             <p>{{$item->descripcion}}</p>
                             <h4>${{$item->precio1}}</h4>
                             <ul class="list2">
-                                <li class="list2_left"><span class="m_1"><a href="#" onclick="addProducto({{$item->codigo}})" class="link addToCart"
+                                <li class="list2_left"><span class="m_1"><a href="#" onclick="addProducto('{{$item->codigo}}')" class="link addToCart"
                                                                             >Añadir al carrito</a></span>
                                 </li>
                                 <li class="list2_right"><span class="m_2"><a href="#" class="link1"
