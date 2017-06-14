@@ -119,7 +119,7 @@ Route::group(['prefix'=>'panel'],function (){
 
 
 /*Grupo de rutas para clientes*/
-Route::group(['middleware'=>'web','prefix'=>'/'],function() {
+Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
 
     Route::get('', [
         'uses' => 'ClientesController@index',
@@ -186,11 +186,19 @@ Route::group(['middleware'=>'web','prefix'=>'/'],function() {
     Route::get('/addProduct/{id}',[
         'uses' => 'ProductosController@addCarrito',
         'as' => 'Producto.addCarrito'
-    ]);
+    ]); //llamada directa (proxima a eliminar)
+    Route::post('/addToCart',[
+        'uses' => 'ProductosController@addToCart',
+        'as' => 'Producto.Ajax.addCart'
+    ]); //llamada Ajax
     Route::get('/removeProduct/{id}',[
         'uses' => 'ProductosController@removeCarrito',
         'as' => 'Producto.removeCarrito'
     ]);
+    Route::delete('/removeCart',[
+        'uses' => 'ProductosController@removeCart',
+        'as' => 'Producto.Ajax.removerCarrito'
+    ]); //llamada ajax
     Route::get('/showItems',[
         'uses' => 'ProductosController@getItems',
         'as' => 'Producto.showCarrito'

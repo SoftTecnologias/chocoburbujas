@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <h1>Se encontraron {{sizeof($productos->getCollection()->all())}} productos</h1>
+                <h1>Se encontraron {{sizeof($productos)}} productos</h1>
                 <div class="mens-toolbar">
                     <div class="clearfix"></div>
                 </div>
@@ -81,8 +81,8 @@
                             <p>{{$item->descripcion}}</p>
                             <h4>${{$item->precio1}}</h4>
                             <ul class="list2">
-                                <li class="list2_left"><span class="m_1"><a href="{{route('Producto.addCarrito',['id'=> $item->id,'ref'=>2])}}" class="link"
-                                                                            data-value="{{$item->id}}">Añadir al carrito</a></span>
+                                <li class="list2_left"><span class="m_1"><a href="#" onclick="addProducto({{$item->codigo}})" class="link addToCart"
+                                                                            >Añadir al carrito</a></span>
                                 </li>
                                 <li class="list2_right"><span class="m_2"><a href="#" class="link1"
                                                                              onclick="verProducto({{$item->id}})">ver más</a></span>

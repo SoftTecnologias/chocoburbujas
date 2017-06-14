@@ -67,7 +67,7 @@
                 <ul class="bag">
                     <a href="#" id="cart">
                         <i class="bag_left "> <span
-                                    class="badge badge-info">  {{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}}  </span></i>
+                                    class="badge badge-info" id="totalCart">  {{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}}  </span></i>
                     </a>
                     <a href="{{route('shop.carrito')}}">
                         <li class="bag_right">

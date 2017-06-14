@@ -13,6 +13,7 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link media="all" type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.4/sweetalert2.min.css" />
     {{ Html::style('css/style.css') }}
     {{ Html::style('css/jquery.countdown.css') }}
     {{ Html::script('js/plugins/jquery.easydropdown.js') }}
@@ -29,6 +30,7 @@
     @yield('menu')
     @yield('content')
     @include('partials.footer')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.4/sweetalert2.min.js" type="text/javascript"></script>
     @yield('scripts')
 </body>
 </html>
