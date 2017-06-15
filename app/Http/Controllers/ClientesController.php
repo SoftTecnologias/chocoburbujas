@@ -226,6 +226,16 @@ class ClientesController extends Controller
         return view('shop.busqueda',['categorias'=>$categorias,'productos'=> $productos,'marcas'=> $marcas]);
     }
 
+    public function getRegister(Request $request){
+        $marcas = DB::table('marcas')
+            ->orderBy('nombre','asc')
+            ->get();
+        $categorias = DB::table('categorias')->take(10)->get();
+        $estados = DB::table('estados')->get();
+
+        return view('cliente.register',['categorias'=>$categorias, 'marcas' => $marcas,'estados'=>$estados]);
+    }
+
 
 
 }
