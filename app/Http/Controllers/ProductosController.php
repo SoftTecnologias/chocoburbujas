@@ -580,5 +580,13 @@ class ProductosController extends Controller
         return view('shop.busqueda',['categorias'=>$categorias,'productos'=> $resultado, 'marcas' => $marcas]);
     }
 
+    public function getMunicipios(Request $request, $id){
+        $municipios= DB::table('municipios')->where('cve_ent',$id)->get();
+        return Response::json([
+            'code' => 200,
+            'msg' => json_encode($municipios),
+            'detail' =>'OK'
+        ]);
+    }
 
 }

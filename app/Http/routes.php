@@ -120,7 +120,6 @@ Route::group(['prefix'=>'panel'],function (){
 
 /*Grupo de rutas para clientes*/
 Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
-
     Route::get('', [
         'uses' => 'ClientesController@index',
         'as'   => 'shop.index'
@@ -130,33 +129,27 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'Auth\AuthController@showLoginForm',
         'as' => 'cliente.login'
     ]);
-
-    Route::post('login', [
+    Route::post('/login', [
         'uses' => 'Auth\AuthController@login',
         'as' => 'cliente.login'
     ]);
-
-    Route::get('logout', [
+    Route::get('/logout', [
         'uses' => 'Auth\AuthController@logout',
         'as' => 'cliente.logout'
     ]);
-
-    Route::get('registro', [
-        'uses' => 'Auth\AuthController@showRegistrationForm',
+    Route::get('/registro', [
+        'uses' => 'ClientesController@getRegister',
         'as' => 'cliente.register'
     ]);
-
     Route::post('registro', [
         'uses' => 'Auth\AuthController@register',
         'as' => 'cliente.register'
     ]);
-
     Route::get('perfil', [
         'uses' => 'ClientesController@index',
         'as' => 'cliente.profile',
         'middleware'=>'auth:cliente'
     ]);
-
     Route::get('/categorias/{id}',[
         'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.categoria'
@@ -165,7 +158,6 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ClientesController@getMarcas',
         'as' => 'shop.marca'
     ]);
-
     Route::get('/productos/{id}',[
         'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.detalle'
@@ -174,7 +166,6 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ProductosController@getCarrito',
         'as' => 'shop.carrito'
     ]);
-
     Route::get('/checkout',[
         'uses' => 'ProductosController@Checkout',
         'as' => 'checkout'
@@ -203,10 +194,13 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ProductosController@getItems',
         'as' => 'Producto.showCarrito'
     ]);
-
     Route::get('/search',[
         'uses'=>'ProductosController@search',
         'as' => 'Producto.search'
+    ]);
+    Route::get('/getMunicipios/{id}',[
+        'uses' => 'ProductosController@getMunicipios',
+        'as' => 'Municipios.get'
     ]);
 });
 
