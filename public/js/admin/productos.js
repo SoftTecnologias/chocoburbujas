@@ -258,7 +258,7 @@ function newProduct(){
         if(json.code == 200) {
             swal("Realizado", json.msg, json.detail);
             $('#modalProduct').modal("hide");
-            $('#productTable').dataTable().api().ajax.reload();
+            $('#productTable').dataTable().api().ajax.reload(null,false);
             reset();
         }else{
             swal("Error",json.msg,json.detail);
@@ -281,7 +281,7 @@ function updateProduct(id){
         if(json.code == 200) {
             swal("Realizado", json.msg, json.detail);
             $('#modalProduct').modal("hide");
-            $('#productTable').dataTable().fnReloadAjax();
+            $('#productTable').dataTable().api().ajax.reload(null, false);
             reset();
         }else{
             console.log(json);
