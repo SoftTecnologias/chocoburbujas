@@ -19,7 +19,6 @@ $(function(){
     });
 });
 function addProducto(codigo){
-    console.log('codigo: '+codigo+" a direccion: "+document.location.protocol+'//'+document.location.host+'/addToCart');
     $.ajax({
         url:document.location.protocol+'//'+document.location.host+'/addToCart',/*quitar o agregar segun corresponda*/
         type: 'POST',
@@ -85,38 +84,7 @@ function removeCart(codigo){
             swal('Producto eliminado del carrito',"Se ha retirado el producto de tu carrito",'success');
             //En el mensaje vendrá el carrito así que lo volveremos a agregar
             constructCart(json.msg);
-            /*
-            $('#detalles').empty();
-            $.each(json.msg['productos'],function(index, row){
-                $('<li>',{
-                    class:'clearfix'
-                }).append($('<img>',{
-                    src : 'images/productos/'+row.item['img1'],
-                    alt:'item'+(index+1),
-                    style:'height: 75px; width: 50px;'
-                })).append($('<span>',{
-                    class:'item-name',
-                    text:row.item['nombre']
-                })).append($('<span>',{
-                    class:'item-price',
-                    text:'$'+row.item['precio1']
-                })).append($('<span>',{
-                    class:'item-quantity',
-                    text: 'Cantidad: '+ row.cantidad
-                })).append($('<a>',{
-                    class:'close rmCart',
-                    text:'x'
-                })).appendTo('#detalles');
-            });
-
-
-            $(".rmCart").on('click',function(){
-                $.ajax({
-                    url:'removeProduct/'+this.data('value'),
-                    type:'GET'
-                })
-            });
-            */
+        
         }
     }).fail({
 
