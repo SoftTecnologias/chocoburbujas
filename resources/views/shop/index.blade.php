@@ -113,18 +113,30 @@
                         <h3>Promociones</h3></li>
                 </ul>
                 <!-- Promociones -->
+                @if(sizeof($promociones)> 0)
                 <ul id="flexiselDemo3" >
-                    @foreach($promociones as $promocion)
-                        <li >
-                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                <p> $ {{$promocion->precio1}} </p>
-                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                <div class="ticket"></div>
-                            </div>
-                        </li>
-                    @endforeach
+
+                        @foreach($promociones as $promocion)
+                            <li >
+                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
+                                <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
+                                    <p> $ {{$promocion->precio1}} </p>
+                                    <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
+                                    <div class="ticket"></div>
+                                </div>
+                            </li>
+                        @endforeach
                 </ul>
+                @else
+
+                    <div class="container">
+                        <div class="callbacks_container">
+                            <ul class="rslides" id="slider">
+                                <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                @endif
                 <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
             </div>
         </div>
