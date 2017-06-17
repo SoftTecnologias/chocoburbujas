@@ -48,6 +48,11 @@ class Carrito{
     }
 
     public function setCantidad($id, $cantidad){
-
+        $this->cantidadProductos -= $this->productos[$id]['cantidad'];
+        $this->productos[$id]['cantidad'] = $cantidad;
+        $this->cantidadProductos += $this->productos[$id]['cantidad'];
+        $this->total -= $this->productos[$id]['total'];
+        $this->productos[$id]['total'] = $this->productos[$id]['cantidad'] * $this->productos[$id]['item']->precio1;
+        $this->total += $this->productos[$id]['total'];
     }
 }

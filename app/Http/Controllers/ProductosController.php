@@ -382,6 +382,7 @@ class ProductosController extends Controller
             'detail' => 'OK'
         ]);
     }
+
     public function getCarrito(){
         $categorias = DB::table('categorias')->take(10)->get();
         $marcas = DB::table('marcas')
@@ -396,7 +397,7 @@ class ProductosController extends Controller
         return view('shop.carrito',['products' => $cart->productos, 'total' =>$cart->total,'categorias' => $categorias, 'marcas'=> $marcas]);
     }
 
-    public function Checkout(){
+    public function Checkout(Request $request){
         if(!Session::has('carrito')){
             return view('shop.carrito');
         }
@@ -408,6 +409,31 @@ class ProductosController extends Controller
             ->orderBy('nombre','asc')
             ->get();
         return view('shop.checkout',['total' => $total, 'categorias'=> $categorias,'marcas' => $marcas]);
+    }
+
+    public function postCheckout(Request $request){
+      $productos = json_decode($request->input("productos"));
+        if(!Session::has('carrito')){
+            return view('shop.carrito');
+        }
+        $oldCart = Session::get('carrito');
+        $cart = $this->setCart($oldCart, $productos);
+        $total = $cart->total;
+        $request->session()->put('carrito', $cart);
+        $categorias = DB::table('categorias')->take(10)->get();
+        $marcas = DB::table('marcas')
+            ->orderBy('nombre','asc')
+            ->get();
+        return view('shop.checkout',['total' => $total, 'categorias'=> $categorias,'marcas' => $marcas]);
+    }
+
+    public function  setCart($oldCart, $productos){
+        $cart = new Carrito($oldCart);
+        foreach ($productos as $product){
+            $producto = Producto::where('codigo', '=', $product->codigo)->first();
+            $cart->setCantidad($producto->id, $product->cantidad);
+        }
+        return $cart;
     }
 
     public function getItems(){

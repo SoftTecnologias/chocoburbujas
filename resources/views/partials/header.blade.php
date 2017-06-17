@@ -69,9 +69,9 @@
                         <i class="bag_left "> <span
                                     class="badge badge-info" id="totalCart">  {{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}}  </span></i>
                     </a>
-                    <a href="{{route('shop.carrito')}}">
+                    <a href="{{route('shop.carrito')}}" id="cartLink">
                         <li class="bag_right">
-                            <p>$ {{Session::has('carrito') ? Session::get('carrito')->total : '0.00'}} </p>
+                            <p id="tMCart">$ {{Session::has('carrito') ? Session::get('carrito')->total : '0.00'}} </p>
                         </li>
                     </a>
                     <div class="clearfix"></div>
@@ -84,7 +84,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">{{!Session::has('carrito') ? "Tu carrito de compra está vacio :( " : 'Tu carrito de compras'}}</h4>
+                        <h4 class="modal-title" id="cartTitle">{{!Session::has('carrito') ? "Tu carrito de compra está vacio :( " : 'Tu carrito de compras'}}</h4>
                     </div>
                     <div class="modal-body" id="filasDetalle">
                         <ul id="detalles" class="shopping-cart-items">
@@ -95,7 +95,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <a href="{{route('shop.carrito')}}" class="btn btn-primary" >checkout ( <span id="check"></span> ) </a>
+                        <a href="{{route('shop.carrito')}}" class="btn btn-primary" id="checkB">checkout ( <span id="check"></span> ) </a>
                     </div>
                 </div>
             </div>
