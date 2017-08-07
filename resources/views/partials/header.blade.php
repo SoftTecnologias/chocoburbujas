@@ -21,20 +21,23 @@
             </div>
             <div class="cssmenu">
 
-                @if(!auth()->guard('cliente')->guest())
+
                     <ul id="sesionOpc">
                         <li><a href="#">Mi lista de deseos</a></li>
-                        <li><a href="{{route('cliente.profile')}}">{{auth()->guard('cliente')->user()->username}} </a>
+                        <li><a href="{{route('cliente.profile')}}"> </a>
                         </li>
-                        <li><a href="{{route('cliente.logout')}}">Logout</a></li>
-                    </ul>
-                @else
-                    <ul id="sesionOpc">
-                        <li><a href="{{route('cliente.login')}}">Iniciar Sesión</a></li>
-                        <li><a href="{{route('cliente.register')}}">Registrar</a></li>
+                        <li><a href="{{route('cliente.logout')}}" id="logout">Logout</a></li>
                     </ul>
 
-                @endif
+                    <ul id="sesionOpc">
+                        <div class="login">
+                            <li><a data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in"></i>
+                                <span class="hidden-xs text-uppercase">Iniciar Sesión</span></a></li>
+                            <li><a href="{{route('cliente.register')}}"><i class="fa fa-user"></i> <span
+                                        class="hidden-xs text-uppercase">Registrarse</span></a></li>
+                        </div>
+                    </ul>
+
             </div>
             <div class="clearfix"></div>
         </div>
@@ -103,3 +106,4 @@
 
     </div>
 </div>
+

@@ -66,8 +66,10 @@ class UsuariosController extends Controller
                   "img" => $userid.".".$request->file("img")->getClientOriginalExtension()
               ]);
               $user->save();
+              $user->apikey = bcrypt($user->id);
               $nombre="/usuarios/".$userid.".".$request->file("img")->getClientOriginalExtension();
               Storage::disk('local')->put($nombre, File::get($request->file("img")));
+              $user->save();
           }
           $respuesta = ["code"=>200, "msg"=>'El usuario fue creado exitosamente', 'detail' => 'success'];
       }catch (Exception $e){

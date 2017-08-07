@@ -81,6 +81,7 @@ class ProductosController extends Controller
                 "unidad_id"     => $request->input('unidad_id')   ,
                 "stock_max"     => $request->input('maximo')   ,
                 "stock_min"     => $request->input('minimo')   ,
+                "stock"         => 0,
                 "precio1"       => $request->input('precio1')   ,
                 "precio2"       => $request->input('precio2')   ,
                 "img1"          => "producto.png"   ,
@@ -607,7 +608,7 @@ class ProductosController extends Controller
     }
 
     public function getMunicipios(Request $request, $id){
-        $municipios= DB::table('municipios')->where('cve_ent',$id)->get();
+        $municipios= DB::table('municipios')->where('estado_id',$id)->get();
         return Response::json([
             'code' => 200,
             'msg' => json_encode($municipios),

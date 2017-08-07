@@ -34,22 +34,7 @@ return [
     | Supported: "session", "token"
     |
     */
-
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'cliente' => [
-            'driver' => 'session',
-            'provider' => 'clientes',
-        ],
-
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-        ],
-    ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -103,13 +88,6 @@ return [
     |
     */
 
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'email' => 'auth.emails.password',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
-    ],
+   
 
 ];

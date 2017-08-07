@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.panel',['user_info' => $datos])
 <!-- Promociones -->
 @section('content')
     <div class="content-wrapper" id="ContenidoPrincipal">

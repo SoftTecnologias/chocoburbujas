@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.panel',['user_info' => $datos])
 <!-- Usuarios -->
 @section('styles')
     <link media="all" type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
@@ -194,7 +194,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src=" "></script>
     <script src="{{asset('js/admin/usuarios.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/plugins/jquery.validate.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>

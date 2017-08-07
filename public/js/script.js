@@ -1,7 +1,7 @@
 $(function(){
     $("#cart").on("click", function() {
         $.ajax({
-           url:"https://"+document.location.host+"/chocoburbujas/public/"+"showItems",
+           url:document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"showItems",
            type:'GET',
             'Access-Control-Allow-Headers': '*'
         }).done(function(json){
@@ -44,7 +44,7 @@ function constructCart(productos){
         $('<li>',{
             class:'clearfix'
         }).append($('<img>',{
-            src : "https://"+document.location.host+"/chocoburbujas/public/"+'images/productos/'+row.item['img1'],
+            src : document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+'images/productos/'+row.item['img1'],
             alt:'item'+(index+1),
             style:'height: 75px; width: 50px;'
         })).append($('<span>',{
@@ -153,8 +153,8 @@ function checkout(){
 
     datos = datos.substr(0,datos.length-1)+ "]";
     console.log(datos);
-    $.post("https://"+document.location.host+"/chocoburbujas/public/"+"checkout", {productos: datos},function(){
-        document.location.href = "https://"+document.location.host+"/chocoburbujas/public/"+"checkout";
+    $.post(document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"checkout", {productos: datos},function(){
+        document.location.href = document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"checkout";
     });
 }
 function searchProduct(producto){

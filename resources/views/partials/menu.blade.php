@@ -22,7 +22,7 @@
                             </div>
                         </div>
                     </li>
-                    <li><a class="color3" href="404.html">Promociones</a></li>
+                    <li><a class="color3" href="/chocoburbujas/resources/views/errors/404.html">Promociones</a></li>
                     <li><a class="color7" href="#">Marcas</a>
                         <div class="megapanel">
                             <div class="row">

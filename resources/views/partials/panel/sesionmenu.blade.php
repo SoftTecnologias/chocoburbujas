@@ -35,7 +35,7 @@
                                     <a href="#">
                                         <div class="pull-left">
                                             <!-- User Image -->
-                                            {{Html::image('images/usuarios/'.auth()->user()->img ,'User Image',['class'=>'img-circle'])}}
+
                                         </div>
                                         <!-- Message title and timestamp -->
                                         <h4>
@@ -114,18 +114,17 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                    {{Html::image('images/usuarios/'.auth()->user()->img,'User Image',['class'=>'user-image'])}}
-                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ auth()->guard('web')->user()->username}}</span>
+                        <img src="{{asset('images/usuarios/'.$user_info['photo'])}}" alt="User Image" class="user-image"/>
+                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                        <span class="hidden-xs">{{$user_info['name']}}</span>
+                        <span class="hidden-xs"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                        {{Html::image('images/usuarios/'.auth()->user()->img,'User Image',['class'=>'img-circle'])}}
+                            <img src="{{asset('images/usuarios/'.$user_info['photo'])}}" alt="User Image" class="img-circle"/>
                         <p>
-                            {{Carbon::setLocale(LC_ALL,'')}}
-                            {{ auth()->guard('web')->user()->username }}
-                            <small> Miembro desde {{Carbon::parse(auth()->guard('web')->user()->created_at,'America/Mexico_City')->format('l jS \\of F Y ')}}</small>
+                            <small> Miembro desde </small>
                         </p>
                         </li>
                         <!-- Menu Body -->
