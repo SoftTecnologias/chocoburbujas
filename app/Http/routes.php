@@ -181,6 +181,14 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ProductosController@postCheckout',
         'as' => 'checkout'
     ]);
+    Route::get('/envio/direccion',[
+        'uses' => 'ClientesController@dirEnvio',
+        'as' => 'envio.direccion'
+    ]);
+    Route::post('/envio/direccion',[
+        'uses' => 'ClientesController@guardarDir',
+        'as' => 'envio.dir'
+    ]);
     Route::get('/addProduct/{id}',[
         'uses' => 'ProductosController@addCarrito',
         'as' => 'Producto.addCarrito'

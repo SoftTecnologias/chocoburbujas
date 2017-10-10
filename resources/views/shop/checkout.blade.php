@@ -5,6 +5,13 @@
 @section('menu')
     @include('partials.menu',['categorias'=>$categorias, 'marcas' => $marcas])
 @endsection
+@section('scripts')
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('/js/plugins/jquery.validate.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
+    {{Html::script('js/shop/checkout.js')}}
+    <script type="text/javascript" src="{{asset('/js/shop/checkout.js')}}"></script>
+@endsection
 @section('content')
 <div class="container">
     <div class="centered title"><h1>Formulario pago</h1></div>
@@ -27,45 +34,43 @@
                                     </div>
                                 </div>
                                 <label class='control-label'>Nombre en tarjeta</label>
-                                <input class='form-control' size='4' type='text'>
+                                <input class='form-control' size='4' type='text' id="nombre" name="nombre">
                             </div>
 
                         </div>
                         <div class='form-row'>
                             <div class='form-group card required'>
                                 <label class='control-label'>Numero de tarjeta</label>
-                                <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+                                <input autocomplete='off' class='form-control card-number' size='20' type='text' id="number" name="number">
                             </div>
                         </div>
                         <div class='form-row'>
                             <div class='form-group card required'>
                                 <label class='control-label'>Dirección de facturación</label>
-                                <input autocomplete='off' class='form-control' size='20' type='text'>
+                                <input autocomplete='off' class='form-control' size='20' type='text' id="direccion" name="direccion">
                             </div>
                         </div>
                         <div class='form-row'>
                             <div class='form-group cvc required'>
                                 <label class='control-label'>CVC</label>
-                                <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+                                <input autocomplete='off' class='form-control card-cvc' id="cvc" name="cvc" placeholder='ex. 311' size='4' type='text'>
                             </div>
                             <div class='form-group expiration required'>
                                 <label class='control-label'>Mes de expiración</label>
-                                <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
+                                <input class='form-control card-expiry-month' placeholder='MM' size='2' id="mes" name="mes" type='text'>
                             </div>
                             <div class='form-group expiration required'>
                                 <label class='control-label'>Año de expiración</label>
-                                <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+                                <input class='form-control card-expiry-year' placeholder='YY' name="año" id="año" size='4' type='text'>
                             </div>
                         </div>
 
-
-                        <div class='form-row'>
-                            <div class='form-group'>
-                                <label class='control-label'></label>
-
-                                <button class='form-control btn btn-primary' type='submit'> Continue →</button>
-
                     </form>
+                    <div class='form-row'>
+                        <div class='form-group'>
+                            <label class='control-label'></label>
+
+                            <button class='form-control btn btn-primary' id="continuar" type='submit'> Continue →</button>
 
                 </div>
             </div>
@@ -80,7 +85,8 @@
                 <input type="hidden" id="token" value="token-supersecuretoken123123123"></input>
                 <a href="#paypal"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="paypal" width="100%"></a>
                 <br><br><br>
-                <button class='form-control btn btn-primary submit-button' type='submit'> Continuar →</button>
+                <a class='btn btn-primary' id="continuar" name="continuar" type='submit'> Continuar →</a>
+            </form>
         </div>
     </div>
 
@@ -126,4 +132,3 @@
 </form>
 
 @endsection
-@section('partials.footer')
