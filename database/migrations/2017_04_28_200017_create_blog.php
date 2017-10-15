@@ -13,7 +13,7 @@ class CreateBlog extends Migration
      */
     public function up()
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::create('blogs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo');
             $table->string('descripcion');
@@ -29,7 +29,7 @@ class CreateBlog extends Migration
      */
     public function down()
     {
-        Schema::table('blog', function (Blueprint $table) {
+        Schema::table('blogs', function (Blueprint $table) {
             //
         });
     }

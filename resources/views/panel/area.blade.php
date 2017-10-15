@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.panel',['user_info' => $datos])
 <!-- Index -->
 @section('content')
 

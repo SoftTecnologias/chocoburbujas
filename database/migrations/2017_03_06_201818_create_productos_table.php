@@ -23,7 +23,7 @@ class CreateProductosTable extends Migration
             $table->integer('unidad_id')->unsigned();
             $table->integer('stock_max');
             $table->integer('stock_min');
-            $table->integer('stock');
+            $table->integer('stock')->default(0);
             $table->integer('vendidos')->default(0);
             $table->boolean('promocion')->default(false);
             $table->float('precio1');

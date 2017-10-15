@@ -22,6 +22,7 @@ class CreateUserTable extends Migration
             $table->string('password');
             $table->string('img');
             $table->integer('rol');
+            $table->string('apikey');
             $table->rememberToken();
             $table->timestamps();
 
