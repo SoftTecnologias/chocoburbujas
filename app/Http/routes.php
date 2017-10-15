@@ -166,6 +166,7 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ProductosController@getCarrito',
         'as' => 'shop.carrito'
     ]);
+    
     Route::get('/checkout',[
         'uses' => 'ProductosController@Checkout',
         'as' => 'checkout'

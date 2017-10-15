@@ -1,7 +1,7 @@
 $(function(){
     $("#cart").on("click", function() {
         $.ajax({
-           url:"https://"+document.location.host+"/chocoburbujas/public/"+"showItems",
+           url:"https://"+document.location.host+"/showItems",
            type:'GET',
             'Access-Control-Allow-Headers': '*'
         }).done(function(json){
@@ -16,8 +16,9 @@ $(function(){
 
 });
 function addProducto(codigo){
+    console.log(document.location.protocol+'//'+document.location.host+'/addToCart');
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/addToCart',/*quitar o agregar segun corresponda*/
+        url:document.location.protocol+'//'+document.location.host+'/addToCart',/*quitar o agregar segun corresponda*/
         type: 'POST',
         data:{codigo:codigo}
     }).done(function(response){
@@ -44,7 +45,7 @@ function constructCart(productos){
         $('<li>',{
             class:'clearfix'
         }).append($('<img>',{
-            src : "https://"+document.location.host+"/chocoburbujas/public/"+'images/productos/'+row.item['img1'],
+            src : "https://"+document.location.host+'/images/productos/'+row.item['img1'],
             alt:'item'+(index+1),
             style:'height: 75px; width: 50px;'
         })).append($('<span>',{
@@ -84,7 +85,7 @@ function constructCart(productos){
 
 function removeCart(codigo){
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/removeCart',
+        url:document.location.protocol+'//'+document.location.host+'/removeCart',
         type: 'delete',
         data:{codigo:codigo}
     }).done(function(json) {
@@ -102,7 +103,7 @@ function removeCart(codigo){
 function removeCarrito(codigo, index){
     $('#row'+index).remove();
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/removeCart',
+        url:document.location.protocol+'//'+document.location.host+'/removeCart',
         type: 'delete',
         data:{codigo:codigo}
     }).done(function(json) {
