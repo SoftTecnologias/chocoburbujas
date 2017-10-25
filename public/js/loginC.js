@@ -5,7 +5,7 @@ $(function () {
 
     $('#btnLogin').on('click',function(){
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+"/login",
+            url:document.location.protocol+'//'+document.location.host+"/login",
             type:"POST",
             data:{
                 email: $("#modalemail").val(),
@@ -20,10 +20,10 @@ $(function () {
 
                 if(response.msg['rol']== 1 ){
 
-                    window.location.href=document.location.protocol + '//' + document.location.host+ "/chocoburbujas/public/panel/area";
+                    window.location.href=document.location.protocol + '//' + document.location.host+ "/panel/area";
                 }else{
                     //parte de los clientes redirigimos al index (primero generando la cookie)
-                    window.location.href=document.location.protocol + '//' + document.location.host+ "/chocoburbujas/public";
+                    window.location.href=document.location.protocol + '//' + document.location.host+ "/";
                 }
             }
             else{

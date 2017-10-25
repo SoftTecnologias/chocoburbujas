@@ -12,7 +12,7 @@ $(document).ready(function(e) {
         var estado = $(this).val();
         if(estado != '00'){
             $.ajax({
-                url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/getMunicipios/'+estado,
+                url:document.location.protocol+'//'+document.location.host+'/getMunicipios/'+estado,
                 type:'GET'
             }).done(function(response){
                 if(response.code == 200){
@@ -52,7 +52,7 @@ $(document).ready(function(e) {
         var id = $("#userid").val();
         var datos = {'nombre':$('#nombre').val(),apellidop:$('#apellidop').val(),apellidom:$('#apellidom').val()};
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public' +'/perfil/perup',
+            url:document.location.protocol+'//'+document.location.host+'/perfil/perup',
             type:"POST",
             data: datos,
             headers: {
@@ -88,7 +88,7 @@ $(document).ready(function(e) {
                     tel2:$('#tel2').val()
         };
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public' +'/perfil/contup',
+            url:document.location.protocol+'//'+document.location.host+'/perfil/contup',
             type:"POST",
             data: datos,
             headers: {
@@ -129,7 +129,7 @@ $(document).ready(function(e) {
         var id = $("#userid").val();
          data = new FormData(document.getElementById("passform"));
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'  +'/perfil/imgup',
+            url:document.location.protocol+'//'+document.location.host+'/perfil/imgup',
             type:"POST",
             data: data,
             headers: {
@@ -242,7 +242,7 @@ function cambiaPass(){
             confirm:$('#confirmpass').val()
         };
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'  +'/perfil/passup',
+            url:document.location.protocol+'//'+document.location.host+'/perfil/passup',
             type:"POST",
             data: datos,
             headers: {

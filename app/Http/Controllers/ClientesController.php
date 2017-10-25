@@ -414,7 +414,7 @@ class ClientesController extends Controller
 
         }
     }
-    public function perup(Request $request){
+    public function clientInfoUpdate(Request $request){
         try{
             if($request->cookie('cliente') != null){
                 $cookie = Cookie::get('cliente');
@@ -430,7 +430,7 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function contup(Request $request){
+    public function clientAddressUpdate(Request $request){
         try{
             if($request->cookie('cliente') != null){
                 $cookie = Cookie::get('cliente');
@@ -453,7 +453,7 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function passup(Request $request)
+    public function clientPasswordUpdate(Request $request)
     {
         try {
             if($request->cookie('cliente') != null) {
@@ -474,7 +474,7 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function imgup(Request $request){
+    public function clientImageUpdate(Request $request){
         try{
             if($request->cookie('cliente') != null) {
                 $cookie = Cookie::get('cliente');
@@ -496,7 +496,7 @@ class ClientesController extends Controller
             }
         return Response::json($respuesta);
     }
-    public function register(Request $request)
+    public function clientRegister(Request $request)
     {
         try {
             if($request->cookie('cliente') != null) {
@@ -539,7 +539,7 @@ class ClientesController extends Controller
         }
 
     }
-    public function dirEnvio(Request $request){
+    public function getAddressDelivery(Request $request){
         try {
             if ($request->cookie('cliente') != null) {
                 $estados = DB::table('estados')->get();
@@ -569,8 +569,8 @@ class ClientesController extends Controller
         }catch (Exception $e){
 
         }
-    }
-    public function guardarDir(Request $request){
+    } //¿view de envio?
+    public function setDeliveryAddress(Request $request){
         try{
             $cookie = Cookie::get('cliente');
             $facturacion = '';
@@ -616,5 +616,5 @@ class ClientesController extends Controller
             $respuesta = ["code"=>500, "msg"=>$e->getMessage(), 'detail' => 'warning'];
         }
         return Response::json($respuesta);
-    }
+    } //¿Facturación?
 }

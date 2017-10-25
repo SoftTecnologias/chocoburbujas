@@ -26,7 +26,7 @@ $(document).ready(function () {
         var estado = $(this).val();
         if(estado != '00'){
             $.ajax({
-                url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/getMunicipios/'+estado,
+                url:document.location.protocol+'//'+document.location.host+'/getMunicipios/'+estado,
                 type:'GET'
             }).done(function(response){
                 if(response.code == 200){
@@ -282,7 +282,7 @@ function continuarDir() {
         var data = new FormData(document.getElementById("formdats"));
         data.append('checked',$('#fact').val());
         $.ajax({
-            url:document.location.protocol + '//' + document.location.host+'/chocoburbujas/public' +"/envio/direccion",
+            url:document.location.protocol + '//' + document.location.host+"/envio/direccion",
             type:"POST",
             data: data,
             headers: {
