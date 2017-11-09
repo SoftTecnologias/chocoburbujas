@@ -117,7 +117,7 @@ Route::group(['prefix'=>'panel'],function (){
 /*Grupo de rutas para clientes*/
 Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('', [
-        'uses' => 'ClientesController@index',
+        'uses' => 'HomeController@index',
         'as'   => 'shop.index'
     ]);
     /*Para el cliente*/
@@ -130,11 +130,11 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.dologin'
     ]);
     Route::get('/logout', [
-        'uses' => 'ClientesController@logout',
+        'uses' => 'HomeController@logout',
         'as' => 'cliente.logout'
     ]);
     Route::get('/registro', [
-        'uses' => 'ClientesController@getRegister',
+        'uses' => 'HomeController@getRegister',
         'as' => 'cliente.register'
     ]);
     Route::post('/registro', [
@@ -142,7 +142,7 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.register.client'
     ]);
     Route::get('perfil', [
-        'uses' => 'ClientesController@profile',
+        'uses' => 'HomeController@profile',
         'as' => 'cliente.profile'
     ]);
     Route::post('perfil/perup',[
@@ -162,15 +162,15 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.imgup'
     ]);
     Route::get('/categorias/{id}',[
-        'uses' => 'ClientesController@getCategorias',
+        'uses' => 'HomeController@getCategorias',
         'as' => 'shop.categoria'
     ]);
     Route::get('/marcas/{id}',[
-        'uses' => 'ClientesController@getMarcas',
+        'uses' => 'HomeController@getMarcas',
         'as' => 'shop.marca'
     ]);
     Route::get('/productos/{id}',[
-        'uses' => 'ClientesController@getCategorias',
+        'uses' => 'HomeController@getCategorias',
         'as' => 'shop.detalle'
     ]);
 
@@ -178,11 +178,11 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'ProductosController@getCarrito',
         'as' => 'shop.carrito'
     ]);
+
     Route::post('/shoppingCart',[
         'uses' => 'ProductosController@postCarrito',
         'as' => 'shop.post.carrito'
     ]);
-
     Route::get('/checkout',[
         'uses' => 'ProductosController@Checkout',
         'as' => 'shop.checkout'
@@ -199,6 +199,14 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('/cancelOrder',[
         'uses' => "ProductosController@cancelOrder",
         'as' => 'shop.cancelOrder'
+    ]);
+    Route::get('/envio/direccion',[
+        'uses' => 'ClientesController@dirEnvio',
+        'as' => 'envio.direccion'
+    ]);
+    Route::post('/envio/direccion',[
+        'uses' => 'ClientesController@guardarDir',
+        'as' => 'envio.dir'
     ]);
     Route::get('/addProduct/{id}',[
         'uses' => 'ProductosController@addCarrito',

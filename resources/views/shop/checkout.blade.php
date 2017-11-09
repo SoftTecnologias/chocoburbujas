@@ -5,6 +5,13 @@
 @section('menu')
     @include('partials.menu',['categorias'=>$categorias, 'marcas' => $marcas])
 @endsection
+@section('scripts')
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{{asset('/js/plugins/jquery.validate.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
+    {{Html::script('js/shop/checkout.js')}}
+    <script type="text/javascript" src="{{asset('/js/shop/checkout.js')}}"></script>
+@endsection
 @section('content')
     <div class="contenido">
         <div class="container">
@@ -103,4 +110,3 @@
 @section('scripts')
     {{Html::script('js/shop/checkout.js')}}
 @endsection
-@section('partials.footer')

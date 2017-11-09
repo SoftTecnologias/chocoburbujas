@@ -17,6 +17,7 @@ $(function(){
     });
 });
 function addProducto(codigo){
+    console.log(document.location.protocol+'//'+document.location.host+'/addToCart');
     $.ajax({
         url:document.location.protocol+'//'+document.location.host+'/addToCart',/*quitar o agregar segun corresponda*/
         type: 'POST',

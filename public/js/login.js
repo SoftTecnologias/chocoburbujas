@@ -16,11 +16,13 @@ $(function () {
         }).done(function(response){
 
             if(response.code == 200){
+
                 console.log(response.msg);
                 if(response.msg['rol']== 1 ){
                     location.reload();
                 }else{
                     //parte de los clientes redirigimos al index (primero generando la cookie)
+
                     window.location.href=document.location.protocol + '//' + document.location.host+ "/";
                 }
             }else{

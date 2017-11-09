@@ -1,3 +1,4 @@
+
 $(function() {
     $('form.require-validation').bind('submit', function(e) {
         var $form         = $(e.target).closest('form'),
@@ -49,3 +50,4 @@ $(function() {
         }
     }
 })
+

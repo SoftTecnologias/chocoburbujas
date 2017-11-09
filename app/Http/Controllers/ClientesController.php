@@ -257,6 +257,7 @@ class ClientesController extends Controller
                 $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
             }
 
+
             /* ************************************************************* */
             if($request->cookie('cliente')==null) {
                 return view('shop.marcas', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);
@@ -271,7 +272,6 @@ class ClientesController extends Controller
                     'user' => "$user->username"
                 ]);
             }
-
         }catch(Exception $exception){
             dd($exception);
         }
@@ -405,6 +405,7 @@ class ClientesController extends Controller
         }
     }
 
+
     public function perup(Request $request){
         try{
             if($request->cookie('cliente') != null){
@@ -421,7 +422,7 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-
+  
     public function contup(Request $request){
         try{
             if($request->cookie('cliente') != null){
@@ -468,7 +469,7 @@ class ClientesController extends Controller
         return Response::json($respuesta);
     }
 
-    public function imgup(Request $request){
+  public function imgup(Request $request){
         try{
             if($request->cookie('cliente') != null) {
                 $cookie = Cookie::get('cliente');
@@ -534,4 +535,82 @@ class ClientesController extends Controller
         }
 
     }
+    public function getAddressDelivery(Request $request){
+        try {
+            if ($request->cookie('cliente') != null) {
+                $estados = DB::table('estados')->get();
+                $cookie = Cookie::get('cliente');
+                $cliente = Cliente::where('id', '=', base64_decode($cookie['id']))->firstOrFail();
+                $municipios = DB::table('municipios')->where('estado_id', $cliente->estado)->get();
+                $categorias = DB::table('categorias')->take(4)->get();
+                $menu = array();
+                $marcas = DB::table('marcas')
+                    ->orderBy('nombre', 'asc')
+                    ->get();
+                foreach ($marcas as $marca) {
+                    $marca->id = base64_encode($marca->id);
+                }
+                foreach ($categorias as $categoria) {
+                    $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
+                    $categoria->id = base64_encode($categoria->id);
+                    array_push($menu, [$categoria->id => $productos]);
+                }
+                $cliente->id = base64_encode($cliente->id);
+                return view('shop.dirEnvio', ['categorias' => $categorias, 'cliente' => $cliente,
+                    'marcas' => $marcas, 'municipios' => $municipios, 'estados' => $estados
+                ]);
+            } else {
+                return redirect()->route('shop.index');
+            }
+        }catch (Exception $e){
+
+        }
+    } //¿view de envio?
+    public function setDeliveryAddress(Request $request){
+        try{
+            $cookie = Cookie::get('cliente');
+            $facturacion = '';
+            if($request->checked == 1){
+                $factid = DB::table("Facturacion_Envio")->insertGetId([
+                    "a_nombre_de" => $request->input("factnombre"),
+                    "RFC" => $request->input('txtRFC'),
+                    "pais" => $request->input('factpais'),
+                    "estado" => $request->input('factestado'),
+                    "Municipio" => $request->input("factmunicipio"),
+                    "ciudad" => $request->input('factciudad'),
+                    "Colonia" => $request->input("factcolonia"),
+                    "Calle" => $request->input("factcalle"),
+                    "CP" => $request->input("factcp"),
+                    "num_int" => $request->input("factnumi"),
+                    "num_ext" => $request->input("factnume"),
+                    "correo" => $request->input("factcorreo"),
+                    'telefono' => $request->input("txtTel2"),
+                    'celular' => $request->input("factcelular"),
+                    'EstadoFactura'=>'Pendiente',
+                ]);
+                $facturacion = $factid;
+            }else{
+                $facturacion = 'no';
+            }
+            $envioid = DB::table("Direcciones_Envio")->insertGetId([
+                "Estado" => $request->input("estado"),
+                "Municipio" => $request->input("municipio"),
+                "Colonia" => $request->input("txtColonia"),
+                "Calle" => $request->input("txtCalle"),
+                "CP" => $request->input("txtCp"),
+                "num_int" => $request->input("txtNumInt"),
+                "num_ext" => $request->input("txtNumExt"),
+                "correo" => $request->input("txtCorreo"),
+                'telefono' => $request->input("txtTel"),
+                'cliente_id'=>base64_decode($cookie['id']),
+                'EstadoEnvio'=>'Pendiente',
+                'Factura' => $facturacion
+            ]);
+
+            $respuesta = ["code"=>200, "msg"=>'El usuario fue creado exitosamente', 'detail' => 'success'];
+        }catch (Exception $e){
+            $respuesta = ["code"=>500, "msg"=>$e->getMessage(), 'detail' => 'warning'];
+        }
+        return Response::json($respuesta);
+    } //¿Facturación?
 }
