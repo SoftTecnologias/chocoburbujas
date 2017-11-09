@@ -26,7 +26,7 @@
 				<form>
 					{!! csrf_field()!!}
 					<div>
-					<span>Correo Electronico<label>*</label></span>
+					<span>Correo Electronico o Usuario<label>*</label></span>
 					<input type="email" name="email" id="email">
 				  </div>
 				  <div>
@@ -38,7 +38,7 @@
 
 
 					</form>
-				   <input type="submit" value="Iniciar Sesion" id="loginC">
+                   <a href="#" class="acount-btn" id="btnLogin">Iniciar Sesión</a>
 			   </div>	
 			   <div class="clearfix"> </div>
 		</div>

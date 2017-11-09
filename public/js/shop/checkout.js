@@ -1,107 +1,53 @@
 
-$(function(){
-    $.validator.addMethod("mes",
-        function(value, element) {
-            return (value<=12 && value>0);
-        },
-        "Mes Incorrecto");
-    $.validator.addMethod("año",
-        function(value, element) {
-            var d = new Date();
-            var año = d.getFullYear();
-            año = año-2000;
-            return (value>=año && value<(año+8));
-        },
-        "año Incorrecto");
-    $("#payment-form").validate({
-        rules:{
-            'nombre': {
-                required:true,
-                minlength:4,
-                maxlength:100},
-            'number':{
-                required:true,
-                integer:true,
-                minlength:16,
-                maxlength:16
-            },
-            'direccion':{
-                required:true,
-                minlength:4,
-                maxlength:20
-            },
-            'cvc':{
-                required:true,
-                minlength:3,
-                maxlength:3,
-                integer:true
-            },
-            'mes':{
-                required:true,
-                mes:true,
-                integer:true
-            },
-            'año':{
-                required:true,
-                año:true,
-                integer:true
+$(function() {
+    $('form.require-validation').bind('submit', function(e) {
+        var $form         = $(e.target).closest('form'),
+            inputSelector = ['input[type=email]', 'input[type=password]',
+                'input[type=text]', 'input[type=file]',
+                'textarea'].join(', '),
+            $inputs       = $form.find('.required').find(inputSelector),
+            $errorMessage = $form.find('div.error'),
+            valid         = true;
+        $errorMessage.addClass('hide');
+        $('.has-error').removeClass('has-error');
+        $inputs.each(function(i, el) {
+            var $input = $(el);
+            if ($input.val() === '') {
+                $input.parent().addClass('has-error');
+                $errorMessage.removeClass('hide');
+                e.preventDefault(); // cancel on first error
             }
-
-        },
-        messages:{
-            'nombre': {
-                required:'Este campo es Requerido',
-                minlength:'Escriba por lo menos 4 caractres',
-                maxlength:150},
-            'number':{
-                required:'Este campo es Requerido',
-                integer:'Solo Numeros',
-                minlength:'Tarjeta no valida',
-                maxlength:'Tarjeta no valida'
-            },
-            'direccion':{
-                required:'Este campo es Requerido',
-                minlength:'direccion no valida',
-                maxlength:'direccion no valida'
-            },
-            'cvc':{
-                required:'Este campo es Requerido',
-                minlength:'CVC no Valido',
-                maxlength:'CVC no valido',
-                integer:true
-            },
-            'mes':{
-                required:'Este campo es Requerido',
-                mes:true,
-                integer:'Solo Numeros'
-            },
-            'año':{
-                required:'Este campo es Requerido',
-                año:true,
-                integer:'Solo numeros'
-            }
-        },
-        highlight: function (element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        unhighlight: function (element) {
-            $(element).closest('.form-group').removeClass('has-error');
-        },
-        errorElement: 'span',
-        errorClass: 'help-block',
-        errorPlacement: function (error, element) {
-            if (element.parent('.input-group').length) {
-                error.insertAfter(element.parent());
-            } else {
-                error.insertAfter(element);
-            }
-        },
-        submitHandler: function () {
-            console.log('algo');
-            return false;
+        });
+    });
+});
+$(function() {
+    var $form = $("#payment-form");
+    $form.on('submit', function(e) {
+        if (!$form.data('cc-on-file')) {
+            e.preventDefault();
+            Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+            Stripe.createToken({
+                number: $('.card-number').val(),
+                cvc: $('.card-cvc').val(),
+                exp_month: $('.card-expiry-month').val(),
+                exp_year: $('.card-expiry-year').val()
+            }, stripeResponseHandler);
         }
     });
-  $('#continuar').on('click',function () {
-        $("#payment-form").submit();
-  });
-});
+    function stripeResponseHandler(status, response) {
+        if (response.error) {
+            $('.error')
+                .removeClass('hide')
+                .find('.alert')
+                .text(response.error.message);
+        } else {
+            // token contains id, last4, and card type
+            var token = response['id'];
+            // insert the token into the form so it gets submitted to the server
+            $form.find('input[type=text]').empty();
+            $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+            $form.get(0).submit();
+        }
+    }
+})
+

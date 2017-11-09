@@ -121,9 +121,13 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as'   => 'shop.index'
     ]);
     /*Para el cliente*/
-    Route::post('/login', [
-        'uses' => 'ClientesController@login',
+    Route::get('/login', [
+        'uses' => 'ClientesController@getLoginForm',
         'as' => 'cliente.login'
+    ]);
+    Route::post('/login', [
+        'uses' => 'ClientesController@doLogin',
+        'as' => 'cliente.dologin'
     ]);
     Route::get('/logout', [
         'uses' => 'HomeController@logout',
@@ -169,18 +173,32 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'uses' => 'HomeController@getCategorias',
         'as' => 'shop.detalle'
     ]);
+
     Route::get('/shoppingCart',[
         'uses' => 'ProductosController@getCarrito',
         'as' => 'shop.carrito'
     ]);
-    
+
+    Route::post('/shoppingCart',[
+        'uses' => 'ProductosController@postCarrito',
+        'as' => 'shop.post.carrito'
+    ]);
     Route::get('/checkout',[
         'uses' => 'ProductosController@Checkout',
-        'as' => 'checkout'
+        'as' => 'shop.checkout'
     ]);
     Route::post('/checkout',[
-        'uses' => 'ProductosController@postCheckout',
-        'as' => 'checkout'
+        'uses' => 'ProductosController@postpayment',
+        'as' => 'payment'
+    ]);
+
+    Route::get('/makeOrder',[
+        'uses' => "ProductosController@makeOrder",
+        'as' => 'shop.makeOrder'
+    ]);
+    Route::get('/cancelOrder',[
+        'uses' => "ProductosController@cancelOrder",
+        'as' => 'shop.cancelOrder'
     ]);
     Route::get('/envio/direccion',[
         'uses' => 'ClientesController@dirEnvio',
@@ -201,6 +219,10 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('/removeProduct/{id}',[
         'uses' => 'ProductosController@removeCarrito',
         'as' => 'Producto.removeCarrito'
+    ]);
+    Route::post('/updateCart',[
+        'uses'=>'ProductosController@updateCart',
+        'as' =>'carrito.updateCart'
     ]);
     Route::delete('/removeCart',[
         'uses' => 'ProductosController@removeCart',

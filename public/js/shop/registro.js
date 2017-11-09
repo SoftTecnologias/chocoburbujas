@@ -113,7 +113,7 @@ function userAction() {
     var data = new FormData(document.getElementById("formReg"));
     data.append('photo',$('input#photo')[0].files[0]);
     $.ajax({
-        url:document.location.protocol + '//' + document.location.host+"/registro",
+        url:document.location.protocol + '//' + document.location.host +"/registro",
         type:"POST",
         data: data,
         headers: {
