@@ -9,14 +9,16 @@
     <!-- Esta parte es la que siempre va a variar
       Pero por ahora dejaré el index fijo
  -->
+    <?php
+        $cookie = \Illuminate\Support\Facades\Cookie::get('cliente');
+    ?>
     <div id="contenido">
-
         <div class="container">
             <div class="row">
-                <h3>Tu carrito de compras contiene: <span id="canP">{{Session::has('carrito') ? Session::get('carrito')->cantidadProductos : '0'}} Productos</span></h3>
+                <h3>Tu carrito de compras contiene: <span id="canP">{{$cookie != null ? $cookie['carrito']->cantidadProductos : '0'}} Productos</span></h3>
                 <hr>
             </div>
-            <div class="container">
+            <div class="container" style="background-color: #fbfbfb">
                 <table id="cart" class="table table-hover table-condensed">
                     <thead>
                     <tr>
@@ -31,18 +33,18 @@
                     @if($products != null)
                     <?php $total = 0; $i=0;  ?>
                     @foreach($products as $product)
-                    <tr id="row{{$i}}">
-                        <td data-th="Producto">
+                    <tr id="row{{$i}}" data-qty="{{$product['cantidad']}}" data-id="{{$product['item']['id']}}">
+                        <td data-th="Producto" >
                             <div class="row">
                                 <div class="col-sm-2 hidden-xs"><a href="#" id="codigo{{$i}}" data-value="{{$product['item']['codigo']}}"><img src="{{asset("images/productos/".$product['item']['img1'])}}" alt="Producto{{$product['item']['id']}}" class="img-responsive"/></a></div>
                                 <div class="col-sm-10">
                                     <h4 class="nomargin">{{$product['item']['nombre']}}</h4>
-                                    <p>{{$product['item']['descripcion']}}</p>
+
                                 </div>
                             </div>
                         </td>
                         <td data-th="Price">$<span id="pr{{$i}}">{{$product['item']['precio1']}}</span></td>
-                        <td data-th="Quantity">
+                        <td data-th="Quantity" id="qty{{base64_decode($product['item']['id'])}}">
                             <input type="number" class="form-control text-center" value="{{$product['cantidad']}}" id="ca{{$i}}" onchange="updateCart('{{$i}}')">
                         </td>
                         <td data-th="Subtotal" class="text-center" >$<span id="sb{{$i}}">{{$product['total']}}</span></td>
@@ -61,14 +63,26 @@
                         <td class="text-center" ><strong>Total: {{$total}}</strong></td>
                     </tr>
                     <tr>
-                        <td><a href="{{route('shop.index')}}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continuar comprando</a></td>
-                        <td colspan="2" class="hidden-xs"></td>
-                        <td class="hidden-xs text-center" ><strong><span id="gTotal">Total ${{$total}}</span></strong></td>
-                        <td><a href="#" class="btn btn-success btn-block" {{($products!=null)? 'onclick=checkout()' : ""}} {{($products!=null)? '' : 'disabled'}} id="Ncheck">Checkout <i class="fa fa-angle-right"></i></a></td>
+                        <td></td>
+                        <td class="hidden-xs"></td>
+                        <td>Total</td>
+                        <td class="hidden-xs text-center" ><strong><span id="gTotal">${{$total}}</span></strong></td>
                     </tr>
                     </tfoot>
                 </table>
+                <br>
+                <div class="box-footer">
+                    <div class="pull-left">
+                        <a href="{{ route('shop.index')}}" class="btn btn-warning"><i class="fa fa-chevron-left"></i> Continuar Comprando</a>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-primary" id="updateCart"><i class="fa fa-refresh"></i>Actualizar Carrito</a>
+                        <a href="#" data-val="{{ route('shop.checkout')}}" class="btn btn-success" id="next">Continuar con el pago <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
+            <br>
         </div>
     </div>
 @endsection

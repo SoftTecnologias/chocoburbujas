@@ -64,9 +64,6 @@ class UsersController extends Controller
         else
             return Response::json($respuesta);
     }
-
-
-
     public function index(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
@@ -216,7 +213,6 @@ class UsersController extends Controller
             return redirect()->route('user.login')->withCookie(Cookie::forget('admin'));
         }
     }
-
     public function email($email){
         $em=DB::table('users')->select("email")->where("email","=",$email);
         if(empty($em->get())){
@@ -225,7 +221,6 @@ class UsersController extends Controller
             return "false";
         }
     }
-
     public function username($username){
         $user=DB::table('users')->select("username")->where("username","=",$username);
         if(empty($user->get())){

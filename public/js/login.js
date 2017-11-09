@@ -4,7 +4,7 @@
 $(function () {
     $('#test').on('click',function(){
         $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+"/panel/login/user",
+            url:document.location.protocol+'//'+document.location.host+"/panel/login/user",
             type:"POST",
             data:{
                 email: $("#email").val(),
@@ -21,7 +21,7 @@ $(function () {
                     location.reload();
                 }else{
                     //parte de los clientes redirigimos al index (primero generando la cookie)
-                    window.location.href=document.location.protocol + '//' + document.location.host+ "/chocoburbujas/public";
+                    window.location.href=document.location.protocol + '//' + document.location.host+ "/";
                 }
             }else{
                 console.log('No se hizo');

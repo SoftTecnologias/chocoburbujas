@@ -1,27 +1,28 @@
 $(function(){
     $("#cart").on("click", function() {
         $.ajax({
-           url:document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"showItems",
-           type:'GET',
-            'Access-Control-Allow-Headers': '*'
+           url:document.location.protocol+'//'+document.location.host+"/showItems",
+           type:'GET'
+           // 'Access-Control-Allow-Headers': '*'
         }).done(function(json){
             if(json.code === 200){
                 constructCart(json.msg);
+            }else{
+                console.log(json);
             }
-        }).fail(function(){
-
+        }).fail(function(response){
+            console.log(response);
         });
         $("#modalCart").modal();
     });
-
 });
 function addProducto(codigo){
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/addToCart',/*quitar o agregar segun corresponda*/
+        url:document.location.protocol+'//'+document.location.host+'/addToCart',/*quitar o agregar segun corresponda*/
         type: 'POST',
         data:{codigo:codigo}
     }).done(function(response){
-            //Se agrega el producto y se muestra la chingadera
+            //Se agrega el producto
         if (response.code == 200){
             swal('Producto Agregado al Carrito',"Se a añadido exitosamente",'success');
             //En el mensaje vendrá el carrito así que lo volveremos a agregar
@@ -44,7 +45,7 @@ function constructCart(productos){
         $('<li>',{
             class:'clearfix'
         }).append($('<img>',{
-            src : document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+'images/productos/'+row.item['img1'],
+            src : document.location.protocol+'//'+document.location.host+'/images/productos/'+row.item['img1'],
             alt:'item'+(index+1),
             style:'height: 75px; width: 50px;'
         })).append($('<span>',{
@@ -84,7 +85,7 @@ function constructCart(productos){
 
 function removeCart(codigo){
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/removeCart',
+        url:document.location.protocol+'//'+document.location.host+'/removeCart',
         type: 'delete',
         data:{codigo:codigo}
     }).done(function(json) {
@@ -102,7 +103,7 @@ function removeCart(codigo){
 function removeCarrito(codigo, index){
     $('#row'+index).remove();
     $.ajax({
-        url:document.location.protocol+'//'+document.location.host+'/chocoburbujas/public'+'/removeCart',
+        url:document.location.protocol+'//'+document.location.host+'/removeCart',
         type: 'delete',
         data:{codigo:codigo}
     }).done(function(json) {
@@ -153,8 +154,8 @@ function checkout(){
 
     datos = datos.substr(0,datos.length-1)+ "]";
     console.log(datos);
-    $.post(document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"checkout", {productos: datos},function(){
-        document.location.href = document.location.protocol+'//'+document.location.host+"/chocoburbujas/public/"+"checkout";
+    $.post(document.location.protocol+'//'+document.location.host+"/checkout", {productos: datos},function(){
+        document.location.href = document.location.protocol+'//'+document.location.host+"/checkout";
     });
 }
 function searchProduct(producto){
