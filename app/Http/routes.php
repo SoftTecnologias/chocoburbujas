@@ -18,55 +18,51 @@ Route::group(['prefix'=>'panel'],function (){
     Route::get('/login',[
         'uses'=>'UsersController@showLoginForm',
         'as' => 'user.login',
-        'middleware' => 'guest:web'
     ]);
-    Route::post('/login',[
-        'uses'=>'UsersController@login',
-        'as' => 'user.login',
-        'middleware' => 'guest:web'
+    Route::post('login/user',[
+        'uses'=>'UsersController@doLogin',
+        'as' => 'user.panel.login'
     ]);
     Route::get('/registro',[
         'uses'=>'UsersController@showRegistrationForm',
-        'as' => 'user.register',
-            'middleware' => 'auth:web'
+        'as' => 'user.register'
     ]);
     Route::post('/registro',[
         'uses'=>'UsersController@register',
-        'as'=> 'user.register',
-        'middleware' => 'auth'
+        'as'=> 'user.register'
         ]);
     Route::get('/logout',[
         'uses'=>'UsersController@logout',
         'as' =>'user.logout',
-        'middleware'=>['auth','is_admin']
     ]);
-    Route::get('/area',['uses'=>'UsersController@index',
-        'as' =>'panel.area',
-        'middleware'=>'auth:web']);
+    Route::get('/area', [
+        'uses'=>'UsersController@index',
+        'as' =>'panel.area'
+    ]);
     Route::get('/brands',['uses'=>'UsersController@showBrandForm',
-        'as' =>'panel.brand',
-        'middleware'=>'auth:web']);
+        'as' =>'panel.brand'
+    ]);
     Route::get('/categories',['uses'=>'UsersController@showCategoryForm',
         'as' =>'panel.category',
-        'middleware'=>'auth:web']);
+    ]);
     Route::get('/products',['uses'=>'UsersController@showProductForm',
         'as' =>'panel.product',
-        'middleware'=>'auth:web']);
+    ]);
     Route::get('/providers',['uses'=>'UsersController@showProviderForm',
         'as' =>'panel.provider',
-        'middleware'=>'auth:web']);
+    ]);
     Route::get('/profile',['uses'=>'UsersController@showProfileForm',
         'as' =>'user.profile',
-        'middleware'=>'auth:web']);
+    ]);
     Route::get('/users',['uses'=>'UsersController@showUserForm',
         'as' =>'panel.user',
-        'middleware'=>['auth:web','is_admin']]);
+    ]);
     Route::get('/movements',['uses'=>'UsersController@showMovementForm',
         'as' =>'panel.movements',
-        'middleware'=>['auth:web','is_admin']]);
+    ]);
     Route::get('/blogs',['uses'=>'UsersController@showBlogForm',
         'as' =>'panel.blogs',
-        'middleware'=>['auth:web','is_admin']]);
+    ]);
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/categorias','CategoriasController');
@@ -121,58 +117,96 @@ Route::group(['prefix'=>'panel'],function (){
 /*Grupo de rutas para clientes*/
 Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('', [
-        'uses' => 'ClientesController@index',
+        'uses' => 'HomeController@index',
         'as'   => 'shop.index'
     ]);
     /*Para el cliente*/
     Route::get('/login', [
-        'uses' => 'Auth\AuthController@showLoginForm',
+        'uses' => 'ClientesController@getLoginForm',
         'as' => 'cliente.login'
     ]);
     Route::post('/login', [
-        'uses' => 'Auth\AuthController@login',
-        'as' => 'cliente.login'
+        'uses' => 'ClientesController@doLogin',
+        'as' => 'cliente.dologin'
     ]);
     Route::get('/logout', [
-        'uses' => 'Auth\AuthController@logout',
+        'uses' => 'HomeController@logout',
         'as' => 'cliente.logout'
     ]);
     Route::get('/registro', [
-        'uses' => 'ClientesController@getRegister',
+        'uses' => 'HomeController@getRegister',
         'as' => 'cliente.register'
     ]);
-    Route::post('registro', [
-        'uses' => 'Auth\AuthController@register',
-        'as' => 'cliente.register'
+    Route::post('/registro', [
+        'uses' => 'ClientesController@register',
+        'as' => 'cliente.register.client'
     ]);
     Route::get('perfil', [
-        'uses' => 'ClientesController@index',
-        'as' => 'cliente.profile',
-        'middleware'=>'auth:cliente'
+        'uses' => 'HomeController@profile',
+        'as' => 'cliente.profile'
+    ]);
+    Route::post('perfil/perup',[
+        'uses' => 'ClientesController@perup',
+        'as' => 'cliente.perup'
+        ]);
+    Route::post('/perfil/contup',[
+        'uses' => 'ClientesController@contup',
+        'as' => 'cliente.perup'
+    ]);
+    Route::post('/perfil/passup',[
+        'uses' => 'ClientesController@passup',
+        'as' => 'cliente.passup'
+    ]);
+    Route::post('/perfil/imgup',[
+        'uses' => 'ClientesController@imgup',
+        'as' => 'cliente.imgup'
     ]);
     Route::get('/categorias/{id}',[
-        'uses' => 'ClientesController@getCategorias',
+        'uses' => 'HomeController@getCategorias',
         'as' => 'shop.categoria'
     ]);
     Route::get('/marcas/{id}',[
-        'uses' => 'ClientesController@getMarcas',
+        'uses' => 'HomeController@getMarcas',
         'as' => 'shop.marca'
     ]);
     Route::get('/productos/{id}',[
-        'uses' => 'ClientesController@getCategorias',
+        'uses' => 'HomeController@getCategorias',
         'as' => 'shop.detalle'
     ]);
+
     Route::get('/shoppingCart',[
         'uses' => 'ProductosController@getCarrito',
         'as' => 'shop.carrito'
     ]);
+
+    Route::post('/shoppingCart',[
+        'uses' => 'ProductosController@postCarrito',
+        'as' => 'shop.post.carrito'
+    ]);
     Route::get('/checkout',[
         'uses' => 'ProductosController@Checkout',
-        'as' => 'checkout'
+        'as' => 'shop.checkout'
     ]);
     Route::post('/checkout',[
-        'uses' => 'ProductosController@postCheckout',
-        'as' => 'checkout'
+        'uses' => 'ProductosController@postpayment',
+        'as' => 'payment'
+    ]);
+
+    Route::get('/makeOrder',[
+        'uses' => "ProductosController@makeOrder",
+        'as' => 'shop.makeOrder'
+    ]);
+    Route::get('/cancelOrder',[
+        'uses' => "ProductosController@cancelOrder",
+        'as' => 'shop.cancelOrder'
+    ]);
+    Route::get('/envio/direccion',[
+        'uses' => 'ClientesController@dirEnvio',
+        'as' => 'envio.direccion'
+    ]);
+    Route::post('/envio/direccion',[
+        'uses' => 'ClientesController@guardarDir',
+        'as' => 'envio.dir'
     ]);
     Route::get('/addProduct/{id}',[
         'uses' => 'ProductosController@addCarrito',
@@ -185,6 +219,10 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('/removeProduct/{id}',[
         'uses' => 'ProductosController@removeCarrito',
         'as' => 'Producto.removeCarrito'
+    ]);
+    Route::post('/updateCart',[
+        'uses'=>'ProductosController@updateCart',
+        'as' =>'carrito.updateCart'
     ]);
     Route::delete('/removeCart',[
         'uses' => 'ProductosController@removeCart',

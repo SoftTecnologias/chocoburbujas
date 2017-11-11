@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.panel',['user_info' => $datos])
 <!-- Marcas -->
 @section('styles')
     <link media="all" type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />

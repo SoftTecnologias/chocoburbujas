@@ -113,18 +113,30 @@
                         <h3>Promociones</h3></li>
                 </ul>
                 <!-- Promociones -->
+                @if(sizeof($promociones)> 0)
                 <ul id="flexiselDemo3" >
-                    @foreach($promociones as $promocion)
-                        <li >
-                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                <p> $ {{$promocion->precio1}} </p>
-                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                <div class="ticket"></div>
-                            </div>
-                        </li>
-                    @endforeach
+
+                        @foreach($promociones as $promocion)
+                            <li >
+                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
+                                <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
+                                    <p> $ {{$promocion->precio1}} </p>
+                                    <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
+                                    <div class="ticket"></div>
+                                </div>
+                            </li>
+                        @endforeach
                 </ul>
+                @else
+
+                    <div class="container">
+                        <div class="callbacks_container">
+                            <ul class="rslides" id="slider">
+                                <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                @endif
                 <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
             </div>
         </div>
@@ -144,16 +156,16 @@
                             </ul>
                             <ul class="navigation">
                                 <li>
-                                    <p class="timeRefDays">DAYS</p>
+                                    <p class="timeRefDays">DIAS</p>
                                 </li>
                                 <li>
-                                    <p class="timeRefHours">HOURS</p>
+                                    <p class="timeRefHours">HORAS</p>
                                 </li>
                                 <li>
-                                    <p class="timeRefMinutes">MINUTES</p>
+                                    <p class="timeRefMinutes">MINUTOS</p>
                                 </li>
                                 <li>
-                                    <p class="timeRefSeconds">SECONDS</p>
+                                    <p class="timeRefSeconds">SEG.</p>
                                 </li>
                             </ul>
                         </div>
@@ -201,7 +213,7 @@
                     <ul class="spinner">
                         <i class="box_icon"> </i>
                         <li class="spinner_head">
-                            <h3>mazim pla</h3></li>
+                            <h3>Nuestro logo</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
                     <img src="images//logo.png" class="img-responsive" alt="" />
@@ -210,40 +222,40 @@
                     <ul class="spinner">
                         <i class="bubble"> </i>
                         <li class="spinner_head">
-                            <h3>About Us</h3></li>
+                            <h4>Acerca de nosotros</h4></li>
                         <div class="clearfix"> </div>
                     </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl
-                        ut aliquip ex ea commodo consequat</p>
+                    <p>
+                        TENEMOS SERVICIOS DE CONSULTAS, VACUNAS, DESPARASITACION, CIRUGIA, HOSPITALIZACION, ORTOPEDIA,
+                        ODONTOLOGIA, RAYOS X, ANALISIS CLINICOS, ULTRASONIDO. TODO LO TENEMOS EN NUESTRAS INSTALACIONES.
+                        ALIMENTOS PREMIUM (ROYAL CANIN, DIAMOND, NUPEC).
+                        HOSPEDAJE, ROPA, ACCESORIOS, CAMAS, TRANSPORTADORAS, CASAS Y MUCHAS OTRAS COSAS PARA CONSENTIR A TUS MASCOTAS.
+                    </p>
                 </div>
                 <div class="col-md-3 span_1">
                     <ul class="spinner">
                         <i class="mail"> </i>
                         <li class="spinner_head">
-                            <h3>Contact Us</h3></li>
+                            <h3>Nuestras redes</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
                     <ul class="social">
                         <li>
                             <a href="https://www.facebook.com/Veterinariaboutiqueyesteticachocoburbujas/"> <i class="fb"> </i> </a>
                         </li>
-                        <li><a href=""><i class="tw"> </i> </a></li>
-                        <li><a href=""><i class="google"> </i> </a></li>
-                        <li><a href=""><i class="linkedin"> </i> </a></li>
-                        <li><a href=""><i class="skype"> </i> </a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 span_1">
                     <ul class="spinner">
                         <i class="mail"> </i>
                         <li class="spinner_head">
-                            <h3>Contact Us</h3></li>
+                            <h3>Contactanos</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
-                    <p>500 Lorem Ipsum Dolor Sit,</p>
-                    <p>22-56-2-9 Sit Amet, Lorem,</p>
-                    <p>Phone:(00) 222 666 444</p>
-                    <p><a href="mailto:info@demo.com"> info(at)gifty.com</a></p>
+                    <p>Avenida de los insurgentes poniente </p>
+                    <p>Colonia Las Brisas,</p>
+                    <p> Telefono: 311 169 5037</p>
+                    <p><a href="mailto:chocovetyest@hotmail.com"> Mas informacion </a></p>
                 </div>
                 <div class="clearfix"> </div>
             </div>

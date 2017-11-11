@@ -7,10 +7,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{asset('images/usuarios/'.auth()->user()->img )}}" class="img-circle" alt="User Image" />
+                <img src="" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-                <p>{{ auth()->guard()->user()->username }}</p>
+                <p></p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -23,10 +23,8 @@
             <li><a href="{{route('panel.brand')}}"><i class='fa fa-tag'></i> <span>Marcas</span></a></li>
             <li><a href="{{route('panel.category')}}"><i class='fa fa-book'></i> <span>Categorias</span></a></li>
             <li><a href="{{route('panel.product')}}"><i class='fa fa-paw'></i> <span>Productos</span></a></li>
-            @if(auth()->guard()->user()->rol == 1)
             <li><a href="{{route('panel.user')}}"><i class='fa fa-users'></i><span>Usuarios</span></a></li>
             <li><a href="{{route('panel.movements')}}"><i class='fa fa-archive'></i> <span>Movimientos de almacén</span></a></li>
-            @endif
             <li><a href="{{route('panel.provider')}}"><i class='fa fa-truck'></i> <span>Proveedores</span></a></li>
             <li><a href="{{route('panel.blogs')}}"><i class='fa fa-desktop'></i><span>Blog</span></a></li>
         </ul><!-- /.sidebar-menu -->

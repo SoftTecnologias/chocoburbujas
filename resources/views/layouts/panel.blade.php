@@ -30,7 +30,7 @@
 <body class="skin-black sidebar-mini sidebar-collapse">
 <div class="wrapper">
     <!-- En esta parte colocaré el menú donde aparecé la sesión -->
-    @include('partials.panel.sesionmenu')
+    @include('partials.panel.sesionmenu',['user_info', $user_info])
     <!-- aquí colocaré las operaciones del menu (administrador) -->
     @include('partials.panel.menu')
     <!-- contenido dinamico -->

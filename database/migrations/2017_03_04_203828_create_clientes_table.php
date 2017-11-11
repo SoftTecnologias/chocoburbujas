@@ -32,6 +32,7 @@ class CreateClientesTable extends Migration
             $table->string('password');
             $table->boolean('suscrito');
             $table->string('img');
+            $table->string('apikey');
             $table->rememberToken();
             $table->timestamps();
             

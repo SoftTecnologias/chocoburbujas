@@ -3,7 +3,7 @@
     Chocoburbujas: Estetica Canina, Boutique y Veterinaria
 @endsection
 @section('menu')
-    @include('partials.menu',array('categorias'=>$categorias))
+    @include('partials.menu',['categorias'=>$categorias, 'marcas'=>$marcas])
 @endsection
 <script>
     $(".megamenu").megamenu();
