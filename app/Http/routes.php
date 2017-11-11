@@ -134,7 +134,7 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.logout'
     ]);
     Route::get('/registro', [
-        'uses' => 'HomeController@getRegister',
+        'uses' => 'ClientesController@getRegister',
         'as' => 'cliente.register'
     ]);
     Route::post('/registro', [
@@ -165,15 +165,15 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.imgup'
     ]);
     Route::get('/categorias/{id}',[
-        'uses' => 'HomeController@getCategorias',
+        'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.categoria'
     ]);
     Route::get('/marcas/{id}',[
-        'uses' => 'HomeController@getMarcas',
+        'uses' => 'ClientesController@getMarcas',
         'as' => 'shop.marca'
     ]);
     Route::get('/productos/{id}',[
-        'uses' => 'HomeController@getCategorias',
+        'uses' => 'ClientesController@getCategorias',
         'as' => 'shop.detalle'
     ]);
 
@@ -202,14 +202,6 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('/cancelOrder',[
         'uses' => "ProductosController@cancelOrder",
         'as' => 'shop.cancelOrder'
-    ]);
-    Route::get('/envio/direccion',[
-        'uses' => 'ClientesController@dirEnvio',
-        'as' => 'envio.direccion'
-    ]);
-    Route::post('/envio/direccion',[
-        'uses' => 'ClientesController@guardarDir',
-        'as' => 'envio.dir'
     ]);
     Route::get('/addProduct/{id}',[
         'uses' => 'ProductosController@addCarrito',
