@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Carrito;
 use App\Cliente;
 use App\Producto;
+use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Illuminate\Http\Request;
@@ -20,98 +22,74 @@ class ClientesController extends Controller
     /**
      * @return $this
      */
-    public function index(){
-        $topselling = DB::table('productos')->take(4)->orderBy('vendidos', 'asc')->get();
-        $promociones = DB::table('productos')->take(10)->where('promocion',1)->orderBy('precio1', 'asc')->get();
-        $blogs = DB::table('blogs')->take(4)->orderBy('fecha','desc')->get();
-        $categorias = DB::table('categorias')->take(4)->get();
-        $menu = array();
-        $marcas = DB::table('marcas')
-            ->orderBy('nombre','asc')
-            ->get();
-        foreach ($marcas as $marca){
-            $marca->id = base64_encode($marca->id);
+    public function index(Request $request){
+        try {
+            $topselling = DB::table('productos')->take(4)->orderBy('vendidos', 'asc')->get();
+            $promociones = DB::table('productos')->take(10)->where('promocion', 1)->orderBy('precio1', 'asc')->get();
+            $blogs = DB::table('blogs')->take(4)->orderBy('fecha', 'desc')->get();
+            $categorias = DB::table('categorias')->take(4)->get();
+            $menu = array();
+            $marcas = DB::table('marcas')
+                ->orderBy('nombre', 'asc')
+                ->get();
+            foreach ($marcas as $marca) {
+                $marca->id = base64_encode($marca->id);
+            }
+            foreach ($categorias as $categoria) {
+                $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
+                $categoria->id = base64_encode($categoria->id);
+                array_push($menu, [$categoria->id => $productos]);
+            }
+            if($request->cookie('cliente')==null) {
+                return view('shop.index', ['topselling' => $topselling,
+                    'promociones' => $promociones,
+                    'blogs' => $blogs,
+                    'categorias' => $categorias,
+                    'marcas' => $marcas
+                ]);
+            }else{
+                $cookie= $request->cookie('cliente');
+                $user = Cliente::find(base64_decode($cookie['id']));
+                return view('shop.index', ['topselling' => $topselling,
+                    'promociones' => $promociones,
+                    'blogs' => $blogs,
+                    'categorias' => $categorias,
+                    'marcas' => $marcas,
+                    'user' => "$user->username"
+                ]);
+            }
+        }catch(Exception $exception){
+            dd($exception);
         }
-        foreach ($categorias as $categoria){
-            $productos = DB::table('productos')->take(9)->where('categoria_id',$categoria->id)->orderBy('vendidos',1)->get();
-            $categoria->id = base64_encode($categoria->id);
-            array_push($menu,[$categoria->id => $productos]);
-        }
-        return view('shop.index',['topselling'=>$topselling,
-                                  'promociones'=>$promociones,
-                                  'blogs' => $blogs,
-                                  'categorias'=>$categorias,
-                                  'marcas' => $marcas
-        ]);
     }
 
     public function getCategorias(Request $request, $id){
-        $id = base64_decode($id);
-        $busqueda = $request->query();
-        $marcas = DB::table('marcas')
-            ->select(DB::raw("id, nombre,(
+        try {
+            $id = base64_decode($id);
+            $busqueda = $request->query();
+            $marcas = DB::table('marcas')
+                ->select(DB::raw("id, nombre,(
 		                      SELECT COUNT(*)
 		                      FROM [laravel_chocoburbujas].[dbo].[productos] p
 		                      where p.marca_id = marcas.id AND p.categoria_id = $id
                              ) as total "))
-            ->orderBy('nombre','asc')
-            ->get();
+                ->orderBy('nombre', 'asc')
+                ->get();
 
-        $categorias = DB::table('categorias')->take(10)->get();
-        foreach ($marcas as $marca){
-            $marca->id = base64_encode($marca->id);
-        }
-        foreach ($categorias as $categoria){
-            $categoria->id = base64_encode($categoria->id);
-        }
-        /* ************************************************** */
-        if(!array_key_exists('precio',$busqueda) && !array_key_exists('marca',$busqueda) ) { //no existen ambos filtros
-            $resultado = DB::table('productos')->where('categoria_id',$id)->paginate(9);
-        } else{
-            //revisamos si existen los dos o solo alguno
-            if(array_key_exists('precio', $busqueda) && array_key_exists('marca', $busqueda)){ //existen ambas y por tanto se hace la consulta
-                $marca_id = DB::table('marcas')->select('id')->where('nombre',$busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
-                try {
-                    //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
-                    if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
-                        switch ((Integer) $busqueda['precio']) {
-                            case 1:
-                                $precio = array(0, 99.99);
-                                break;
-                            case 2:
-                                $precio = array(100, 199.99);
-                                break;
-                            case 3:
-                                $precio = array(200, 299.99);
-                                break;
-                            case 4:
-                                $precio = array(300, 399.99);
-                                break;
-                            case 5:
-                                $precio = array(400, 499.99);
-                                break;
-                        }
-                        $resultado = DB::table('productos')
-                            ->where('categoria_id',$id)
-                            ->where('marca_id','=',$marca_id->id)
-                            ->whereBetween('precio1',$precio)
-                            ->paginate(9);
-
-                    } else { // se tomará automaticamente +500
-                        $resultado = DB::table('productos')
-                            ->where('categoria_id',$id)
-                            ->where('precio1','>=',500)
-                            ->paginate(9);
-                    }
-                }catch(Exception $e){
-                    //ignoramos entonces el criterio de busqueda y lo tomamos a +500
-                    $resultado = DB::table('productos')
-                        ->where('categoria_id',$id)
-                        ->where('precio1','>=',500)
-                        ->paginate(9);
-                }
-            }else{ // solo existe una
-                if(array_key_exists('precio', $busqueda)){
+            $categorias = DB::table('categorias')->take(10)->get();
+            foreach ($marcas as $marca) {
+                $marca->id = base64_encode($marca->id);
+            }
+            foreach ($categorias as $categoria) {
+                $categoria->id = base64_encode($categoria->id);
+            }
+            /* ************************************************** */
+            if (!array_key_exists('precio', $busqueda) && !array_key_exists('marca', $busqueda)) { //no existen ambos filtros
+                $resultado = DB::table('productos')->where('categoria_id', $id)->paginate(9);
+            } else {
+                //revisamos si existen los dos o solo alguno
+                if (array_key_exists('precio', $busqueda) && array_key_exists('marca', $busqueda)) { //existen ambas y por tanto se hace la consulta
+                    $marca_id = DB::table('marcas')->select('id')->where('nombre', $busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
                     try {
                         //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
                         if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
@@ -133,174 +111,170 @@ class ClientesController extends Controller
                                     break;
                             }
                             $resultado = DB::table('productos')
-                                ->where('categoria_id',$id)
-                                ->whereBetween('precio1',$precio)
+                                ->where('categoria_id', $id)
+                                ->where('marca_id', '=', $marca_id->id)
+                                ->whereBetween('precio1', $precio)
                                 ->paginate(9);
 
                         } else { // se tomará automaticamente +500
                             $resultado = DB::table('productos')
-                                ->where('categoria_id',$id)
-                                ->where('precio1','>=',500)
+                                ->where('categoria_id', $id)
+                                ->where('precio1', '>=', 500)
                                 ->paginate(9);
                         }
-                    }catch(Exception $e){
+                    } catch (Exception $e) {
                         //ignoramos entonces el criterio de busqueda y lo tomamos a +500
                         $resultado = DB::table('productos')
-                            ->where('categoria_id',$id)
-                            ->where('precio1','>=',500)
+                            ->where('categoria_id', $id)
+                            ->where('precio1', '>=', 500)
                             ->paginate(9);
                     }
-                }elseif (array_key_exists('marca', $busqueda)){
-                    $marca_id = DB::table('marcas')->select('id')->where('nombre',$busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
-                    $resultado = DB::table('productos')
-                        ->where('categoria_id',$id)
-                        ->where('marca_id','=',$marca_id->id)
-                        ->paginate(9);
+                } else { // solo existe una
+                    if (array_key_exists('precio', $busqueda)) {
+                        try {
+                            //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                            if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                                switch ((Integer)$busqueda['precio']) {
+                                    case 1:
+                                        $precio = array(0, 99.99);
+                                        break;
+                                    case 2:
+                                        $precio = array(100, 199.99);
+                                        break;
+                                    case 3:
+                                        $precio = array(200, 299.99);
+                                        break;
+                                    case 4:
+                                        $precio = array(300, 399.99);
+                                        break;
+                                    case 5:
+                                        $precio = array(400, 499.99);
+                                        break;
+                                }
+                                $resultado = DB::table('productos')
+                                    ->where('categoria_id', $id)
+                                    ->whereBetween('precio1', $precio)
+                                    ->paginate(9);
+
+                            } else { // se tomará automaticamente +500
+                                $resultado = DB::table('productos')
+                                    ->where('categoria_id', $id)
+                                    ->where('precio1', '>=', 500)
+                                    ->paginate(9);
+                            }
+                        } catch (Exception $e) {
+                            //ignoramos entonces el criterio de busqueda y lo tomamos a +500
+                            $resultado = DB::table('productos')
+                                ->where('categoria_id', $id)
+                                ->where('precio1', '>=', 500)
+                                ->paginate(9);
+                        }
+                    } elseif (array_key_exists('marca', $busqueda)) {
+                        $marca_id = DB::table('marcas')->select('id')->where('nombre', $busqueda['marca'])->first(); //obtenemos el id de la marca que pasamos
+                        $resultado = DB::table('productos')
+                            ->where('categoria_id', $id)
+                            ->where('marca_id', '=', $marca_id->id)
+                            ->paginate(9);
+                    }
+
                 }
-
             }
+            /* ************************************************** */
+            if($request->cookie('cliente')==null) {
+                return view('shop.categorias', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);
+            }else{
+                $cookie= $request->cookie('cliente');
+                $user = Cliente::find(base64_decode($cookie['id']));
+                #dd($user);
+                return view('shop.categorias', [
+                    'categorias' => $categorias,
+                    'productos' => $resultado,
+                    'marcas' => $marcas,
+                    'user' => "$user->username"
+                ]);
+            }
+        }catch(Exception $exception){
+            dd($exception);
         }
-
-
-        /* ************************************************** */
-        return view('shop.categorias',['categorias'=>$categorias,'productos'=> $resultado, 'marcas' => $marcas]);
     }
 
     public function getMarcas(Request $request, $id){
-        $id = base64_decode($id);
-        $busqueda = $request->query();
-        $marcas = DB::table('marcas')
-            ->orderBy('nombre','asc')
-            ->get();
-        $categorias = DB::table('categorias')->take(10)->get();
-        foreach ($marcas as $marca){
-            $marca->id = base64_encode($marca->id);
-        }
-        foreach ($categorias as $categoria){
-            $categoria->id = base64_encode($categoria->id);
-        }
-        /* ************************************************************* */
         try {
-            //parte de los filtros
-            $url = base64_decode($id);
-            $precioUsuario = "";
-            $consultaPrecios = '';
-            $consultaCategorias = null;
-            $consultaSubcategorias = null;
-            $consultaMarcas = null;
-            if ($precioUsuario != "") {
-                array_push($select, $precioUsuario . " as precio1");
+            $id = base64_decode($id);
+            $busqueda = $request->query();
+            $marcas = DB::table('marcas')
+                ->orderBy('nombre', 'asc')
+                ->get();
+            $categorias = DB::table('categorias')->take(10)->get();
+            foreach ($marcas as $marca) {
+                $marca->id = base64_encode($marca->id);
             }
-            if (strpos($url, "/")) { //Existe al menos un parametro a parte del id
-                $partes = explode("/", $url); //Separamos el id y los parametros
-                $urlid = $partes[0]; //ID en cuestion
-                $parametros = explode('&', $partes[1]); //Separamos los parametros con &
-                foreach ($parametros as $parametro) { //Recorremos los parametros enviados ("precio", "categorias", "subcategorias")
-                    $filtro = explode('=', $parametro); //Separamos filtros[0] y valor[1]
-
-                    switch ($filtro[0]) {
-                        case 'precio': //Revisamos los valores que podria tener
-                            $valores = explode(',', $filtro[1]); //Valores a filtrar
-                            $consultaPrecios = "(";
-                            if (sizeof($valores) > 1) {
-                                $i = 0;
-                                foreach ($valores as $valor) { //Recorremos los valores del filtro
-                                    if (strpos($valor, '-')) { //Existe un rango
-                                        $precios = explode('-', $valor);
-                                        if ($i == 0) {
-                                            $consultaPrecios .= "(" . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . " between " . $precios[0] . " AND " . $precios[1] . ") ";
-                                        } else {
-                                            $consultaPrecios .= " OR (" . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . " between " . $precios[0] . " AND " . $precios[1] . ") ";
-                                        }
-                                    } else { //no existe el rango
-                                        if ($i == 0) {
-                                            $consultaPrecios .= "( " . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . "> $valor )";
-                                        } else {
-                                            $consultaPrecios .= " OR ( " . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . "> $valor )";
-                                        }
-                                    }
-                                    $i++;
-                                }
-                            } else { //Solo hay un filtro
-                                if (strpos($valores[0], '-')) { //Existe un rango
-                                    $rango = explode('-', $valores[0]);
-                                    $consultaPrecios .= "(" . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . " between " . $rango[0] . " AND " . $rango[1] . ") ";
-                                } else {
-                                    $consultaPrecios .= " ( " . (($precioUsuario == "") ? "productos.precio1" : $precioUsuario) . "> $valores[0] )";
-                                }
-                            }
-                            $consultaPrecios .= ")";
-                            break;
-                        case 'categoria':
-                            $valores = explode(',', $filtro[1]); //Valores a filtrar
-                            $consultaCategorias = "(";
-                            if (sizeof($valores) > 1) {
-                                $consultaCategorias .= " productos.categoria_id IN( ";
-                                $i = 0;
-                                foreach ($valores as $valor) { //Recorremos los valores del filtro
-                                    if ($i == 0) {
-                                        $consultaCategorias .= $valor;
-                                        $i++;
-                                    } else {
-                                        $consultaCategorias .= ", $valor";
-                                    }
-                                }
-                                $consultaCategorias .= " ) ";
-
-                            } else { //Solo hay un filtro
-                                $consultaCategorias .= "( productos.categoria_id = $valores[0] ) ";
-                            }
-                            $consultaCategorias .= " )";
-                            break;
-                    }
-                }
+            foreach ($categorias as $categoria) {
+                $categoria->id = base64_encode($categoria->id);
             }
-            else {
-                $urlid = $url;
-            }
-            $filtromarcas = [];
-            $filtrobusqueda = DB::table('productos')
-                ->select("*")
-                ->where('img1', 'not like', 'minilogo.png')
-                ->where('nombre', 'like', '%' . $urlid . '%');
-            /*Aplicacion de los filtros con o sin precios ... */
-            if ($consultaPrecios != null) {
-                $filtrobusqueda->whereRaw($consultaPrecios);
-                /* Parte de los filtros con precios */
-                $todasCategorias = DB::table('categorias')
-                    ->select('categorias.id',
-                        'categorias.nombre')
-                    ->orderBy('nombre', 'asc')
-                    ->get();
-                //Filtro  de categorias y subcategorias
-                foreach ($todasCategorias as $categoria)
-                $filtroCategorias = [];
-                    array_push($filtroCategorias, ['id' => base64_encode($categoria->id), 'nombre' => $categoria->nombre]);
-
-                }
-
-            /* Aplicacion Recuperación de los productos con o sin filtros*/
-            if ($consultaCategorias != null) {
-                $filtrobusqueda->whereRaw($consultaCategorias);
-            }
-            if ($consultaSubcategorias != null) {
-                $filtrobusqueda->whereRaw($consultaSubcategorias);
-            }
-            if ($consultaMarcas != null) {
-                $filtrobusqueda->whereRaw($consultaMarcas);
-            }
-            $filtrobusqueda = $filtrobusqueda->paginate();
-            // Parte del menu
-
-
-            //Menu de marcas
-        } catch (Exception $e){
-
-        }
 
             /* ************************************************************* */
+            if (array_key_exists('precio', $busqueda)) {
+                try {
+                    //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                    if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                        switch ((Integer)$busqueda['precio']) {
+                            case 1:
+                                $precio = array(0, 99.99);
+                                break;
+                            case 2:
+                                $precio = array(100, 199.99);
+                                break;
+                            case 3:
+                                $precio = array(200, 299.99);
+                                break;
+                            case 4:
+                                $precio = array(300, 399.99);
+                                break;
+                            case 5:
+                                $precio = array(400, 499.99);
+                                break;
+                        }
+                        $resultado = DB::table('productos')
+                            ->where('marca_id', $id)
+                            ->whereBetween('precio1', $precio)
+                            ->paginate(9);
 
-            return view('shop.marcas',['categorias'=>$categorias,'productos'=> $filtrobusqueda,'marcas'=> $marcas]);
+                    } else { // se tomará automaticamente +500
+                        $resultado = DB::table('productos')
+                            ->where('marca_id', $id)
+                            ->where('precio1', '>=', 500)
+                            ->paginate(9);
+                    }
+                } catch (Exception $e) {
+                    //ignoramos entonces el criterio de busqueda y lo tomamos a +500
+                    $resultado = DB::table('productos')
+                        ->where('marca_id', $id)
+                        ->where('precio1', '>=', 500)
+                        ->paginate(9);
+                }
+            } else {
+                $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
+            }
+
+
+            /* ************************************************************* */
+            if($request->cookie('cliente')==null) {
+                return view('shop.marcas', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);
+            }else{
+                $cookie= $request->cookie('cliente');
+                $user = Cliente::find(base64_decode($cookie['id']));
+                #dd($user);
+                return view('shop.marcas', [
+                    'categorias' => $categorias,
+                    'productos' => $resultado,
+                    'marcas' => $marcas,
+                    'user' => "$user->username"
+                ]);
+            }
+        }catch(Exception $exception){
+            dd($exception);
+        }
     }
 
     public function getFiltro(Request $request, $tipo){
@@ -339,6 +313,14 @@ class ClientesController extends Controller
         return view('cliente.register',['categorias'=>$categorias, 'marcas' => $marcas,'estados'=>$estados,'error' => false,'msg' => '']);
     }
 
+    public function getDelivery(Request $request){
+
+    }
+
+    public function postDelivery(Request $request){
+
+    }
+
     public function logout(Request $request){
 
         if ($request->cookie('cliente') != null) {
@@ -347,23 +329,22 @@ class ClientesController extends Controller
         }
     }
 
-    public function showLoginForm(){
+    public function getLoginForm(){
         return view('cliente.login');
     }
-    public function login(Request $request){
-        try {
-            $cookie = null;
-            $users = Cliente::where('email', $request->email)->firstOrFail(); //buscamos con el email si es vacio entonces mensaje de error
 
+    public function doLogin(Request $request){
+
+        try {
+            $cookie=null;
+            $users = Cliente::where('email', $request->email)
+                ->orWhere('username',$request->email)->firstOrFail(); //buscamos con el email si es vacio entonces mensaje de error
             if (Hash::check($request->password, $users->password)) {
                 $datos = [
-                    'rol' => $users->rol,
                     'id' => base64_encode($users->id),
+                    'carrito' => new Carrito(null)
                 ];
-
-                    $cookie = Cookie::make('cliente', $datos, 180);
-
-
+                $cookie = Cookie::make('cliente', $datos, 360);
                 $respuesta = [
                     'code' => 200,
                     'msg' => $datos,
@@ -394,8 +375,10 @@ class ClientesController extends Controller
         try {
             if($request->cookie('cliente') != null){
                 $estados = DB::table('estados')->get();
+                #dd($estados);
                 $cookie=Cookie::get('cliente');
                 $cliente = Cliente::where('id','=',base64_decode($cookie['id']))->firstOrFail();
+                #dd($cliente);
                 $municipios = DB::table('municipios')->where('estado_id',$cliente->estado)->get();
                 $categorias = DB::table('categorias')->take(4)->get();
                 $menu = array();
@@ -408,13 +391,22 @@ class ClientesController extends Controller
                 }
                 $cliente->id = base64_encode($cliente->id);
 
-                return view('cliente.profile', ['municipios'=>$municipios,'estados'=>$estados,'categorias' => $categorias, 'marcas' => $marcas,'cliente' => $cliente]);
+                return view('cliente.profile', [
+                    'municipios'=>$municipios,
+                    'estados'=>$estados,
+                    'categorias' => $categorias,
+                    'marcas' => $marcas,
+                    'cliente' => $cliente,
+                    'user'=>"$cliente->username"
+                ]);
             }
         }catch (Exception $e){
-
+            dd($e);
         }
     }
-    public function clientInfoUpdate(Request $request){
+
+
+    public function perup(Request $request){
         try{
             if($request->cookie('cliente') != null){
                 $cookie = Cookie::get('cliente');
@@ -430,7 +422,8 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function clientAddressUpdate(Request $request){
+  
+    public function contup(Request $request){
         try{
             if($request->cookie('cliente') != null){
                 $cookie = Cookie::get('cliente');
@@ -453,7 +446,8 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function clientPasswordUpdate(Request $request)
+
+    public function passup(Request $request)
     {
         try {
             if($request->cookie('cliente') != null) {
@@ -474,7 +468,8 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     }
-    public function clientImageUpdate(Request $request){
+
+  public function imgup(Request $request){
         try{
             if($request->cookie('cliente') != null) {
                 $cookie = Cookie::get('cliente');
@@ -496,7 +491,8 @@ class ClientesController extends Controller
             }
         return Response::json($respuesta);
     }
-    public function clientRegister(Request $request)
+
+    public function register(Request $request)
     {
         try {
             if($request->cookie('cliente') != null) {

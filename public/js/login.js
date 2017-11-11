@@ -22,7 +22,8 @@ $(function () {
                     location.reload();
                 }else{
                     //parte de los clientes redirigimos al index (primero generando la cookie)
-                    window.location.href=document.location.protocol + '//' + document.location.host;
+
+                    window.location.href=document.location.protocol + '//' + document.location.host+ "/";
                 }
             }else{
                 console.log('No se hizo');
