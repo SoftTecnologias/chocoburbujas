@@ -117,7 +117,7 @@ Route::group(['prefix'=>'panel'],function (){
 /*Grupo de rutas para clientes*/
 Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     Route::get('', [
-        'uses' => 'HomeController@index',
+        'uses' => 'ClientesController@index',
         'as'   => 'shop.index'
     ]);
     /*Para el cliente*/
@@ -130,7 +130,7 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.dologin'
     ]);
     Route::get('/logout', [
-        'uses' => 'HomeController@logout',
+        'uses' => 'ClientesController@logout',
         'as' => 'cliente.logout'
     ]);
     Route::get('/registro', [
@@ -142,8 +142,11 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
         'as' => 'cliente.register.client'
     ]);
     Route::get('perfil', [
-        'uses' => 'HomeController@profile',
+        'uses' => 'ClientesController@profile',
         'as' => 'cliente.profile'
+    ]);
+    Route::get('/perfil/infocompra/{id}',[
+       'uses' => 'ClientesController@infoCompra'
     ]);
     Route::post('perfil/perup',[
         'uses' => 'ClientesController@perup',
