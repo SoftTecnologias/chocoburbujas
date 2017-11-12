@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Costo_Envio;
 use App\Estado;
 use App\Marca;
 use App\Movimiento;
@@ -131,6 +132,7 @@ class UsersController extends Controller
             'categorias' => $categorias,
             'unidades'  => $unidades
         ];
+        $estado = Estado::all();
                     $cookie = Cookie::get('admin');
                     $user = User::where('id', $cookie['apikey'])->first();
                     $fecha = explode("-", substr($user->signindate, 0, 10));
@@ -139,10 +141,25 @@ class UsersController extends Controller
                         'datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                         'photo' => $user->img,
                         'username' => $user->username,
-                        'permiso' => 'Administrador']]);
+                        'permiso' => 'Administrador'],'estados' => $estado]);
                 }else{
                     return view('user.login');}
     }
+
+    public function precioenvio(Request $request){
+        try{
+            $precioenvio = new Costo_Envio;
+            $precioenvio->estado_id = $request->estado;
+            $precioenvio->municipio_id = $request->municipio;
+            $precioenvio->costo = $request->precio;
+            $precioenvio->save();
+            $respuesta = ["code" => 200, "msg" => 'El costo se agrego correctamente', 'detail' => 'success'];
+        }catch (Exception $e){
+            $respuesta = ["code" => 500, "msg" => $e->getMessage(), 'detail' => 'error'];
+        }
+        return $respuesta;
+    }
+
     public function showProviderForm(Request $request){
         if($request->cookie('admin') != null) {
                 $estados = Estado::all();

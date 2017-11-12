@@ -48,6 +48,11 @@ Route::group(['prefix'=>'panel'],function (){
     Route::get('/products',['uses'=>'UsersController@showProductForm',
         'as' =>'panel.product',
     ]);
+
+    Route::post('/products/precioenvio',['uses'=>'UsersController@precioenvio',
+        'as' =>'panel.product.precioenvio',
+    ]);
+
     Route::get('/providers',['uses'=>'UsersController@showProviderForm',
         'as' =>'panel.provider',
     ]);
@@ -233,6 +238,11 @@ Route::group(['middleware'=>['web','cors'],'prefix'=>'/'],function() {
     ]);
     Route::get('/getMunicipios/{id}',[
         'uses' => 'ProductosController@getMunicipios',
+        'as' => 'Municipios.get'
+    ]);
+
+    Route::get('/getMunicipiosfitro/{id}',[
+        'uses' => 'ProductosController@Municipiosfiltroprecio',
         'as' => 'Municipios.get'
     ]);
 });
