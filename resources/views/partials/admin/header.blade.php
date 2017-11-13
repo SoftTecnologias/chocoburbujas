@@ -13,14 +13,6 @@
                 <div class="clearfix"></div>
 
             </div>
-            <div class="cssmenu">
-             @if(!auth()->guard('web')->guest())
-                <ul id="sesionOpc">
-                    <li><a href="{{route('user.profile')}}">{{auth()->guard('web')->user()->username}}</a></li>
-                    <li><a href="{{route('user.logout')}}">Logout</a></li>
-                </ul>
-             @endif
-            </div>
             <div class="clearfix"></div>
 
         </div>
