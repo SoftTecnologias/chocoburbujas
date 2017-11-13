@@ -242,33 +242,71 @@
 
 
         <div class="col-sm-4">
-            <div class="panel panel-default">
+            <div class="panel ">
                 <div class="menu_title">
-                    <b>Compras</b>
-                    <p>RSI Content Solutions India Pvt. Ltd</p>
+                    <h3>Compras</h3>
+                    <table class="table">
+                        <thead>
+                        <trow>
+                            <th class="text-center">Codigo</th>
+                            <th class="text-center">Fecha</th>
+                            <th class="text-center">Total</th>
+                        </trow>
+                        </thead>
+                        <tbody>
+                        @foreach($compras as $compra)
+                            <tr>
+                                <td>{{$compra->id}}</td>
+                                <td>{{$compra->fecha_venta}}</td>
+                                <td>{{$compra->total}}</td>
+                                <td>
+                                    <a class="btn btn-warning" onclick="infocompra('{{$compra->id}}')" id="info{{$compra->id}}">Info</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+
+                    </table>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label for="email">Name:</label>
-                                <p>Vijayan K. </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Emp ID:</label>
-                                <p>1020</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Data of Joining:</label>
-                                <p>09-05-2016</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Blood Group:</label>
-                                <p>O+ve</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">In Case of emergency please contact:</label>
-                                <p>9500028421</p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class = "modal" id="modalinfo">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1 toppad" id="datos">
+
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                        <span>
+                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                         class="fa fa-times"></i></button>
+                            <h3 class="panel-title">Info Compra</h3>
+                        </span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class=" col-md-12 col-lg-12 ">
+                                    <table class="table table-user-information">
+                                        <thead>
+                                        <tr class="active">
+                                            <th>Producto</th>
+                                            <th>Marca</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                            <th>Moneda</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="info">
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

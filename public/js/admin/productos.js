@@ -6,6 +6,39 @@ $(function(){
         $('#titulo-modal').text("Nuevo Producto");
         $("#modalProduct").modal("show");
     });
+
+    $('#estado').change(function(){
+        var estado = $(this).val();
+        if(estado != '00'){
+            $.ajax({
+                url:document.location.protocol+'//'+document.location.host+'/getMunicipiosfitro/'+estado,
+                type:'GET'
+            }).done(function(response){
+                if(response.code == 200){
+
+                    $('#muni option').remove();
+
+                    $('<option>',{text:'Seleccione un Municipio'}).attr('value',"000").appendTo('#muni');
+
+                    $.each($.parseJSON(response.msg),function(i, row){
+
+                        $('<option>', {text: row.nombre}).attr('value', row.id).appendTo('#muni');
+                    });
+                    $('#muni').selectpicker('refresh');;
+                }
+            }).fail(function(){
+
+            });
+        }
+    });
+
+    $('#btnEnvio').on('click',function () {
+        $('#cppr').val('');
+        $('#colpr').val('');
+        $('#prenvio').val('');
+        $('#modprecio').modal('show');
+    });
+
     $('#btnProduct').on('click',function(){
         $('#productForm').submit();
     });
@@ -236,6 +269,49 @@ $(function(){
         }
     });
 });
+
+ function test() {
+     window.alert($('#estado').val());
+ }
+function AgregarCosto() {
+    swal({
+        title: '¿Estás seguro?',
+        text: "Se Asignara el precio al Municipio seleccionado",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, deseo continuar',
+        cancelButtonText: "Lo pensaré"
+    }).then(function(){
+        $.ajax({
+            url:document.location.protocol+'//'+document.location.host+'/panel/products/precioenvio',
+            type:"POST",
+            data: {'estado':$('#estado').val(),
+                'municipio':$('#muni').val(),
+                'precio':$('#prenvio').val()},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }).done(function(json){
+            if(json.code == 200) {
+                swal("Realizado", json.msg, json.detail).then(function () {
+                    $('#cppr').val('');
+                    $('#colpr').val('');
+                    $('#prenvio').val('');
+                    $('#modprecio').modal('hide');
+                });
+            }else{
+
+                swal("Error",json.msg,json.detail).then(function () {
+
+                });
+            }
+        }).fail(function(){
+            swal("Error","Tuvimos un problema de conexion","error");
+        });
+    });
+}
 
 //
 function productAction(){

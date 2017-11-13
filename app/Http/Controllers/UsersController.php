@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Costo_Envio;
 use App\Estado;
 use App\Marca;
 use App\Movimiento;
@@ -28,7 +29,7 @@ class UsersController extends Controller
             if (Hash::check($request->password, $users->password)) {
                 $datos = [
                     'rol' => $users->rol,
-                    'apikey' => $users->apikey,
+                    'apikey' => $users->id,
                 ];
 
                 if($users->rol == "1") {
@@ -67,7 +68,7 @@ class UsersController extends Controller
     public function index(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.area',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                 'photo' => $user->img,
@@ -80,7 +81,7 @@ class UsersController extends Controller
     public function showBrandForm(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $marcas = Marca::all();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.brand',['marcas' => $marcas,'datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
@@ -93,7 +94,7 @@ class UsersController extends Controller
     public function showLoginForm(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.area',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                 'photo' => $user->img,
@@ -110,7 +111,7 @@ class UsersController extends Controller
     public function showCategoryForm(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.category',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                 'photo' => $user->img,
@@ -131,23 +132,39 @@ class UsersController extends Controller
             'categorias' => $categorias,
             'unidades'  => $unidades
         ];
+        $estado = Estado::all();
                     $cookie = Cookie::get('admin');
-                    $user = User::where('apikey', $cookie['apikey'])->first();
+                    $user = User::where('id', $cookie['apikey'])->first();
                     $fecha = explode("-", substr($user->signindate, 0, 10));
                     return view('panel.product',['marcas' => $marcas,
                         'categorias' => $categorias, 'proveedores' => $proveedores, 'unidades' => $unidades,
                         'datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                         'photo' => $user->img,
                         'username' => $user->username,
-                        'permiso' => 'Administrador']]);
+                        'permiso' => 'Administrador'],'estados' => $estado]);
                 }else{
                     return view('user.login');}
     }
+
+    public function precioenvio(Request $request){
+        try{
+            $precioenvio = new Costo_Envio;
+            $precioenvio->estado_id = $request->estado;
+            $precioenvio->municipio_id = $request->municipio;
+            $precioenvio->costo = $request->precio;
+            $precioenvio->save();
+            $respuesta = ["code" => 200, "msg" => 'El costo se agrego correctamente', 'detail' => 'success'];
+        }catch (Exception $e){
+            $respuesta = ["code" => 500, "msg" => $e->getMessage(), 'detail' => 'error'];
+        }
+        return $respuesta;
+    }
+
     public function showProviderForm(Request $request){
         if($request->cookie('admin') != null) {
                 $estados = Estado::all();
                 $cookie = Cookie::get('admin');
-                $user = User::where('apikey', $cookie['apikey'])->first();
+                $user = User::where('id', $cookie['apikey'])->first();
                 $fecha = explode("-", substr($user->signindate, 0, 10));
                 return view('panel.provider',['estados' => $estados,'datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                     'photo' => $user->img,
@@ -169,7 +186,7 @@ class UsersController extends Controller
     public function showUserForm(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.user',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                 'photo' => $user->img,
@@ -183,7 +200,7 @@ class UsersController extends Controller
             $cookie = Cookie::get('admin');
             if ($cookie['rol'] == 1) {
                 $cookie = Cookie::get('admin');
-                $user = User::where('apikey', $cookie['apikey'])->first();
+                $user = User::where('id', $cookie['apikey'])->first();
                 $fecha = explode("-", substr($user->signindate, 0, 10));
                 $productos = DB::table('productos')->select('id', 'nombre')->get();
                 $proveedores = DB::table('proveedores')->select('id', 'nombre')->get();
@@ -198,7 +215,7 @@ class UsersController extends Controller
     public function showBlogForm(Request $request){
         if($request->cookie('admin') != null) {
             $cookie = Cookie::get('admin');
-            $user = User::where('apikey', $cookie['apikey'])->first();
+            $user = User::where('id', $cookie['apikey'])->first();
             $fecha = explode("-", substr($user->signindate, 0, 10));
             return view('panel.blog',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                 'photo' => $user->img,
