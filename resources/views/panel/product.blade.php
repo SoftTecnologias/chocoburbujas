@@ -1,6 +1,7 @@
 @extends('layouts.panel',['user_info' => $datos])
 @section('styles')
     <link media="all" type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <link media="all" type="text/css" rel="stylesheet" href="{{asset("css/fileinput.min.css")}}" />
 @endsection
 <!-- Productos -->
@@ -25,6 +26,7 @@
                                 <h3 class="box-title">Productos</h3>
                             </div>
                             <div class="pull-right">
+                                <a class="btn btn-warning" id="btnEnvio"><i class="fa fa-plus"></i>Costos de Envio</a>
                                 <a class="btn btn-success" id="btnNew"><i class="fa fa-plus"></i>Agregar Producto</a>
                             </div>
 
@@ -268,9 +270,57 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" id="modprecio">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                class="fa fa-times"></i></button>
+                    <h3 id="titulo-modal">Precios de envio</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="prenform" enctype="multipart/form-data">
+                        <fieldset>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6" align="left">
+                                    <label for="estado">Estado:</label>
+                                    <div class="col-md-12"></div>
+                                    <select class="selectpicker col-md-12" data-live-search="true" id="estado">
+                                        <option value="00">Seleccione un Estado</option>
+                                        @foreach($estados as $estado)
+                                            <option value="{{$estado->id}}">{{$estado->nombre}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <br/>
+                                    <label for="muni">Municipio</label>
+                                    <select class="selectpicker col-md-12" data-live-search="true" id="muni">
+                                        <option value="00">Seleccione un Municipio</option>
+                                    </select>
+                                    <br/>
+                                    <label for="prenvio">Precio Envio</label> <a href="http://www.google.com.mx" target="_blank">consultar</a>
+                                    <input type="text" class="form-control col-md-12" id="prenvio" name="prenvio" placeholder="Precio Envio">
+
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnAgregar" class="btn btn-sm btn-primary" onclick="AgregarCosto()">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
     <script src="{{asset('js/admin/productos.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/plugins/jquery.validate.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/plugins/fileinput.min.js')}}"></script>

@@ -845,6 +845,21 @@ class ProductosController extends Controller
         ]);
     }
 
+    public function Municipiosfiltroprecio(Request $request, $id)
+    {
+        $municipios = DB::table('municipios as m')
+            ->select('m.id','m.nombre')
+            ->leftJoin('costo_envio as ce','ce.municipio_id','=','m.id')
+            ->where('m.estado_id', $id)
+            ->where('ce.id', null)
+            ->get();
+        return Response::json([
+            'code' => 200,
+            'msg' => json_encode($municipios),
+            'detail' => 'OK'
+        ]);
+    }
+
     public function updateCart(Request $request)
     {
         try {

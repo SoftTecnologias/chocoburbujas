@@ -8,7 +8,7 @@ class User extends Model{
     protected $table = "users";
     protected $fillable=[
         'id',"nombre", "ape_pat", "ape_mat", "email",
-        "username", "password", "img", "rol", "remember_token","apikey"
+        "username", "password", "img", "rol", "remember_token"
     ];
     protected $hidden = [];
 

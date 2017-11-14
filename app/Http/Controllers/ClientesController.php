@@ -382,6 +382,16 @@ class ClientesController extends Controller
                 $municipios = DB::table('municipios')->where('estado_id',$cliente->estado)->get();
                 $categorias = DB::table('categorias')->take(4)->get();
                 $menu = array();
+                $compras = DB::table('ventas')
+                    ->select('*')
+                    ->where('cliente_id','=',base64_decode($cookie['id']))
+                    ->get();
+                foreach ($compras as $compra){
+                    $compra->id = base64_encode($compra->id);
+                    $fecha = date_create($compra->fecha_venta);
+                    $compra->fecha_venta = date_format($fecha,'Y-m-d');
+                }
+
                 $marcas = DB::table('marcas')
                     ->orderBy('nombre', 'asc')
                     ->get();
@@ -397,7 +407,8 @@ class ClientesController extends Controller
                     'categorias' => $categorias,
                     'marcas' => $marcas,
                     'cliente' => $cliente,
-                    'user'=>"$cliente->username"
+                    'user'=>"$cliente->username",
+                    'compras' => $compras
                 ]);
             }
         }catch (Exception $e){
@@ -613,4 +624,25 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     } //¿Facturación?
+
+    public function infoCompra($id){
+        try{
+            $id = base64_decode($id);
+            $icompra = DB::table('ventas as v')
+                ->select('p.nombre as producto','m.nombre as marca','d.cantidad as cantidad',
+                    'p.precio1 as preciounitario')
+                ->join('detalle_ventas as d','d.venta_id','=','v.id')
+                ->join('productos as p','p.id','=','producto_id')
+                ->join('marcas as m','m.id','=','p.marca_id')
+                ->where('v.id','=',$id)
+                ->get();
+            return Response::json([
+                'code' => 200,
+                'msg' => json_encode($icompra),
+                'detail' => 'OK'
+            ]);
+        }catch (Exception $e){
+            dd($e);
+        }
+    }
 }
