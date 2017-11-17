@@ -10,8 +10,9 @@
       Pero por ahora dejaré el index fijo
  -->
     <div id="contenido">
-        <div class="index_slider">
-            <div class="container">
+        <div class="container">
+            <!--Banner -->
+            <div class="index_slider">
                 <div class="callbacks_container">
                     <ul class="rslides" id="slider">
                         <li><img src="images/accesorios.png" class="img-responsive" alt="" /></li>
@@ -20,9 +21,8 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="content_top">
-            <div class="container">
+            <!-- anuncios -->
+            <div class="content_top">
                 <div class="grid_1">
                     <div class="col-md-3">
                         <div class="box2">
@@ -70,120 +70,115 @@
                     </div>
                     <div class="clearfix"> </div>
                 </div>
-                <div class="sellers_grid">
-                    <ul class="sellers">
-                        <i class="star"> </i>
-                        <li class="sellers_desc">
-                            <h2>Lo mas vendido</h2></li>
-                        <div class="clearfix"> </div>
-                    </ul>
-                </div>
-                <!-- Mas vendidos-->
-                <div class="grid_2">
-                    @foreach($topselling as $product)
-                        <div class="col-md-3 span_6">
-                            <div class="box_inner">
-                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
-                                                                            style="height: 250px; width: 200px;"/></div>
-                                <div class="sale-box"></div>
-                                <div class="desc">
-                                    <h3>{{$product->nombre}}</h3>
-                                    <h4>$ {{$product->precio1}}</h4>
-                                    <ul class="list2">
-                                        <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
-                                        </li>
-                                        <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
-                                                                                     onclick="verProducto({{$product->codigo}})">ver más</a></span>
-                                        </li>
-                                        <div class="clearfix"></div>
-                                    </ul>
-                                    <div class="heart"></div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
             </div>
-        </div>
-        <div class="content_middle">
-            <div class="container" >
-                <ul class="promote">
-                    <i class="promote_icon"> </i>
-                    <li class="promote_head">
-                        <h3>Promociones</h3></li>
-                </ul>
-                <!-- Promociones -->
-                @if(sizeof($promociones)> 0)
+            <!-- Promocion del Mes -->
+            <div class="content_middle">
+            <ul class="promote">
+                <i class="promote_icon"> </i>
+                <li class="promote_head">
+                    <h3>Promoción del mes</h3></li>
+            </ul>
+            <!-- Promociones -->
+            @if(sizeof($promociones)> 0)
                 <ul id="flexiselDemo3" >
 
-                        @foreach($promociones as $promocion)
-                            <li >
-                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                                <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                    <p> $ {{$promocion->precio1}} </p>
-                                    <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                    <div class="ticket"></div>
-                                </div>
-                            </li>
-                        @endforeach
+                    @foreach($promociones as $promocion)
+                        <li >
+                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
+                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
+                                <p> $ {{$promocion->precio1}} </p>
+                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
+                                <div class="ticket"></div>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
-                @else
+            @else
 
-                    <div class="container">
-                        <div class="callbacks_container">
-                            <ul class="rslides" id="slider">
-                                <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
-                            </ul>
-                        </div>
-                    </div>
-                @endif
-                <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
-            </div>
-        </div>
-        <div class="container">
-            <div class="content_middle_bottom">
-                <div class="col-md-4">
-                    <ul class="spinner">
-                        <i class="spinner_icon"> </i>
-                        <li class="spinner_head">
-                            <h3>Promoción del mes</h3></li>
-                        <div class="clearfix"> </div>
-                    </ul>
-                    <div class="timer_box">
-                        <div class="thumb"> </div>
-                        <div class="timer_grid">
-                            <ul id="countdown">
-                            </ul>
-                            <ul class="navigation">
-                                <li>
-                                    <p class="timeRefDays">DIAS</p>
-                                </li>
-                                <li>
-                                    <p class="timeRefHours">HORAS</p>
-                                </li>
-                                <li>
-                                    <p class="timeRefMinutes">MINUTOS</p>
-                                </li>
-                                <li>
-                                    <p class="timeRefSeconds">SEG.</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="thumb_desc">
-                            <h3> totam rem aperiam</h3>
-                            <div class="price">
-                                <span class="reducedfrom">$140.00</span>
-                                <span class="actual">$120.00</span>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="m_3 deal">
-                                <div class="link3">Adquirir esta promoción</div>
-                            </div>
-                        </a>
+                <div class="container">
+                    <div class="callbacks_container">
+                        <ul class="rslides" id="slider">
+                            <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-8">
+            @endif
+            <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
+        </div>
+            <!-- Promociones -->
+            <div class="content_middle">
+            <ul class="promote">
+                <i class="promote_icon"> </i>
+                <li class="promote_head">
+                    <h3>Promociones</h3></li>
+            </ul>
+            <!-- Promociones -->
+            @if(sizeof($promociones)> 0)
+                <ul id="flexiselDemo3" >
+
+                    @foreach($promociones as $promocion)
+                        <li >
+                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
+                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
+                                <p> $ {{$promocion->precio1}} </p>
+                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
+                                <div class="ticket"></div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+
+                <div class="container">
+                    <div class="callbacks_container">
+                        <ul class="rslides" id="slider">
+                            <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                        </ul>
+                    </div>
+                </div>
+            @endif
+            <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
+        </div>
+            <!-- Mas Vendidos -->
+            <div class="content_middle">
+            <div class="sellers_grid">
+                <ul class="sellers">
+                    <i class="star"> </i>
+                    <li class="sellers_desc">
+                        <h2>Lo mas vendido</h2></li>
+                    <div class="clearfix"> </div>
+                </ul>
+            </div>
+            <!-- Mas vendidos-->
+            <div class="grid_2">
+                @foreach($topselling as $product)
+                    <div class="col-md-3 span_6">
+                        <div class="box_inner">
+                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
+                                                                        style="height: 250px; width: 200px;"/></div>
+                            <div class="sale-box"></div>
+                            <div class="desc">
+                                <h3>{{$product->nombre}}</h3>
+                                <h4>$ {{$product->precio1}}</h4>
+                                <ul class="list2">
+                                    <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
+                                    </li>
+                                    <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
+                                                                                 onclick="verProducto({{$product->codigo}})">ver más</a></span>
+                                    </li>
+                                    <div class="clearfix"></div>
+                                </ul>
+                                <div class="heart"></div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+            <!-- Blog -->
+            <div class="content_middle_bottom">
+                <div class="col-md-12">
                     <ul class="spinner">
                         <i class="paperclip"> </i>
                         <li class="spinner_head">
@@ -208,6 +203,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+            <!-- Información -->
             <div class="content_bottom">
                 <div class="col-md-3 span_1">
                     <ul class="spinner">

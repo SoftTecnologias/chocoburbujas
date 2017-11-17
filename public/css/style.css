@@ -23,7 +23,6 @@ html, body {
     background: #fff;
     background-image: url("../images/bc.png");
     background-size: contain;
-    /*background-repeat: repeat-y ;*/
     height: 100%;
 }
 
