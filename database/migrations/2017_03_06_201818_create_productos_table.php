@@ -31,6 +31,7 @@ class CreateProductosTable extends Migration
             $table->string('img1');
             $table->string('img2');
             $table->string('img3');
+            $table->boolean('mostrar');
             $table->timestamps();
 
         });
