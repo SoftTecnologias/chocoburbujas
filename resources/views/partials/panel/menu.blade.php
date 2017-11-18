@@ -25,8 +25,10 @@
             <li><a href="{{route('panel.product')}}"><i class='fa fa-paw'></i> <span>Productos</span></a></li>
             <li><a href="{{route('panel.user')}}"><i class='fa fa-users'></i><span>Usuarios</span></a></li>
             <li><a href="{{route('panel.movements')}}"><i class='fa fa-archive'></i> <span>Movimientos de almacén</span></a></li>
+            <li><a href="{{route('panel.pedidos')}}"><i class="fa fa-cart-arrow-down"></i><span>Pedidos</span></a></li>
             <li><a href="{{route('panel.provider')}}"><i class='fa fa-truck'></i> <span>Proveedores</span></a></li>
             <li><a href="{{route('panel.blogs')}}"><i class='fa fa-desktop'></i><span>Blog</span></a></li>
+            <li><a href="{{route('panel.banner')}}"><i class="fa fa-wrench"></i><span>Banner</span></a></li>
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

@@ -15,9 +15,9 @@
             <div class="index_slider">
                 <div class="callbacks_container">
                     <ul class="rslides" id="slider">
-                        <li><img src="images/accesorios.png" class="img-responsive" alt="" /></li>
-                        <li><img src="images/alimento.png" class="img-responsive" alt="" /></li>
-                        <li><img src="images/pug.png" class="img-responsive" alt="" /></li>
+                        <li><img src="images/Banner/accesorios.png" class="img-responsive" alt=""  /></li>
+                        <li><img src="images/Banner/alimento.png" class="img-responsive" alt="" /></li>
+                        <li><img src="images/Banner/pug.png" class="img-responsive" alt="" /></li>
                     </ul>
                 </div>
             </div>
