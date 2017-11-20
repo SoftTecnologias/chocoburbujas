@@ -266,6 +266,25 @@ class UsersController extends Controller
             return view('user.login');
         }
     }
+    public function showSeccionForm(Request $request){
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                $seccion = Configuracion::all()->keyBy('seccion');
+                return view('panel.secciones',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador'],
+                    'secciones' => $seccion
+                ]);
+            }else{
+                return view('user.login');
+            }
+       }catch(Exception $e){
+
+       }
+    }
     public function logout(Request $request){
         if ($request->cookie('admin') != null) {
             Cookie::forget('admin');
