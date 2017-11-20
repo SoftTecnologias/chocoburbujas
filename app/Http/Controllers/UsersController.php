@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Configuracion;
 use App\Costo_Envio;
 use App\Estado;
 use App\Marca;
@@ -10,6 +11,7 @@ use App\Movimiento;
 use App\Proveedor;
 use App\Unidad;
 use App\User;
+use ClassPreloader\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -18,6 +20,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Response;
+use \Exception;
 
 class UsersController extends Controller
 {
@@ -145,7 +148,26 @@ class UsersController extends Controller
                 }else{
                     return view('user.login');}
     }
+    public function showSeccionForm(Request $request){
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                $seccion = Configuracion::all()->keyBy('seccion');
+                return view('panel.secciones',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador'],
+                    'secciones' => $seccion
+                ]);
+            }else{
+                return view('user.login');
+            }
+        }catch(Exception $e){
 
+        }
+
+    }
     public function precioenvio(Request $request){
         try{
             $precioenvio = new Costo_Envio;
@@ -159,7 +181,21 @@ class UsersController extends Controller
         }
         return $respuesta;
     }
-
+    public function updateSection(Request $request, $id){
+     try{
+        $set = $request->input('height');
+        $configuracion = Configuracion::find($id);
+        $configuracion->nombre = $request->input('nombre');
+        $configuracion->setHeight = $request->input('setHeight');
+        if($set)
+          $configuracion->height = $request->input('height');
+        $configuracion->activo = $request->input('activo');
+        $configuracion->save();
+         return $respuesta = ["code" => 200, "msg" => 'La sección fue actualizada exitosamente', 'detail' => 'success'];
+     }catch(Exception $exception){
+         return $respuesta = ["code" => 500, "msg" => $exception->getMessage(), "detail" => "error"];
+     }
+    }
     public function showProviderForm(Request $request){
         if($request->cookie('admin') != null) {
                 $estados = Estado::all();
@@ -222,7 +258,8 @@ class UsersController extends Controller
                 'username' => $user->username,
                 'permiso' => 'Administrador']]);
         }else{
-            return view('user.login');}
+            return view('user.login');
+        }
     }
     public function logout(Request $request){
         if ($request->cookie('admin') != null) {
