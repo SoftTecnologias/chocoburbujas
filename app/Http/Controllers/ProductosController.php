@@ -43,7 +43,8 @@ class ProductosController extends Controller
                 'productos.precio2',
                 'productos.img1',
                 'productos.img2',
-                'productos.img3'
+                'productos.img3',
+                'productos.mostrar'
             )
             ->join('marcas', "productos.marca_id", '=', 'marcas.id')
             ->join('categorias', "productos.categoria_id", '=', 'categorias.id')
@@ -51,6 +52,23 @@ class ProductosController extends Controller
             ->join('tipo_unidades', 'productos.unidad_id', '=', 'tipo_unidades.id')
             ->get();
         return Response::json($productos);
+    }
+
+    public function mostrarEnIndex(Request $request,$id){
+      try {
+          $producto = Producto::findOrFail($id);
+
+          $producto->fill([
+              "mostrar" => $request->mostrar
+          ]);
+
+          $producto->save();
+          $respuesta = ["code" => 200, "msg" => '', 'detail' => 'success'];
+      }catch (Exception $e){
+          $respuesta = ["code" => 500, "msg" => 'Error al conectar con el servicio, intentelo mas tarde', 'detail' => 'error'];
+      }
+
+        return Response::json($respuesta);
     }
 
     /**
@@ -93,7 +111,8 @@ class ProductosController extends Controller
                 "precio2" => $request->input('precio2'),
                 "img1" => "producto.png",
                 "img2" => "producto.png",
-                "img3" => "producto.png"
+                "img3" => "producto.png",
+                "mostrar" => "0"
             ]);
             if ($imgu1 == null) {
                 if ($img1 != null) {

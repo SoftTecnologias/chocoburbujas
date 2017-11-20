@@ -15,6 +15,41 @@
 /*Para Los administradores */
 Route::group(['prefix'=>'panel'],function (){
 
+    Route::get('/banner',[
+        'uses' => 'UsersController@showBannerForm',
+        'as' => 'panel.banner'
+    ]);
+
+    Route::get('/pedidos',[
+        'uses' => 'UsersController@showPedidosForm',
+        'as' => 'panel.pedidos'
+    ]);
+
+    Route::get('/pedidos/detail/{id}',[
+        'uses' => 'PedidosController@pedidoDetail',
+        'as' => 'panel.pedidos.detail'
+    ]);
+
+    Route::post('/pedidos/regitra/{id}',[
+        'uses' => 'PedidosController@asignarTrabajador',
+        'as' => 'panel.pedidos.asignaT'
+    ]);
+
+    Route::post('/pedidos/accion/{id}',[
+        'uses' => 'PedidosController@accion',
+        'as' => 'panel.pedidos.accion'
+    ]);
+
+    Route::get('/getpedidos',[
+        'uses' => 'PedidosController@getPedidos',
+        'as' => 'panel.get.pedidos'
+    ]);
+
+    Route::get('/getTrabajadores',[
+        'uses' => 'PedidosController@getTrabajadores',
+        'as' => 'panel.get.trabajadores'
+    ]);
+
     Route::get('/login',[
         'uses'=>'UsersController@showLoginForm',
         'as' => 'user.login',
@@ -51,6 +86,10 @@ Route::group(['prefix'=>'panel'],function (){
 
     Route::post('/products/precioenvio',['uses'=>'UsersController@precioenvio',
         'as' =>'panel.product.precioenvio',
+    ]);
+
+    Route::post('/products/mostrarindex/{id}',[
+       'uses' => 'ProductosController@mostrarEnIndex'
     ]);
 
     Route::get('/providers',['uses'=>'UsersController@showProviderForm',

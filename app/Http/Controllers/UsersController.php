@@ -135,7 +135,6 @@ class UsersController extends Controller
             'categorias' => $categorias,
             'unidades'  => $unidades
         ];
-        $estado = Estado::all();
                     $cookie = Cookie::get('admin');
                     $user = User::where('id', $cookie['apikey'])->first();
                     $fecha = explode("-", substr($user->signindate, 0, 10));
@@ -144,29 +143,35 @@ class UsersController extends Controller
                         'datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                         'photo' => $user->img,
                         'username' => $user->username,
-                        'permiso' => 'Administrador'],'estados' => $estado]);
+                        'permiso' => 'Administrador']]);
                 }else{
                     return view('user.login');}
     }
-    public function showSeccionForm(Request $request){
-        try{
-            if($request->cookie('admin') != null) {
-                $cookie = Cookie::get('admin');
-                $user = User::where('id', $cookie['apikey'])->first();
-                $seccion = Configuracion::all()->keyBy('seccion');
-                return view('panel.secciones',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
-                    'photo' => $user->img,
-                    'username' => $user->username,
-                    'permiso' => 'Administrador'],
-                    'secciones' => $seccion
-                ]);
-            }else{
-                return view('user.login');
-            }
-        }catch(Exception $e){
-
+    public function showBannerForm(Request $request){
+        if($request->cookie('admin') != null) {
+            $cookie = Cookie::get('admin');
+            $user = User::where('id', $cookie['apikey'])->first();
+            $fecha = explode("-", substr($user->signindate, 0, 10));
+            return view('panel.banner',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                'photo' => $user->img,
+                'username' => $user->username,
+                'permiso' => 'Administrador']]);
+        }else{
+            return view('user.login');}
+    }
+    public function showPedidosForm(Request $request){
+        if($request->cookie('admin') != null) {
+            $cookie = Cookie::get('admin');
+            $user = User::where('id', $cookie['apikey'])->first();
+            $estado = Estado::all();
+            $fecha = explode("-", substr($user->signindate, 0, 10));
+            return view('panel.pedidos',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                'photo' => $user->img,
+                'username' => $user->username,
+                'permiso' => 'Administrador'],'estados' => $estado]);
+        }else{
+            return view('user.login');
         }
-
     }
     public function precioenvio(Request $request){
         try{

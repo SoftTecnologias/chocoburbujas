@@ -7,30 +7,6 @@ $(function(){
         $("#modalProduct").modal("show");
     });
 
-    $('#estado').change(function(){
-        var estado = $(this).val();
-        if(estado != '00'){
-            $.ajax({
-                url:document.location.protocol+'//'+document.location.host+'/getMunicipiosfitro/'+estado,
-                type:'GET'
-            }).done(function(response){
-                if(response.code == 200){
-
-                    $('#muni option').remove();
-
-                    $('<option>',{text:'Seleccione un Municipio'}).attr('value',"000").appendTo('#muni');
-
-                    $.each($.parseJSON(response.msg),function(i, row){
-
-                        $('<option>', {text: row.nombre}).attr('value', row.id).appendTo('#muni');
-                    });
-                    $('#muni').selectpicker('refresh');;
-                }
-            }).fail(function(){
-
-            });
-        }
-    });
 
     $('#btnEnvio').on('click',function () {
         $('#cppr').val('');
@@ -89,6 +65,8 @@ $(function(){
                 str = "<div class='col-md-6'> ";
                 str += " <button id='btnEditar' class='btn btn-primary block' onclick='showProduct(" + row['id'] +");'><i class='glyphicon glyphicon-edit'></i></button> </div>";
                 str += "<div class='col-md-6'> <button id='btnEliminar' class='btn btn-danger block' onclick='deleteProduct(" + row['id'] +")'><i class='fa fa-trash-o'></i></button> </div>";
+                str += (row['mostrar'] == 0) ? "<div class='col-md-2'><input type='checkbox' id='check"+row['id']+"' onchange='mostrarEnIndex("+row['id']+")'> Mostrar</div>":
+                    "<div class='col-md-2'><input type='checkbox' id='check"+row['id']+"' onchange='mostrarEnIndex("+row['id']+")' checked> Mostrar</div>";
                 str += "</div>";
                 return str;
              }
@@ -273,45 +251,44 @@ $(function(){
  function test() {
      window.alert($('#estado').val());
  }
-function AgregarCosto() {
-    swal({
-        title: '¿Estás seguro?',
-        text: "Se Asignara el precio al Municipio seleccionado",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, deseo continuar',
-        cancelButtonText: "Lo pensaré"
-    }).then(function(){
-        $.ajax({
-            url:document.location.protocol+'//'+document.location.host+'/panel/products/precioenvio',
-            type:"POST",
-            data: {'estado':$('#estado').val(),
-                'municipio':$('#muni').val(),
-                'precio':$('#prenvio').val()},
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        }).done(function(json){
-            if(json.code == 200) {
-                swal("Realizado", json.msg, json.detail).then(function () {
-                    $('#cppr').val('');
-                    $('#colpr').val('');
-                    $('#prenvio').val('');
-                    $('#modprecio').modal('hide');
-                });
-            }else{
 
-                swal("Error",json.msg,json.detail).then(function () {
+ function mostrarEnIndex(id){
+     var show = $('#check'+id).prop('checked');
+     swal({
+         title: '¿Estás seguro?',
+         text: "El producto se mostrara en la pagina principal",
+         type: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         confirmButtonText: 'Si, deseo continuar',
+         cancelButtonText: "Lo pensaré"
+     }).then(function(){
+         $.ajax({
+             url:document.location.protocol+'//'+document.location.host+'/panel/products/mostrarindex/'+id,
+             type:"POST",
+             data: {"mostrar":show},
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             }
+         }).done(function(json){
+             if(json.code == 200) {
+                 swal("Realizado", json.msg, json.detail).then(function () {
 
-                });
-            }
-        }).fail(function(){
-            swal("Error","Tuvimos un problema de conexion","error");
-        });
-    });
-}
+                 });
+             }else{
+
+                 swal("Error",json.msg,json.detail).then(function () {
+
+                 });
+             }
+         }).fail(function(){
+             swal("Error","Tuvimos un problema de conexion","error");
+         });
+     });
+ }
+
+
 
 //
 function productAction(){
