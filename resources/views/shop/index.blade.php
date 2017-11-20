@@ -11,8 +11,9 @@
  -->
     <div id="contenido">
         <div class="container">
-            <!--Banner -->
-            <div class="index_slider">
+            @if ($secciones['banner']->activo)
+                <!--Banner (banner)-->
+                <div class="index_slider" style="{{ ($secciones['banner']->setHeight)? 'height:'.$secciones['banner']->height.'px' : '' }}">
                 <div class="callbacks_container">
                     <ul class="rslides" id="slider">
                         <li><img src="images/Banner/accesorios.png" class="img-responsive" alt=""  /></li>
@@ -21,8 +22,10 @@
                     </ul>
                 </div>
             </div>
-            <!-- anuncios -->
-            <div class="content_top">
+            @endif
+            @if ($secciones['anuncios']->activo)
+                <!-- anuncios (anuncios)-->
+                <div class="content_top">
                 <div class="grid_1">
                     <div class="col-md-3">
                         <div class="box2">
@@ -71,16 +74,18 @@
                     <div class="clearfix"> </div>
                 </div>
             </div>
-            <!-- Promocion del Mes -->
-            <div class="content_middle">
-            <ul class="promote">
+            @endif
+            @if ($secciones['promocionesM']->activo)
+                <!-- Promociones del Mes (promocionesM)-->
+                <div class="content_middle">
+                <ul class="promote">
                 <i class="promote_icon"> </i>
                 <li class="promote_head">
-                    <h3>Promoción del mes</h3></li>
-            </ul>
-            <!-- Promociones -->
-            @if(sizeof($promociones)> 0)
-                <ul id="flexiselDemo3" >
+                    <h3>{{$secciones['promocionesM']->nombre}}</h3></li>
+                </ul>
+                    <!-- Promociones -->
+                    @if(sizeof($promociones)> 0)
+                        <ul id="flexiselDemo3" >
 
                     @foreach($promociones as $promocion)
                         <li >
@@ -93,64 +98,67 @@
                         </li>
                     @endforeach
                 </ul>
-            @else
-
-                <div class="container">
+                    @else
+                        <div class="container">
                     <div class="callbacks_container">
                         <ul class="rslides" id="slider">
                             <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
                         </ul>
                     </div>
                 </div>
-            @endif
-            <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
-        </div>
-            <!-- Promociones -->
-            <div class="content_middle">
-            <ul class="promote">
-                <i class="promote_icon"> </i>
-                <li class="promote_head">
-                    <h3>Promociones</h3></li>
-            </ul>
-            <!-- Promociones -->
-            @if(sizeof($promociones)> 0)
-                <ul id="flexiselDemo3" >
-
-                    @foreach($promociones as $promocion)
-                        <li >
-                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                <p> $ {{$promocion->precio1}} </p>
-                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                <div class="ticket"></div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-
-                <div class="container">
-                    <div class="callbacks_container">
-                        <ul class="rslides" id="slider">
-                            <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
-                        </ul>
-                    </div>
-                </div>
-            @endif
-            <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
-        </div>
-            <!-- Mas Vendidos -->
-            <div class="content_middle">
-            <div class="sellers_grid">
-                <ul class="sellers">
-                    <i class="star"> </i>
-                    <li class="sellers_desc">
-                        <h2>Lo mas vendido</h2></li>
-                    <div class="clearfix"> </div>
-                </ul>
+                    @endif
+                    <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
             </div>
-            <!-- Mas vendidos-->
-            <div class="grid_2">
+            @endif
+            @if ($secciones['promociones']->activo)
+                <!-- Promociones (promociones)-->
+                <div class="content_middle">
+                <ul class="promote">
+                <i class="promote_icon"> </i>
+                <li class="promote_head">
+                    <h3>{{$secciones['promociones']->nombre}}</h3></li>
+            </ul>
+                <!-- Promociones -->
+                @if(sizeof($promociones)> 0)
+                    <ul id="flexiselDemo3" >
+
+                        @foreach($promociones as $promocion)
+                            <li >
+                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
+                                <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
+                                    <p> $ {{$promocion->precio1}} </p>
+                                    <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
+                                    <div class="ticket"></div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+
+                    <div class="container">
+                        <div class="callbacks_container">
+                            <ul class="rslides" id="slider">
+                                <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+                <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
+            </div>
+            @endif
+            @if ($secciones['mVendidos']->activo)
+                <!-- Mas Vendidos (mVendidos)-->
+                <div class="content_middle">
+                <div class="sellers_grid">
+                    <ul class="sellers">
+                        <i class="star"> </i>
+                        <li class="sellers_desc">
+                            <h2>{{$secciones['mVendidos']->nombre}}</h2></li>
+                        <div class="clearfix"> </div>
+                    </ul>
+                </div>
+                <!-- Mas vendidos-->
+                <div class="grid_2">
                 @foreach($topselling as $product)
                     <div class="col-md-3 span_6">
                         <div class="box_inner">
@@ -174,15 +182,17 @@
                     </div>
                 @endforeach
             </div>
-            <div class="clearfix"> </div>
-        </div>
-            <!-- Blog -->
-            <div class="content_middle_bottom">
+                <div class="clearfix"> </div>
+            </div>
+            @endif
+            @if ($secciones['blog']->activo)
+                <!-- Blog (blog)-->
+                <div class="content_middle_bottom">
                 <div class="col-md-12">
                     <ul class="spinner">
                         <i class="paperclip"> </i>
                         <li class="spinner_head">
-                            <h3>Recomendaciones Chocoburbujas</h3></li>
+                            <h3>{{$secciones['blog']->nombre}}</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
                     @foreach($blogs as $blog)
@@ -203,8 +213,10 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <!-- Información -->
-            <div class="content_bottom">
+            @endif
+            @if ($secciones['informacion']->activo)
+                <!-- Información (informacion)-->
+                <div class="content_bottom">
                 <div class="col-md-3 span_1">
                     <ul class="spinner">
                         <i class="box_icon"> </i>
@@ -255,6 +267,7 @@
                 </div>
                 <div class="clearfix"> </div>
             </div>
+            @endif
         </div>
     </div>
 @endsection
