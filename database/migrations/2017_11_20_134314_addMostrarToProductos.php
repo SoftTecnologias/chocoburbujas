@@ -12,8 +12,8 @@ class AddMostrarToProductos extends Migration
      */
     public function up()
     {
-        Schema::table("ventas", function ($table) {
-            $table->boolean('mostrar');
+        Schema::table("productos", function ($table) {
+            $table->boolean('mostrar')->default(false);
         });
     }
 
@@ -24,7 +24,7 @@ class AddMostrarToProductos extends Migration
      */
     public function down()
     {
-        Schema::table('users', function ($table) {
+        Schema::table('productos', function ($table) {
             $table->dropColumn('mostrar');
         });
     }
