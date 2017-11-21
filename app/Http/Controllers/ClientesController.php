@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Banner;
 use App\Carrito;
 use App\Cliente;
+use App\Configuracion;
 use App\Producto;
 use Exception;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Illuminate\Http\Request;
@@ -34,6 +36,7 @@ class ClientesController extends Controller
             $marcas = DB::table('marcas')
                 ->orderBy('nombre', 'asc')
                 ->get();
+            $secciones = Configuracion::all()->keyBy('seccion');
             foreach ($marcas as $marca) {
                 $marca->id = base64_encode($marca->id);
             }
@@ -48,12 +51,14 @@ class ClientesController extends Controller
                     'blogs' => $blogs,
                     'categorias' => $categorias,
                     'marcas' => $marcas,
-                    'banner' => $banner
+                    'banner' => $banner,
+                    'secciones' => $secciones
                 ]);
             }else{
                 $cookie= $request->cookie('cliente');
                 $user = Cliente::find(base64_decode($cookie['id']));
                 return view('shop.index', ['topselling' => $topselling,
+                    'secciones' => $secciones,
                     'promociones' => $promociones,
                     'blogs' => $blogs,
                     'categorias' => $categorias,
@@ -484,7 +489,7 @@ class ClientesController extends Controller
         return Response::json($respuesta);
     }
 
-  public function imgup(Request $request){
+    public function imgup(Request $request){
         try{
             if($request->cookie('cliente') != null) {
                 $cookie = Cookie::get('cliente');
@@ -506,7 +511,6 @@ class ClientesController extends Controller
             }
         return Response::json($respuesta);
     }
-
     public function register(Request $request)
     {
         try {
@@ -546,7 +550,7 @@ class ClientesController extends Controller
             return $respuesta = ["code" => 200, "msg" => 'El usuario fue creado exitosamente', 'detail' => 'success'];
 
         } catch (Exception $e) {
-            $respuesta = ["code" => 500, "msg" => $e->getMessage(), "detail" => "error"];
+            return $respuesta = ["code" => 500, "msg" => $e->getMessage(), "detail" => "error"];
         }
 
     }
@@ -628,7 +632,6 @@ class ClientesController extends Controller
         }
         return Response::json($respuesta);
     } //¿Facturación?
-
     public function infoCompra($id){
         try{
             $id = base64_decode($id);

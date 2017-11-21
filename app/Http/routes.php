@@ -113,6 +113,10 @@ Route::group(['prefix'=>'panel'],function (){
     Route::get('/blogs',['uses'=>'UsersController@showBlogForm',
         'as' =>'panel.blogs',
     ]);
+    Route::get('/secciones',[
+        'uses'=>'UsersController@showSeccionForm',
+        'as' =>'panel.secciones',
+    ]);
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/categorias','CategoriasController');
@@ -129,6 +133,7 @@ Route::group(['prefix'=>'panel'],function (){
     Route::get("/api/municipios/{id}", 'ProveedoresController@municipios');
     Route::post("/api/municipios/{id}", 'ProveedoresController@update');
     Route::post('/api/blogs/{id}','BlogsController@update');
+    Route::post('/api/configuraciones/{id}',"UsersController@updateSection");
     //Movimientos y sus detalles
     //mostrar movimientos con detalles
     Route::get("/api/movimientos",[
