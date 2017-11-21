@@ -15,6 +15,12 @@
 /*Para Los administradores */
 Route::group(['prefix'=>'panel'],function (){
 
+    Route::resource('/resource/banner','BannerController');
+    Route::post('/resource/banner/{id}',[
+        'uses' => 'BannerController@update',
+        'as' => 'panel.resource.banner.update'
+    ]);
+
     Route::get('/banner',[
         'uses' => 'UsersController@showBannerForm',
         'as' => 'panel.banner'
