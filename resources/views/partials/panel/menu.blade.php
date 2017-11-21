@@ -29,6 +29,7 @@
             <li><a href="{{route('panel.provider')}}"><i class='fa fa-truck'></i> <span>Proveedores</span></a></li>
             <li><a href="{{route('panel.blogs')}}"><i class='fa fa-desktop'></i><span>Blog</span></a></li>
             <li><a href="{{route('panel.secciones')}}"><i class='fa fa-sliders'></i><span>Secciones</span></a></li>
+            <li><a href="{{route('panel.banner')}}"><i class="fa fa-wrench"></i><span>Banner</span></a></li>
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
