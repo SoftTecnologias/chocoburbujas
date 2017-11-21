@@ -1,79 +1,72 @@
 $(function(){
-    $('#btnNew').on('click', function () {
-        $('#titulo-modal').text("Nueva entrada");
-        $("#modalBlog").modal("show");
+
+
+    $('#btnAceptar').on('click',function(){
+        $('#bannerForm').submit();
+
     });
-    $('#btnBlog').on('click',function(){
-        $('#blogForm').submit();
-    });
-    $('#blogTable').DataTable({
-        'ajax':{
-            url:'api/blogs',
-            dataSrc : function(json){
-                return json;
-            }
-        }
-        ,
-        'columns':[
-            {
-                data:function(row){
-                    var str="";
-                    str = "<div align='center col-md-4'>";
-                    str += "<img class=\"img-responsive \" src='../images/blogs/" + row['img'] + "' alt='" + row['id'] + "'>";
-                    str += "</div>";
-                    return str;
-                }
-            },{
-                data:'titulo'
-            },{
-                data:'descripcion'
-            },{
-                data:'fecha'
-            },{
-                data:function (row) {
-                    str  = "<div align='center'>";
-                    str +=   "<button id='btnEditar' class='btn btn-primary block col-md-3' onclick='showBlog(" + row['id'] + ");'><i class='glyphicon glyphicon-edit'></i></button>";
-                    str +=   "<button id='btnEliminar' class='btn btn-danger block col-md-3' onclick='deleteBlog(" + row['id'] + ")'><i class='fa fa-trash-o'></i></button>";
-                    str += "</div>";
-                    return str;
-                }
-            }
+    /* Dependencia de los combos*/
+    var tabla= $('#tblBanner').DataTable({
+        'scrollY':'600px',
+        "ajax": document.location.protocol+'//'+document.location.host  +'/panel/resource/banner',
+        "columnDefs": [
+            { "width": "40%", "targets": [0,1]}
+        ],
+        columns: [
+            {    data: function (row) {
+                str = "";
+                str = "<div align='center' >";
+                str += " <img class=\"imagen\" src='../images/banner/" + row['image'] + "' alt='" + row['id'] + "' style='height: 50px; width: 300px;'>";
+                str += "</div>";
+                return str;
+            }},
+            {data: 'titulo'},
+            {data: function (row) {
+                // console.log(row);
+                str = "<div align='center'>";
+                str +=" <button id='btnEditar' class='btn btn-primary btn-xs col-md-6' onclick='showBanner("
+                    +"\""+row['id']+"\""+","
+                    +"\""+row['titulo']+"\""+","
+                    +"\""+row['image']+"\""+")'> <i class='glyphicon glyphicon-edit'></i></button>";
+                str += "<button id='btnEliminar' class='btn btn-danger btn-xs col-md-6'" +
+                    "onclick='deleteBanner(\""+row['id']+"\")'><i class='fa fa-trash-o'></i></button>";
+                str += "</div>";
+                return str;
+            }}
         ],
         'language': {
-            url:'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json'
+            url:'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json',
+            sLoadingRecords : '<span style="width:100%;"><img src="http://www.snacklocal.com/images/ajaxload.gif"></span>'
         }
     });
+    // Apply the search
+    /*Validacion de los archivos*/
 
+    jQuery.extend(jQuery.validator.messages, {
+        required: "Este campo es obligatorio.",
+        number: "Por favor, escribe un número válido.",
+        digits: "Por favor, escribe sólo dígitos.",
+        maxlength: jQuery.validator.format("Por favor, no escribas más de {0} caracteres."),
+        minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
+    });
     $.validator.addMethod('filesize', function (value, element, param) {
         // param = size (in bytes)
         // element = element to validate (<input>)
         // value = value of the element (file name)
         return this.optional(element) || (element.files[0].size <= param);
     }, $.validator.format("El archivo debe ser menor a 1MB"));
-    $('#blogForm').validate({
-        rules:{
-            'title':{
-                required:true
+    $('#bannerForm').validate({
+        rules: {
+            title: {
+                required: true,
+                maxlength: 100
             },
-            'description':{
-                required:true
-            },
-            'img': {
+            img1: {
                 extension: "png|jpg|gif",
                 filesize: 1048576
             }
-        },
-        messages:{
-            'title':{
-                required:"Ingrese el nombre de la marca"
-            },
-            'description':{
-                required: 'Debe escribir el contenido de esta entrada'
-            },
-            'img':{
-                extension:"Solo se permiten extensiones png, jpg y gif"
-            }
-        },
+        }
+        ,
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
         },
@@ -89,14 +82,15 @@ $(function(){
                 error.insertAfter(element);
             }
         },
-        submitHandler: function () {
-            blogAction();
+        submitHandler: function (form) {
+            bannerAction();
             return false;
         }
+
     });
 
-    /*files de las imagenes*/
-    $("#img").fileinput({
+    //Diseño del seleccionador de imagenes
+    $("#img1").fileinput({
         allowedFileTypes: ["image"],
         showUpload:false,
         browseClass: "btn btn-success",
@@ -108,6 +102,14 @@ $(function(){
         maxFileSize: 1024,
     });
 
+    //Abrir Modal
+    $(function(){
+        $('#btnNew').on('click',function(){
+            $('#titulo-modal').text("Nuevo Banner");
+            reset();
+            $('#modalBanner').modal('show');
+        });
+    });
     /* Inputs con url*/
     $("#imgu").on("change",function(){
         if($(this).val()!==""){
@@ -117,52 +119,39 @@ $(function(){
             $('#im1').addClass("hidden");
         }
     });
+
+    function bannerAction(){
+        if($("#bannerid").val()==""){
+            newBanner();
+        }else{
+            updateBanner($("#bannerid").val());
+        }
+    }
+
+
+
+
+
+
+
 });
 
-function blogAction() {
-    if($('#id').val()=="")
-        newBlog();
-    else
-        updateBlog($("#id").val());
-}
-function newBlog(){
-    data = new FormData(document.getElementById("blogForm"));
-
+function newBanner(){
+    var data = new FormData(document.getElementById("bannerForm"));
     $.ajax({
-        url:"api/blogs",
-        type:'post',
+        url:document.location.protocol+'//'+document.location.host  +"/panel/resource/banner",
+        type:"POST",
         data: data,
-        dataType:'json',
         contentType:false,
-        processData: false
-    }).done(function(json){
-        if(json.code == 200) {
-            swal("Realizado", json.msg, json.detail);
-            $('#modalBlog').modal("hide");
-            $('#blogTable').dataTable().api().ajax.reload();
-            reset();
-        }else{
-            swal("Error",json.msg,json.detail);
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    }).fail(function(){
-        swal("Error","Tuvimos un problema de conexion","error");
-    });
-
-}
-function updateBlog(id){
-    $("#id").val(id);
-    var data = new FormData(document.getElementById("blogForm"));
-    $.ajax({
-        url:"api/blogs/"+id,
-        type:"post",
-        data: data,
-        contentType:false,
-        processData: false
     }).done(function(json){
         if(json.code == 200) {
             swal("Realizado", json.msg, json.detail);
-            $('#modalBlog').modal("hide");
-            $('#blogTable').dataTable().api().ajax.reload( null, false );
+            $('#modalBanner').modal("hide");
+            $('#tblBanner').dataTable().api().ajax.reload(null,false);
             reset();
         }else{
             swal("Error",json.msg,json.detail);
@@ -171,7 +160,42 @@ function updateBlog(id){
         swal("Error","Tuvimos un problema de conexion","error");
     });
 }
-function deleteBlog(id){
+
+function reset(){
+    document.getElementById("bannerForm").reset();
+    $("#bannerForm").validate().resetForm();
+    $('#im1').addClass("hidden");
+    $('#im1').attr("src","");
+}
+
+function updateBanner(id){
+    $("#bannerid").val(id);
+    var datos = new FormData(document.getElementById("bannerForm"));
+    $.ajax({
+        url:document.location.protocol+'//'+document.location.host  +'/panel/resource/banner/'+id,
+        type:"POST",
+        data: datos,
+        contentType:false,
+        processData: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    }).done(function(json){
+        if(json.code == 200) {
+            swal("Realizado", json.msg, json.detail);
+            $('#modalbanner').modal("hide");
+            $('#tblBanner').dataTable().api().ajax.reload(null,false);
+            reset();
+        }else{
+
+            swal("Error",json.msg,json.detail);
+        }
+    }).fail(function(){
+        swal("Error","Tuvimos un problema de conexion","error");
+    });
+}
+
+function deleteBanner(id){
     swal({
         title: '¿Estás seguro?',
         text: "Esto no se puede revertir!",
@@ -182,14 +206,17 @@ function deleteBlog(id){
         confirmButtonText: 'Si, deseo eliminarlo!',
         cancelButtonText: "Lo pensaré"
     }).then(function () {
-        ruta ='api/blogs/'+id;
+        ruta =document.location.protocol+'//'+document.location.host  +'/panel/resource/banner/'+id;
         $.ajax({
             url:ruta,
-            type:'delete'
+            type:'delete',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         }).done(function(json){
             if(json.code==200) {
                 swal("Realizado", json.msg, json.detail);
-                $('#blogTable').dataTable().api().ajax.reload();
+                $('#tblBanner').dataTable().api().ajax.reload(null,false);
             }else{
                 swal("Error", json.msg, json.detail);
             }
@@ -198,31 +225,14 @@ function deleteBlog(id){
         });
     });
 }
-function showBlog(id){
-    $.ajax({
-        url: "api/blogs/"+id,
-        type: 'GET'
-    }).done(function(json){
-        if(json.code==200){
-            reset();
-            $("#id").val(json.msg.id);
-            $("#title").val(json.msg.titulo);
-            $("#description").val(json.msg.descripcion);
-            $("#im1").attr('src',"../images/blogs/"+json.msg.img);
-            $('#im1').removeClass("hidden");
-            $("#titulo-modal").text("Editar Marca");
-            $("#modalBlog").modal("show");
-        }
-    }).fail(function(){
-        swal("Error","No pudimos recuperar los datos","warning");
-    });
-}
-function reset(){
-    $('#titulo-modal').text("");
-    $("#id").val("");
-    $('#title').val("");
-    $('#description').val("");
-    $('#imgu').val("");
-    $('#img').val("");
+
+function showBanner(id,title, longdescription, photo){
+    $('#titulo-modal').text("Editar Banner");
+    $('#bannerid').val(id);
+    $('#title').val(title);
+    $("#im1").attr("src","../img/banner/"+photo);
+    $('#im1').removeClass("hidden");
+    $('#modalBanner').modal("show");
+
 }
 

@@ -11,16 +11,55 @@
  -->
     <div id="contenido">
         <div class="container">
-            <!--Banner -->
-            <div class="index_slider">
-                <div class="callbacks_container">
-                    <ul class="rslides" id="slider">
-                        <li><img src="images/Banner/accesorios.png" class="img-responsive" alt=""  /></li>
-                        <li><img src="images/Banner/alimento.png" class="img-responsive" alt="" /></li>
-                        <li><img src="images/Banner/pug.png" class="img-responsive" alt="" /></li>
-                    </ul>
+            <div class="container">
+                <div id="banner" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <?php
+                            $firstli = true;
+                            $firstimg = true;
+                        ?>
+                        @foreach($banner as $b)
+                            @if($firstli == true)
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <?php
+                                    $firstli = false;
+                                    ?>
+                                @else
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                @endif
+                        @endforeach
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        @foreach($banner as $b)
+                            @if($firstimg == true)
+                                <div class="item active">
+                                    <img src="images/Banner/{{$b->image}}" alt="Los Angeles" style="width:100%;">
+                                </div>
+                                <?php
+                                $firstimg = false;
+                                ?>
+                            @else
+                                <div class="item">
+                                    <img src="images/Banner/{{$b->image}}" alt="Chicago" style="width:100%;">
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
-            </div>
+            </div>            <!--Banner -->
             <!-- anuncios -->
             <div class="content_top">
                 <div class="grid_1">
@@ -150,30 +189,53 @@
                 </ul>
             </div>
             <!-- Mas vendidos-->
-            <div class="grid_2">
-                @foreach($topselling as $product)
-                    <div class="col-md-3 span_6">
-                        <div class="box_inner">
-                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
-                                                                        style="height: 250px; width: 200px;"/></div>
-                            <div class="sale-box"></div>
-                            <div class="desc">
-                                <h3>{{$product->nombre}}</h3>
-                                <h4>$ {{$product->precio1}}</h4>
-                                <ul class="list2">
-                                    <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
-                                    </li>
-                                    <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
-                                                                                 onclick="verProducto({{$product->codigo}})">ver más</a></span>
-                                    </li>
-                                    <div class="clearfix"></div>
-                                </ul>
-                                <div class="heart"></div>
+
+                <div id="carousel-productos" class="carousel slide grid_2" data-ride="carousel">
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-9">
+                            <!-- Controls -->
+                            <div class="controls pull-right ">
+                                <a class="left fa fa-chevron-left btn btn-success" href="#carousel-productos"
+                                   data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success"
+                                                            href="#carousel-productos"
+                                                            data-slide="next"></a>
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <?php $items = 0; $indice = 0?>
+                        @foreach(array_chunk($topselling,4) as $chunk)
+                            <div class="item {{($items==0)? "active" : "" }}">
+                                <div class="row">
+                                    @foreach($chunk as $product)
+                                        <div class="col-md-3 span_6">
+                                            <div class="box_inner">
+                                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
+                                                                                            style="height: 250px; width: 200px;"/></div>
+                                                <div class="sale-box"></div>
+                                                <div class="desc">
+                                                    <h3>{{$product->nombre}}</h3>
+                                                    <h4>$ {{$product->precio1}}</h4>
+                                                    <ul class="list2">
+                                                        <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
+                                                        </li>
+                                                        <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
+                                                                                                     onclick="verProducto({{$product->codigo}})">ver más</a></span>
+                                                        </li>
+                                                        <div class="clearfix"></div>
+                                                    </ul>
+                                                    <div class="heart"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <?php $items++; ?>
+                        @endforeach
+                    </div>
+                </div>
             <div class="clearfix"> </div>
         </div>
             <!-- Blog -->

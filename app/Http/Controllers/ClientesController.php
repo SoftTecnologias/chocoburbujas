@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Carrito;
 use App\Cliente;
 use App\Producto;
@@ -24,9 +25,10 @@ class ClientesController extends Controller
      */
     public function index(Request $request){
         try {
-            $topselling = DB::table('productos')->take(4)->where('mostrar',1)->get();
+            $topselling = DB::table('productos')->where('mostrar',1)->get();
             $promociones = DB::table('productos')->take(10)->where('promocion', 1)->orderBy('precio1', 'asc')->get();
             $blogs = DB::table('blogs')->take(4)->orderBy('fecha', 'desc')->get();
+            $banner = Banner::all();
             $categorias = DB::table('categorias')->take(4)->get();
             $menu = array();
             $marcas = DB::table('marcas')
@@ -45,7 +47,8 @@ class ClientesController extends Controller
                     'promociones' => $promociones,
                     'blogs' => $blogs,
                     'categorias' => $categorias,
-                    'marcas' => $marcas
+                    'marcas' => $marcas,
+                    'banner' => $banner
                 ]);
             }else{
                 $cookie= $request->cookie('cliente');
@@ -55,7 +58,8 @@ class ClientesController extends Controller
                     'blogs' => $blogs,
                     'categorias' => $categorias,
                     'marcas' => $marcas,
-                    'user' => "$user->username"
+                    'user' => "$user->username",
+                    'banner' => $banner
                 ]);
             }
         }catch(Exception $exception){
