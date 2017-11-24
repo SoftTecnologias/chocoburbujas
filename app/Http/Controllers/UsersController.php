@@ -6,6 +6,7 @@ use App\Categoria;
 use App\Configuracion;
 use App\Costo_Envio;
 use App\Estado;
+use App\Informacion;
 use App\Marca;
 use App\Movimiento;
 use App\Proveedor;
@@ -284,6 +285,45 @@ class UsersController extends Controller
        }catch(Exception $e){
 
        }
+    }
+    public function showInfoForm(Request $request){
+    try{
+        if($request->cookie('admin') != null) {
+            $cookie = Cookie::get('admin');
+            $user = User::where('id', $cookie['apikey'])->first();
+            $info = Informacion::all()->first();
+
+            return view('panel.info',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                'photo' => $user->img,
+                'username' => $user->username,
+                'permiso' => 'Administrador'],
+                'info' => $info
+            ]);
+        }else{
+            return view('user.login');
+        }
+    }catch(Exception $e){
+
+    }
+}
+    public function showCostoEnvioForm(Request $request){
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                $seccion = Configuracion::all()->keyBy('seccion');
+                return view('panel.costo',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador'],
+                    'secciones' => $seccion
+                ]);
+            }else{
+                return view('user.login');
+            }
+        }catch(Exception $e){
+
+        }
     }
     public function logout(Request $request){
         if ($request->cookie('admin') != null) {

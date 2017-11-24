@@ -117,6 +117,15 @@ Route::group(['prefix'=>'panel'],function (){
         'uses'=>'UsersController@showSeccionForm',
         'as' =>'panel.secciones',
     ]);
+    Route::get('/costosenvio',[
+        'uses'=>'UsersController@showCostoEnvioForm',
+        'as' =>'panel.costo.envio',
+    ]);
+    Route::get('/info',[
+        'uses'=>'UsersController@showInfoForm',
+        'as' =>'panel.informacion',
+    ]);
+
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/categorias','CategoriasController');

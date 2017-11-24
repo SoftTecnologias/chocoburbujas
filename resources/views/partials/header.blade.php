@@ -59,7 +59,7 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                 </div>
                 <ul class="clock">
                     <i class="clock_icon"> </i>
-                    <li class="clock_desc">Justo 24/h</li>
+                    <li class="clock_desc">{{Carbon\Carbon::now()->toTimeString()}}</li>
                 </ul>
                 <div class="clearfix"></div>
             </div>

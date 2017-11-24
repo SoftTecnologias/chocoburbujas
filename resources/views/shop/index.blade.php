@@ -60,56 +60,7 @@
                     </a>
                 </div>
             </div>            <!--Banner -->
-            <!-- anuncios -->
-            <div class="content_top">
-                <div class="grid_1">
-                    <div class="col-md-3">
-                        <div class="box2">
-                            <ul class="list1">
-                                <i class="lock"> </i>
-                                <li class="list1_right">
-                                    <p>Hasta 5% en productos para perros</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box3">
-                            <ul class="list1">
-                                <i class="clock1"> </i>
-                                <li class="list1_right">
-                                    <p>abierto de 8 am a 8 pm</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box4">
-                            <ul class="list1">
-                                <i class="vehicle"> </i>
-                                <li class="list1_right">
-                                    <p>Servicio de recoleccion y entrega</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box5">
-                            <ul class="list1">
-                                <i class="dollar"> </i>
-                                <li class="list1_right">
-                                    <p>Los mejores productos y servicios al mejor precio</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-            </div>
+
             @if ($secciones['promocionesM']->activo)
                 <!-- Promociones del Mes (promocionesM)-->
                 <div class="content_middle">
@@ -292,10 +243,8 @@
                         <div class="clearfix"> </div>
                     </ul>
                     <p>
-                        TENEMOS SERVICIOS DE CONSULTAS, VACUNAS, DESPARASITACION, CIRUGIA, HOSPITALIZACION, ORTOPEDIA,
-                        ODONTOLOGIA, RAYOS X, ANALISIS CLINICOS, ULTRASONIDO. TODO LO TENEMOS EN NUESTRAS INSTALACIONES.
-                        ALIMENTOS PREMIUM (ROYAL CANIN, DIAMOND, NUPEC).
-                        HOSPEDAJE, ROPA, ACCESORIOS, CAMAS, TRANSPORTADORAS, CASAS Y MUCHAS OTRAS COSAS PARA CONSENTIR A TUS MASCOTAS.
+                        TENEMOS SERVICIOS DE CONSULTAS, VACUNAS, DESPARASITACION, CIRUGIA, HOSPITALIZACION, ORTOPEDIA, ODONTOLOGIA, RAYOS X, ANALISIS CLINICOS, ULTRASONIDO. TODO LO TENEMOS EN NUESTRAS INSTALACIONES.
+                        ALIMENTOS PREMIUM (ROYAL CANIN, DIAMOND, NUPEC). HOSPEDAJE, ROPA, ACCESORIOS, CAMAS, TRANSPORTADORAS, CASAS Y MUCHAS OTRAS COSAS PARA CONSENTIR A TUS MASCOTAS.
                     </p>
                 </div>
                 <div class="col-md-3 span_1">
