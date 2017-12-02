@@ -128,6 +128,8 @@ Route::group(['prefix'=>'panel'],function (){
 
     /*Peticiones con un retorno json*/
     /*CRUD*/
+    Route::resource('/api/costos','CostosController');
+    Route::post('/api/costos/update/{id}','CostosController@update');
     Route::resource('/api/categorias','CategoriasController');
     Route::resource('/api/marcas', 'MarcasController');
     Route::resource('/api/productos',"ProductosController");

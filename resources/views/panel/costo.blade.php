@@ -79,6 +79,52 @@
             </div>
         </section>
     </div>
+
+    <div class="modal" id="modalCost">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                class="fa fa-times"></i></button>
+                    <h3 id="titulo-modal">Precios de envio</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="prenform" enctype="multipart/form-data">
+                        <fieldset>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6" align="left">
+                                    <label for="estado">Estado:</label>
+                                    <div class="col-md-12"></div>
+                                    <select class="selectpicker col-md-12" data-live-search="true" id="estado">
+                                        <option value="00">Seleccione un Estado</option>
+                                        @foreach($estados as $estado)
+                                            <option value="{{$estado->id}}">{{$estado->nombre}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <br/>
+                                    <label for="muni">Municipio</label>
+                                    <select class="selectpicker col-md-12" data-live-search="true" id="muni">
+                                        <option value="00">Seleccione un Municipio</option>
+                                    </select>
+                                    <br/>
+                                    <label for="prenvio">Precio Envio</label> <a href="http://www.google.com.mx" target="_blank">consultar</a>
+                                    <input type="text" class="form-control col-md-12" id="prenvio" name="prenvio" placeholder="Precio Envio">
+
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnAgregar" class="btn btn-sm btn-primary" onclick="AgregarCosto()">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>

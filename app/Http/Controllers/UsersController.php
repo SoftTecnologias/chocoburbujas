@@ -312,11 +312,13 @@ class UsersController extends Controller
                 $cookie = Cookie::get('admin');
                 $user = User::where('id', $cookie['apikey'])->first();
                 $seccion = Configuracion::all()->keyBy('seccion');
+                $estado = Estado::all();
                 return view('panel.costo',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                     'photo' => $user->img,
                     'username' => $user->username,
                     'permiso' => 'Administrador'],
-                    'secciones' => $seccion
+                    'secciones' => $seccion,
+                    'estados' => $estado
                 ]);
             }else{
                 return view('user.login');
