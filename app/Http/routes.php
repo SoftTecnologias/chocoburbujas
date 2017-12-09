@@ -129,6 +129,8 @@ Route::group(['prefix'=>'panel'],function (){
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/costos','CostosController');
+    Route::resource('/api/info','UsersController@infoInsert');
+    Route::resource('/api/infoUpdate','UsersController@infoUpdate');
     Route::post('/api/costos/update/{id}','CostosController@update');
     Route::resource('/api/categorias','CategoriasController');
     Route::resource('/api/marcas', 'MarcasController');

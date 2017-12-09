@@ -243,8 +243,11 @@
                         <div class="clearfix"> </div>
                     </ul>
                     <p>
-                        TENEMOS SERVICIOS DE CONSULTAS, VACUNAS, DESPARASITACION, CIRUGIA, HOSPITALIZACION, ORTOPEDIA, ODONTOLOGIA, RAYOS X, ANALISIS CLINICOS, ULTRASONIDO. TODO LO TENEMOS EN NUESTRAS INSTALACIONES.
-                        ALIMENTOS PREMIUM (ROYAL CANIN, DIAMOND, NUPEC). HOSPEDAJE, ROPA, ACCESORIOS, CAMAS, TRANSPORTADORAS, CASAS Y MUCHAS OTRAS COSAS PARA CONSENTIR A TUS MASCOTAS.
+                       @if($info == null)
+
+                           @else
+                           {{$info->nosotros}}
+                        @endif
                     </p>
                 </div>
                 <div class="col-md-3 span_1">
@@ -255,9 +258,30 @@
                         <div class="clearfix"> </div>
                     </ul>
                     <ul class="social">
-                        <li>
-                            <a href="https://www.facebook.com/Veterinariaboutiqueyesteticachocoburbujas/"> <i class="fb"> </i> </a>
-                        </li>
+                        @if($info->facebookUrl == null)
+                            @else
+                            <li>
+                                <a class="btn" href="{{$info->facebookUrl}}"><i class="fa fa-facebook fa-3x" aria-hidden="true"></i></a>
+                            </li>
+                        @endif
+                            @if($info->twitterUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->twitterUrl}}"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
+                            @if($info->googleUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->googleUrl}}"><i class="fa fa-google fa-x3" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
+                            @if($info->skypeUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->skypeUrl}}"><i class="fa fa-skype fa-x3" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
                     </ul>
                 </div>
                 <div class="col-md-3 span_1">
@@ -267,10 +291,17 @@
                             <h3>Contactanos</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
-                    <p>Avenida de los insurgentes poniente </p>
-                    <p>Colonia Las Brisas,</p>
-                    <p> Telefono: 311 169 5037</p>
-                    <p><a href="mailto:chocovetyest@hotmail.com"> Mas informacion </a></p>
+                    @if($info == null)
+                        @else
+                        <p>Nos encontramos ubicados en:</p>
+                    <p>{{$info->direccion1}} </p>
+                    <p>{{$info->direccion2}},</p>
+                    <p> Telefono: {{$info->telefono1}}</p>
+                    @if($info->telefono2 != null)
+                            <p>o al Telefono: {{$info->telefono1}}</p>
+                        @endif
+                    <p>Correo: <a href="mailto:{{$info->email}}">{{$info->email}}</a></p>
+                        @endif
                 </div>
                 <div class="clearfix"> </div>
             </div>

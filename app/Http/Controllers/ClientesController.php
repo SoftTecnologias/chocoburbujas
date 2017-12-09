@@ -6,6 +6,7 @@ use App\Banner;
 use App\Carrito;
 use App\Cliente;
 use App\Configuracion;
+use App\Informacion;
 use App\Producto;
 use Exception;
 use Illuminate\Support\Facades\Config;
@@ -36,6 +37,7 @@ class ClientesController extends Controller
             $marcas = DB::table('marcas')
                 ->orderBy('nombre', 'asc')
                 ->get();
+            $info = Informacion::all()->first();
             $secciones = Configuracion::all()->keyBy('seccion');
             foreach ($marcas as $marca) {
                 $marca->id = base64_encode($marca->id);
@@ -52,7 +54,8 @@ class ClientesController extends Controller
                     'categorias' => $categorias,
                     'marcas' => $marcas,
                     'banner' => $banner,
-                    'secciones' => $secciones
+                    'secciones' => $secciones,
+                    'info' => $info
                 ]);
             }else{
                 $cookie= $request->cookie('cliente');
@@ -64,7 +67,8 @@ class ClientesController extends Controller
                     'categorias' => $categorias,
                     'marcas' => $marcas,
                     'user' => "$user->username",
-                    'banner' => $banner
+                    'banner' => $banner,
+                    'info' => $info
                 ]);
             }
         }catch(Exception $exception){

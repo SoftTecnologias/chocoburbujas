@@ -25,7 +25,7 @@
                         </div>
                         <div class="box-body">
                             <div class="model-body">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" id="infEmpresa">
                                     <fieldset>
 
                                         <!-- Form Name -->
@@ -35,8 +35,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="textinput">facebook</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="https://www.facebook.com/..."
-                                                       class="form-control input-md" value="{{$info->facebookUrl}}">
+                                                @if($info == null)
+                                                    <input id="face" name="face" type="text" placeholder="https://www.facebook.com/..."
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="face" name="face" type="text" placeholder="https://www.facebook.com/..."
+                                                           class="form-control input-md" value="{{$info->facebookUrl}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -45,8 +50,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="textinput">Twitter</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="https://twitter.com/.."
-                                                       class="form-control input-md" value="{{$info->twitterUrl}}">
+                                                @if($info== null)
+                                                    <input id="twitter" name="twitter" type="text" placeholder="https://twitter.com/.."
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="twitter" name="twitter" type="text" placeholder="https://twitter.com/.."
+                                                           class="form-control input-md" value="{{$info->twitterUrl}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -55,8 +65,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="textinput">Google +</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="https://plus.google.com/..."
-                                                       class="form-control input-md" value="{{$info->googleUrl}}">
+                                                @if($info== null)
+                                                    <input id="google" name="google" type="text" placeholder="https://plus.google.com/..."
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="google" name="google" type="text" placeholder="https://plus.google.com/..."
+                                                           class="form-control input-md" value="{{$info->googleUrl}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -65,8 +80,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="textinput">Skype</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="https://www.skype.com/..."
-                                                       class="form-control input-md" value="{{$info->skypeUrl}}">
+                                                @if($info == null)
+                                                    <input id="skype" name="skype" type="text" placeholder="https://www.skype.com/..."
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="skype" name="skype" type="text" placeholder="https://www.skype.com/..."
+                                                           class="form-control input-md" value="{{$info->skypeUrl}}">
+                                                    @endif
 
                                             </div>
                                         </div>
@@ -76,9 +96,13 @@
                                             <label class="col-md-4 control-label" for="textinput">Correo
                                                 Electronico</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="correo@ejemplo.com"
-                                                       class="form-control input-md" value="{{$info->email}}">
-
+                                                @if($info == null)
+                                                    <input id="mail" name="mail" type="text" placeholder="correo@ejemplo.com"
+                                                           class="form-control input-md" value="">
+                                                @else
+                                                    <input id="mail" name="mail" type="text" placeholder="correo@ejemplo.com"
+                                                           class="form-control input-md" value="{{$info->email}}">
+                                                @endif
                                             </div>
                                         </div>
                                         <legend>Dirección</legend>
@@ -87,8 +111,13 @@
                                             <label class="col-md-4 control-label" for="textinput">Dirección Linea
                                                 1</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text"
-                                                       placeholder="calle y numero" class="form-control input-md" value="{{$info->direccion1}}">
+                                                @if($info == null)
+                                                    <input id="dir" name="dir" type="text"
+                                                           placeholder="calle y numero" class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="dir" name="dir" type="text"
+                                                           placeholder="calle y numero" class="form-control input-md" value="{{$info->direccion1}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -98,8 +127,13 @@
                                             <label class="col-md-4 control-label" for="textinput">Dirección Linea
                                                 2</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="Colonia"
-                                                       class="form-control input-md" value="{{$info->direccion2}}">
+                                                @if($info == null)
+                                                    <input id="dir2" name="dir2" type="text" placeholder="Colonia"
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="dir2" name="dir2" type="text" placeholder="Colonia"
+                                                           class="form-control input-md" value="{{$info->direccion2}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -108,8 +142,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="textinput">Telefono 1</label>
                                             <div class="col-md-4">
-                                                <input id="textinput" name="textinput" type="text" placeholder="111-111-11-11"
-                                                       class="form-control input-md" value="{{$info->telefono1}}">
+                                                @if($info == null)
+                                                    <input id="tel" name="tel" type="text" placeholder="111-111-11-11"
+                                                           class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="tel" name="tel" type="text" placeholder="111-111-11-11"
+                                                           class="form-control input-md" value="{{$info->telefono1}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -118,8 +157,13 @@
                                         <div class="form-group">
                                             <label class="col-md-4 control-label" for="passwordinput">Telefono 2</label>
                                             <div class="col-md-4">
-                                                <input id="passwordinput" name="passwordinput" type="password"
-                                                       placeholder="111-111-11-11" class="form-control input-md" value="{{$info->telefono2}}">
+                                                @if($info == null)
+                                                    <input id="tel2" name="tel2" type="text"
+                                                           placeholder="111-111-11-11" class="form-control input-md" value="">
+                                                    @else
+                                                    <input id="tel2" name="tel2" type="text"
+                                                           placeholder="111-111-11-11" class="form-control input-md" value="{{$info->telefono2}}">
+                                                @endif
 
                                             </div>
                                         </div>
@@ -129,14 +173,22 @@
                                             <label class="col-md-4 control-label" for="textarea">Acerca de
                                                 Nosotros</label>
                                             <div class="col-md-4">
-                                                <textarea class="form-control" id="textarea" name="textarea">{{$info->nosotros}}</textarea>
+                                                @if($info == null)
+                                                    <textarea class="form-control" id="nosotros" name="nosotros"></textarea>
+                                                    @else
+                                                    <textarea class="form-control" id="nosotros" name="nosotros">{{$info->nosotros}}</textarea>
+                                                @endif
                                             </div>
                                         </div>
                                     </fieldset>
                                 </form>
                                 <div class="form-group">
                                     <div class="col-md-4">
-                                        <a href="#" id=btn-save"  class="btn btn-primary" >Guardar Cambios</a>
+                                        @if($info == null)
+                                            <a href="#" id="btn-save"  class="btn btn-primary" onclick="reg()">Guardar Cambios</a>
+                                        @else
+                                            <a href="#" id="btn-save"  class="btn btn-primary" onclick="up()">Guardar Cambios</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -148,5 +200,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('js/admin/secciones.js')}}"></script>
+    <script src="{{asset('js/admin/info.js')}}"></script>
 @endsection
