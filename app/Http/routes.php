@@ -125,10 +125,22 @@ Route::group(['prefix'=>'panel'],function (){
         'uses'=>'UsersController@showInfoForm',
         'as' =>'panel.informacion',
     ]);
+    Route::get('/promociones',[
+        'uses'=>'UsersController@showPromociones',
+        'as' =>'panel.promociones',
+    ]);
+
 
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/costos','CostosController');
+    Route::resource('/api/promotions','PromotionsController');
+    Route::get('/promotions/{id}','PromotionsController@rellenaTabla');
+    Route::get('/getpromotions','PromotionsController@getPromotions');
+    Route::get('/getpromotions/info/{id}','PromotionsController@getPromotionsinfo');
+    Route::post('/api/productPromotion','PromotionsController@productPromotion');
+    Route::post('/delete/productPromotion/{id}','PromotionsController@destroy');
+    Route::post('/addProductToPromotion','PromotionsController@addProductToPromotion');
     Route::resource('/api/info','UsersController@infoInsert');
     Route::resource('/api/infoUpdate','UsersController@infoUpdate');
     Route::post('/api/costos/update/{id}','CostosController@update');

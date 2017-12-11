@@ -378,6 +378,26 @@ class UsersController extends Controller
         }
         return Response::json($respuesta);
     }
+    public function showPromociones(Request $request){
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                $info = Informacion::all()->first();
+
+                return view('panel.promotion',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador'],
+                    'info' => $info
+                ]);
+            }else{
+                return view('user.login');
+            }
+        }catch(Exception $e){
+
+        }
+    }
     public function showCostoEnvioForm(Request $request){
         try{
             if($request->cookie('admin') != null) {

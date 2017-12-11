@@ -32,6 +32,7 @@
             <li><a href="{{route('panel.banner')}}"><i class="fa fa-wrench"></i><span>Banner<span class="label label-success">Nuevo</span></span></a></li>
             <li><a href="{{route('panel.costo.envio')}}"><i class="fa fa-usd"></i><span>Costo de Envios<span class="label label-success">Nuevo</span></span></a></li>
             <li><a href="{{route('panel.informacion')}}"><i class="fa fa-info-circle"></i><span>Información <span class="label label-success">Nuevo</span></span></a></li>
+            <li><a href="{{route('panel.promociones')}}"><i class="fa fa-tags" aria-hidden="true"></i><span>Promociones <span class="label label-success">Nuevo</span></span></a></li>
 
         </ul><!-- /.sidebar-menu -->
     </section>
