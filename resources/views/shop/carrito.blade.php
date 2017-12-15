@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                     @if($products != null)
-                    <?php $total = 0; $i=0;  ?>
+                    <?php $total = 0; $i=0; $subtotal=0; ?>
                     @foreach($products as $product)
                     <tr id="row{{$i}}" data-qty="{{$product['cantidad']}}" data-id="{{$product['item']['id']}}">
                         <td data-th="Producto" >
@@ -39,7 +39,9 @@
                                 <div class="col-sm-2 hidden-xs"><a href="#" id="codigo{{$i}}" data-value="{{$product['item']['codigo']}}"><img src="{{asset("images/productos/".$product['item']['img1'])}}" alt="Producto{{$product['item']['id']}}" class="img-responsive"/></a></div>
                                 <div class="col-sm-10">
                                     <h4 class="nomargin">{{$product['item']['nombre']}}</h4>
-
+                                    @if($product['item']['discount'] != 0)
+                                        <p>${{$product['item']['price']}} con {{$product['item']['discount']}}% de Descuento</p>
+                                        @endif
                                 </div>
                             </div>
                         </td>
@@ -52,7 +54,7 @@
                             <button class="btn btn-danger btn-sm " onclick="removeCarrito('{{$product['item']['codigo']}}','{{$i}}')"><i class="fa fa-trash-o"></i></button>
                         </td>
                     </tr>
-                        <?php $total += $product['total']; $i++;?>
+                        <?php $total += $product['total']; $i++; $subtotal+= $product['item']['price']*$product['cantidad'];?>
                     @endforeach
                     @else
                       <tr> No tienes ningun item en el carrito de compras </tr>
@@ -60,7 +62,19 @@
                     </tbody>
                     <tfoot>
                     <tr class="visible-xs">
-                        <td class="text-center" ><strong>Total: {{$total}}</strong></td>
+                        <td class="text-center" ><strong>{{$total}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="hidden-xs"></td>
+                        <td>Subtotal</td>
+                        <td class="hidden-xs text-center" ><strong><span id="">${{$subtotal}}</span></strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="hidden-xs"></td>
+                        <td>Descuentos</td>
+                        <td class="hidden-xs text-center" ><strong><span id="">${{$subtotal-$total}}</span></strong></td>
                     </tr>
                     <tr>
                         <td></td>

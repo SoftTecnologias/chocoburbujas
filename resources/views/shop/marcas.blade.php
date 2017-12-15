@@ -83,9 +83,14 @@
                             <div class="col_1_of_single1 span_1_of_single1 row">
 
                                 <img src="../images/productos/{{$item->img1}}" class="img-responsive" alt="" style="height: 250px; width: 200px;"/>
+
                                 <h3>{{$item->nombre}}</h3>
                                 <p>{{$item->descripcion}}</p>
-                                <h4>${{$item->precio1}}</h4>
+                                @if($item->promo == 1)
+                                    <h4>De <strike>$ {{$item->precio1}}</strike> a $ {{$item->newprice}}</h4>
+                                @else
+                                    <h4>$ {{$item->precio1}}</h4>
+                                @endif
                                 <ul class="list2">
                                     <li class="list2_left"><span class="m_1"><a href="#" onclick="addProducto('{{$item->codigo}}')" class="link addToCart"
                                                                                 >Añadir al carrito</a></span>
@@ -97,6 +102,7 @@
                                 </ul>
 
                             </div>
+
                         @endforeach
                         <div class="clearfix"></div>
                     </div>

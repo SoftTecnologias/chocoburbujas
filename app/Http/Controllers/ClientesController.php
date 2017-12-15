@@ -7,7 +7,9 @@ use App\Carrito;
 use App\Cliente;
 use App\Configuracion;
 use App\Informacion;
+use App\Product_Promotion;
 use App\Producto;
+use App\Promotion;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
@@ -29,6 +31,18 @@ class ClientesController extends Controller
     public function index(Request $request){
         try {
             $topselling = DB::table('productos')->where('mostrar',1)->get();
+            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+
+            foreach ($topselling as $item){
+                $item->promo = 0;
+                foreach ($promotions as $promotion){
+                    if($item->id == $promotion->idProducto){
+                        $item->promo = 1;
+                        $item->newprice = $item->precio1-(($promotion->descuento/100)*$item->precio1);
+                    }
+                }
+
+            }
             $promociones = DB::table('productos')->take(10)->where('promocion', 1)->orderBy('precio1', 'asc')->get();
             $blogs = DB::table('blogs')->take(4)->orderBy('fecha', 'desc')->get();
             $banner = Banner::all();
@@ -270,7 +284,17 @@ class ClientesController extends Controller
                 $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
             }
 
+            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
 
+            foreach ($resultado as $item){
+                $item->promo = 0;
+                foreach ($promotions as $promotion){
+                    if($item->id == $promotion->idProducto){
+                        $item->promo = 1;
+                        $item->newprice = $item->precio1-(($promotion->descuento/100)*$item->precio1);
+                    }
+                }
+            }
             /* ************************************************************* */
             if($request->cookie('cliente')==null) {
                 return view('shop.marcas', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);

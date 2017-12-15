@@ -166,10 +166,16 @@
                                             <div class="box_inner">
                                                 <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
                                                                                             style="height: 250px; width: 200px;"/></div>
+                                                @if($product->promo == 1)
                                                 <div class="sale-box"></div>
+                                                @endif
                                                 <div class="desc">
                                                     <h3>{{$product->nombre}}</h3>
+                                                    @if($product->promo == 1)
+                                                    <h4>De <strike>$ {{$product->precio1}}</strike> a $ {{$product->newprice}}</h4>
+                                                        @else
                                                     <h4>$ {{$product->precio1}}</h4>
+                                                    @endif
                                                     <ul class="list2">
                                                         <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
                                                         </li>
@@ -273,7 +279,7 @@
                             @if($info->googleUrl == null)
                             @else
                                 <li>
-                                    <a class="btn" href="{{$info->googleUrl}}"><i class="fa fa-google fa-x3" aria-hidden="true"></i></a>
+                                    <a class="btn btn-primary" href="{{$info->googleUrl}}"><i class="fa fa-google fa-x3" aria-hidden="true"></i></a>
                                 </li>
                             @endif
                             @if($info->skypeUrl == null)
