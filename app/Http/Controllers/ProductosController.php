@@ -359,7 +359,11 @@ class ProductosController extends Controller
             //Buscamos el producto por codigo 'En teoria tiene que ser unico '
             if ($cookie = Cookie::get('cliente')) {
                 $producto = Producto::where('codigo', '=', $request->input('codigo'))->first();
-                $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+                $hoy =getdate();
+                $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+                $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                    ->where('fin_promocion','>=',$hoy)
+                    ->get();
 
                 $item = null;
                 foreach ($promotions as $promotion){
@@ -876,7 +880,11 @@ class ProductosController extends Controller
             }
         }
 
-        $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+        $hoy =getdate();
+        $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+        $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+            ->where('fin_promocion','>=',$hoy)
+            ->get();
 
         foreach ($resultado as $item){
             $item->promo = 0;
@@ -923,7 +931,11 @@ class ProductosController extends Controller
                 $datos = json_decode($request->productos, true);
                 foreach ($datos as $dato) {
                     $producto = Producto::findOrFail(base64_decode($dato['id']));
-                    $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+                    $hoy =getdate();
+                    $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+                    $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                        ->where('fin_promocion','>=',$hoy)
+                        ->get();
 
                     $item = null;
                     foreach ($promotions as $promotion){

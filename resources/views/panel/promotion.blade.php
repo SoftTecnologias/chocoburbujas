@@ -10,11 +10,11 @@
         <!-- Todo el contenido irá aquí -->
         <section class="content-header">
             <h1>
-                Productos
+                Promociones
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="#"><i class="fa fa-paw"> Productos</i></a></li>
+                <li><a href="#"><i class="fa fa-paw"> Promociones</i></a></li>
             </ol>
         </section>
         <section class="content">
@@ -23,7 +23,7 @@
                     <div class="box">
                         <div class="box-header">
                             <div class="pull-left">
-                                <h3 class="box-title">Promociones</h3>
+                                <h3 class="box-title">Productos</h3>
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-success" id="newPromo"><i class="fa fa-plus"></i>Agregar Promocion</a>
@@ -88,7 +88,7 @@
                                 <h3 class="box-title">Promociones</h3>
                             </div>
                             <div class="pull-right" id="app">
-                                <label for="promotions" id="infoP">jkjkjkjk</label>
+                                <label for="promotions" id="infoP"></label>
                                 <select class="selectpicker"  name="promotions" id="promotions">
                                 </select>
                             </div>

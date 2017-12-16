@@ -31,7 +31,11 @@ class ClientesController extends Controller
     public function index(Request $request){
         try {
             $topselling = DB::table('productos')->where('mostrar',1)->get();
-            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+            $hoy =getdate();
+            $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                ->where('fin_promocion','>=',$hoy)
+                ->get();
 
             foreach ($topselling as $item){
                 $item->promo = 0;
@@ -284,7 +288,11 @@ class ClientesController extends Controller
                 $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
             }
 
-            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')->get();
+            $hoy =getdate();
+            $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                ->where('fin_promocion','>=',$hoy)
+                ->get();
 
             foreach ($resultado as $item){
                 $item->promo = 0;

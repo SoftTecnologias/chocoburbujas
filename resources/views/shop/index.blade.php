@@ -279,13 +279,13 @@
                             @if($info->googleUrl == null)
                             @else
                                 <li>
-                                    <a class="btn btn-primary" href="{{$info->googleUrl}}"><i class="fa fa-google fa-x3" aria-hidden="true"></i></a>
+                                    <a class="btn" href="{{$info->googleUrl}}"><i class="fa fa-google fa-3x" aria-hidden="true"></i></a>
                                 </li>
                             @endif
                             @if($info->skypeUrl == null)
                             @else
                                 <li>
-                                    <a class="btn" href="{{$info->skypeUrl}}"><i class="fa fa-skype fa-x3" aria-hidden="true"></i></a>
+                                    <a class="btn" href="{{$info->skypeUrl}}"><i class="fa fa-skype fa-3x" aria-hidden="true"></i></a>
                                 </li>
                             @endif
                     </ul>

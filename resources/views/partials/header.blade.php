@@ -30,6 +30,7 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                             <li><a href="{{route('cliente.profile')}}">{{$user}}</a>
                             </li>
                             <li><a href="{{route('cliente.logout')}}" id="logout">Logout</a></li>
+                            <li><i class="fa fa-clock-o fa-lg" style="color: white;" aria-hidden="true"></i><label id="time" style="color: white; font-size: 20px;"></label></li>
                         </ul>
                    @else
                     <ul id="sesionOpc">
@@ -38,10 +39,15 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                                     <span class="hidden-xs text-uppercase">Iniciar Sesión</span></a></li>
                             <li><a href="{{route('cliente.register')}}"><i class="fa fa-user"></i> <span
                                             class="hidden-xs text-uppercase">Registrarse</span></a></li>
+                            <li><i class="fa fa-clock-o fa-lg" style="color: white;" aria-hidden="true"></i><label id="time" style="color: white; font-size: 20px;"></label></li>
                         </div>
                     </ul>
                    @endif
+                       <div class="" align="right">
+                           <div></div>
+                       </div>
             </div>
+
             <div class="clearfix"></div>
         </div>
     </div>
@@ -49,6 +55,7 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
 <!-- Logo, busqueda, y carrito de compra-->
 <div class="header_bottom">
     <div class="container">
+
         <div class="header_bottom-box">
             <div class="header_bottom_left">
                 <div class="logo">
@@ -57,10 +64,6 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                     </a>
 
                 </div>
-                <ul class="clock">
-                    <i class="clock_icon"> </i>
-                    <li class="clock_desc">{{Carbon\Carbon::now()->toTimeString()}}</li>
-                </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="header_bottom_right">
@@ -109,4 +112,4 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
 
     </div>
 </div>
-
+<script src="{{asset('/js/shop/reloj.js')}}"></script>
