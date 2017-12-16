@@ -21,8 +21,11 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                         <option value="2">Ingles</option>
                     </select>
                 </div>
-                <div class="clearfix"></div>
+                <div class="clearfix" align="right"><label  style="color: white; font-size: 20px;">Hora actual:  </label> <label id="time" style="color: white; font-size: 20px;"></label></div>
             </div>
+
+            <div class="box" align="center"></div>
+
             <div class="cssmenu">
 
                    @if( $cookie != null )
@@ -30,7 +33,7 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                             <li><a href="{{route('cliente.profile')}}">{{$user}}</a>
                             </li>
                             <li><a href="{{route('cliente.logout')}}" id="logout">Logout</a></li>
-                            <li><i class="fa fa-clock-o fa-lg" style="color: white;" aria-hidden="true"></i><label id="time" style="color: white; font-size: 20px;"></label></li>
+
                         </ul>
                    @else
                     <ul id="sesionOpc">
@@ -39,7 +42,6 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                                     <span class="hidden-xs text-uppercase">Iniciar Sesión</span></a></li>
                             <li><a href="{{route('cliente.register')}}"><i class="fa fa-user"></i> <span
                                             class="hidden-xs text-uppercase">Registrarse</span></a></li>
-                            <li><i class="fa fa-clock-o fa-lg" style="color: white;" aria-hidden="true"></i><label id="time" style="color: white; font-size: 20px;"></label></li>
                         </div>
                     </ul>
                    @endif

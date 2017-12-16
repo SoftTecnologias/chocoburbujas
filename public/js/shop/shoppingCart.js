@@ -28,6 +28,7 @@ $(function(){
         }).done(function(response){
             if(response.code == 200){
                 swal("¡Listo!", "Carrito Actualizado", response.detail);
+                location.reload();
                 $.each(filas,function(i,row) {
                     $(row).data("qty", $(row).find("input").val());
                 });

@@ -9,7 +9,13 @@ function ActualizarHora(){
         segundos = "0"+segundos;
     }
     var minutos = fecha.getMinutes();
+    if(minutos < 10){
+        minutos = "0"+minutos;
+    }
     var horas = fecha.getHours();
+    if(horas < 10){
+        horas = "0"+horas;
+    }
 
     $('#time').text("  "+horas+":"+minutos+":"+segundos);
 }

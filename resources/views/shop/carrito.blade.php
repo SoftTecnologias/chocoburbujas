@@ -49,7 +49,15 @@
                         <td data-th="Quantity" id="qty{{base64_decode($product['item']['id'])}}">
                             <input type="number" class="form-control text-center" value="{{$product['cantidad']}}" id="ca{{$i}}" onchange="updateCart('{{$i}}')">
                         </td>
-                        <td data-th="Subtotal" class="text-center" >$<span id="sb{{$i}}">{{$product['total']}}</span></td>
+                        <td data-th="Subtotal" class="text-center" >
+                            <div class="row">
+                                $<span id="sb{{$i}}">{{$product['total']}}</span>
+                                <br>
+                                @if($product['item']['discount'] != 0)
+                                    <span>Usted Ahorra: {{($product['item']['price']*$product['cantidad'])-$product['total']}}</span>
+                                @endif
+                            </div>
+                        </td>
                         <td class="actions" data-th="">
                             <button class="btn btn-danger btn-sm " onclick="removeCarrito('{{$product['item']['codigo']}}','{{$i}}')"><i class="fa fa-trash-o"></i></button>
                         </td>
@@ -104,3 +112,4 @@
 {{Html::script('js/shop/shoppingCart.js')}}
 @endsection
 @section('partials.footer')
+    @endsection
