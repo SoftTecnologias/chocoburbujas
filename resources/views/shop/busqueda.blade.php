@@ -81,7 +81,11 @@
                                 <img src="{{asset('images/productos/'.$item->img1)}}" class="img-responsive" alt="" style="height: 250px; width: 200px;"/>
                                 <h3>{{$item->nombre}}</h3>
                                 <p>{{$item->descripcion}}</p>
-                                <h4>${{$item->precio1}}</h4>
+                                @if($item->promo == 1)
+                                    <h4>De <strike>$ {{$item->precio1}}</strike> a $ {{$item->newprice}}</h4>
+                                @else
+                                    <h4>$ {{$item->precio1}}</h4>
+                                @endif
                                 <ul class="list2">
                                     <li class="list2_left"><span class="m_1"><a href="{{route('Producto.addCarrito',['id'=> $item->id,'ref'=>2])}}" class="link"
                                                                                 data-value="{{$item->id}}">Añadir al carrito</a></span>

@@ -60,56 +60,7 @@
                     </a>
                 </div>
             </div>            <!--Banner -->
-            <!-- anuncios -->
-            <div class="content_top">
-                <div class="grid_1">
-                    <div class="col-md-3">
-                        <div class="box2">
-                            <ul class="list1">
-                                <i class="lock"> </i>
-                                <li class="list1_right">
-                                    <p>Hasta 5% en productos para perros</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box3">
-                            <ul class="list1">
-                                <i class="clock1"> </i>
-                                <li class="list1_right">
-                                    <p>abierto de 8 am a 8 pm</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box4">
-                            <ul class="list1">
-                                <i class="vehicle"> </i>
-                                <li class="list1_right">
-                                    <p>Servicio de recoleccion y entrega</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="box5">
-                            <ul class="list1">
-                                <i class="dollar"> </i>
-                                <li class="list1_right">
-                                    <p>Los mejores productos y servicios al mejor precio</p>
-                                </li>
-                                <div class="clearfix"> </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-            </div>
+
             @if ($secciones['promocionesM']->activo)
                 <!-- Promociones del Mes (promocionesM)-->
                 <div class="content_middle">
@@ -215,10 +166,16 @@
                                             <div class="box_inner">
                                                 <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
                                                                                             style="height: 250px; width: 200px;"/></div>
+                                                @if($product->promo == 1)
                                                 <div class="sale-box"></div>
+                                                @endif
                                                 <div class="desc">
                                                     <h3>{{$product->nombre}}</h3>
+                                                    @if($product->promo == 1)
+                                                    <h4>De <strike>$ {{$product->precio1}}</strike> a $ {{$product->newprice}}</h4>
+                                                        @else
                                                     <h4>$ {{$product->precio1}}</h4>
+                                                    @endif
                                                     <ul class="list2">
                                                         <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
                                                         </li>
@@ -292,10 +249,11 @@
                         <div class="clearfix"> </div>
                     </ul>
                     <p>
-                        TENEMOS SERVICIOS DE CONSULTAS, VACUNAS, DESPARASITACION, CIRUGIA, HOSPITALIZACION, ORTOPEDIA,
-                        ODONTOLOGIA, RAYOS X, ANALISIS CLINICOS, ULTRASONIDO. TODO LO TENEMOS EN NUESTRAS INSTALACIONES.
-                        ALIMENTOS PREMIUM (ROYAL CANIN, DIAMOND, NUPEC).
-                        HOSPEDAJE, ROPA, ACCESORIOS, CAMAS, TRANSPORTADORAS, CASAS Y MUCHAS OTRAS COSAS PARA CONSENTIR A TUS MASCOTAS.
+                       @if($info == null)
+
+                           @else
+                           {{$info->nosotros}}
+                        @endif
                     </p>
                 </div>
                 <div class="col-md-3 span_1">
@@ -306,9 +264,30 @@
                         <div class="clearfix"> </div>
                     </ul>
                     <ul class="social">
-                        <li>
-                            <a href="https://www.facebook.com/Veterinariaboutiqueyesteticachocoburbujas/"> <i class="fb"> </i> </a>
-                        </li>
+                        @if($info->facebookUrl == null)
+                            @else
+                            <li>
+                                <a class="btn" href="{{$info->facebookUrl}}"><i class="fa fa-facebook fa-3x" aria-hidden="true"></i></a>
+                            </li>
+                        @endif
+                            @if($info->twitterUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->twitterUrl}}"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
+                            @if($info->googleUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->googleUrl}}"><i class="fa fa-google fa-3x" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
+                            @if($info->skypeUrl == null)
+                            @else
+                                <li>
+                                    <a class="btn" href="{{$info->skypeUrl}}"><i class="fa fa-skype fa-3x" aria-hidden="true"></i></a>
+                                </li>
+                            @endif
                     </ul>
                 </div>
                 <div class="col-md-3 span_1">
@@ -318,10 +297,17 @@
                             <h3>Contactanos</h3></li>
                         <div class="clearfix"> </div>
                     </ul>
-                    <p>Avenida de los insurgentes poniente </p>
-                    <p>Colonia Las Brisas,</p>
-                    <p> Telefono: 311 169 5037</p>
-                    <p><a href="mailto:chocovetyest@hotmail.com"> Mas informacion </a></p>
+                    @if($info == null)
+                        @else
+                        <p>Nos encontramos ubicados en:</p>
+                    <p>{{$info->direccion1}} </p>
+                    <p>{{$info->direccion2}},</p>
+                    <p> Telefono: {{$info->telefono1}}</p>
+                    @if($info->telefono2 != null)
+                            <p>o al Telefono: {{$info->telefono1}}</p>
+                        @endif
+                    <p>Correo: <a href="mailto:{{$info->email}}">{{$info->email}}</a></p>
+                        @endif
                 </div>
                 <div class="clearfix"> </div>
             </div>

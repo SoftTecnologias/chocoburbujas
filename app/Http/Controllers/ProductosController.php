@@ -359,13 +359,41 @@ class ProductosController extends Controller
             //Buscamos el producto por codigo 'En teoria tiene que ser unico '
             if ($cookie = Cookie::get('cliente')) {
                 $producto = Producto::where('codigo', '=', $request->input('codigo'))->first();
-                $item = [
-                    "id" => base64_encode($producto->id),
-                    "nombre" => $producto->nombre,
-                    "codigo" => $producto->codigo,
-                    "precio1" => $producto->precio1,
-                    "img1" => $producto->img1,
-                ];
+                $hoy =getdate();
+                $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+                $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                    ->where('fin_promocion','>=',$hoy)
+                    ->get();
+
+                $item = null;
+                foreach ($promotions as $promotion){
+                    if($producto->id == $promotion->idProducto){
+                        $item = [
+                            "id" => base64_encode($producto->id),
+                            "nombre" => $producto->nombre,
+                            "codigo" => $producto->codigo,
+                            "precio1" => $producto->precio1-(($promotion->descuento/100)*$producto->precio1),
+                            "img1" => $producto->img1,
+                            "price" => $producto->precio1,
+                            "discount" => $promotion->descuento,
+                        ];
+
+                    }
+                }
+
+                if($item == null){
+                    $item = [
+                        "id" => base64_encode($producto->id),
+                        "nombre" => $producto->nombre,
+                        "codigo" => $producto->codigo,
+                        "precio1" => $producto->precio1,
+                        "img1" => $producto->img1,
+                        "price" => $producto->precio1,
+                        "discount" => 0,
+                    ];
+                }
+
+
                 $cart = $cookie['carrito'];
                 #dd($cart);
                 $cart->add($item, $producto->id);
@@ -726,7 +754,7 @@ class ProductosController extends Controller
         $marcas = DB::table('marcas')
             ->select(DB::raw("id, nombre,(
 		                      SELECT COUNT(*)
-		                      FROM [laravel_chocoburbujas].[dbo].[productos] p
+		                      FROM productos p
 		                      where p.marca_id = marcas.id AND (p.nombre like '%$search%' OR p.descripcion like '%$search%' OR p.codigo like '%$search%')
                              ) as total "))
             ->orderBy('nombre', 'asc')
@@ -851,6 +879,23 @@ class ProductosController extends Controller
 
             }
         }
+
+        $hoy =getdate();
+        $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+        $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+            ->where('fin_promocion','>=',$hoy)
+            ->get();
+
+        foreach ($resultado as $item){
+            $item->promo = 0;
+            foreach ($promotions as $promotion){
+                if($item->id == $promotion->idProducto){
+                    $item->promo = 1;
+                    $item->newprice = $item->precio1-(($promotion->descuento/100)*$item->precio1);
+                }
+            }
+        }
+
         return view('shop.busqueda', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);
     }
 
@@ -886,13 +931,39 @@ class ProductosController extends Controller
                 $datos = json_decode($request->productos, true);
                 foreach ($datos as $dato) {
                     $producto = Producto::findOrFail(base64_decode($dato['id']));
-                    $item = [
-                        "id" => base64_encode($producto->id),
-                        "nombre" => $producto->name,
-                        "codigo" => $producto->code,
-                        "precio1" => $producto->precio1,
-                        "img1" => $producto->img1
-                    ];
+                    $hoy =getdate();
+                    $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+                    $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
+                        ->where('fin_promocion','>=',$hoy)
+                        ->get();
+
+                    $item = null;
+                    foreach ($promotions as $promotion){
+                        if($producto->id == $promotion->idProducto){
+                            $item = [
+                                "id" => base64_encode($producto->id),
+                                "nombre" => $producto->nombre,
+                                "codigo" => $producto->codigo,
+                                "precio1" => $producto->precio1-(($promotion->descuento/100)*$producto->precio1),
+                                "img1" => $producto->img1,
+                                "price" => $producto->precio1,
+                                "discount" => $promotion->descuento,
+                            ];
+
+                        }
+                    }
+
+                    if($item == null){
+                        $item = [
+                            "id" => base64_encode($producto->id),
+                            "nombre" => $producto->nombre,
+                            "codigo" => $producto->codigo,
+                            "precio1" => $producto->precio1,
+                            "img1" => $producto->img1,
+                            "price" => $producto->precio1,
+                            "discount" => 0,
+                        ];
+                    }
                     $cantidad = $dato['cantidad'];
                     $carrito = $cookie['carrito'];
                     $carrito->update($item, $producto->id, $cantidad);

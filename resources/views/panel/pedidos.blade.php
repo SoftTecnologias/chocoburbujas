@@ -58,7 +58,6 @@
                                 <td class="warning">Enviado</td>
                                 <td class="success">Recibido</td>
                                 <td class="danger">Cancelado</td>
-                                <td align="center" width="10%"><button class="btn btn-success" id="precioEnvio">Agregar Precio Envios</button></td>
                                 </th>
                                 </tbody>
                             </table>

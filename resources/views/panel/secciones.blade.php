@@ -84,8 +84,5 @@
     </div>
 @endsection
 @section('scripts')
-
     <script src="{{asset('js/admin/secciones.js')}}"></script>
-    <script type="text/javascript" src="{{asset('js/plugins/jquery.validate.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
 @endsection

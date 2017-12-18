@@ -1,7 +1,11 @@
 @extends('layouts.master')
 @section('menu')
     @include('partials.menu',['categorias'=>$categorias, 'marcas' => $marcas])
-@endsection.
+@endsection
+<?php
+  $est=null;
+  $mun=null;
+?>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://opensource.keycdn.com/fontawesome/4.6.3/font-awesome.min.css"
           integrity="sha384-Wrgq82RsEean5tP3NK3zWAemiNEXofJsTwTyHmNb/iL3dP/sZJ4+7sOld1uqYJtE" crossorigin="anonymous">
@@ -247,22 +251,36 @@
                     <h3>Compras</h3>
                     <table class="table">
                         <thead>
-                        <trow>
+                        <tr>
                             <th class="text-center">Codigo</th>
                             <th class="text-center">Fecha</th>
                             <th class="text-center">Total</th>
-                        </trow>
+                        </tr>
                         </thead>
                         <tbody>
                         @foreach($compras as $compra)
-                            <tr>
+                            @if($compra->status == 'C')
+                                <tr class="danger">
+                                    <td>{{$compra->id}}</td>
+                                    <td>{{$compra->fecha_venta}}</td>
+                                    <td>{{$compra->total}}</td>
+                                    <td>
+                                       Cancelado
+                                    </td>
+                                </tr>
+                                @else
+                            <tr class="success">
                                 <td>{{$compra->id}}</td>
                                 <td>{{$compra->fecha_venta}}</td>
                                 <td>{{$compra->total}}</td>
                                 <td>
-                                    <a class="btn btn-warning" onclick="infocompra('{{$compra->id}}')" id="info{{$compra->id}}">Info</a>
+                                    <div class="row">
+                                    <a class="btn btn-warning" onclick="infocompra('{{$compra->id}}')" id="info{{$compra->id}}"><i class="fa fa-info" aria-hidden="true"></i></a>
+                                    <a class="btn btn-danger" onclick="cancelar('{{$compra->id}}')"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                    </div>
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                         </tbody>
 
