@@ -51,9 +51,11 @@ class PromotionsController extends Controller
 
     public function getPromotions(){
 
-
+        $hoy =getdate();
+        $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
         $mpo = DB::table('promociones')
             ->select('id','nombre')
+            ->where('fin_promocion','>=',$hoy)
             ->get();
         if(sizeof($mpo) > 0){
             $respuesta = ['code' => 200, 'msg' => $mpo, 'detail' => 'Ok'];
@@ -170,6 +172,25 @@ class PromotionsController extends Controller
 
             $respuesta = ["code" => 200, "msg" => 'El producto ha sido eliminado', 'detail' => 'success'];
         } catch (Exception $e) {
+            $respuesta = ["code" => 500, "msg" => $e->getMessage(), 'detail' => 'warning'];
+        }
+        return Response::json($respuesta);
+    }
+
+    //Eliminar promociones anteriores a la fecha (para limpiar la base de datos)
+    public function deletePrevious(){
+        try{
+            $hoy =getdate();
+            $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
+            $promo_vencidas = DB::table('promociones')->select('id')->where('fin_promocion','<',$hoy)->get();
+            foreach ($promo_vencidas as $promo_vencida){
+                DB::table('producto_promocion')->where('idPromocion', '=', $promo_vencida->id)->delete();
+                $product = Promotion::destroy($promo_vencida->id);
+            }
+
+            $respuesta = ["code" => 200, "msg" => 'Las promociones se han eliminado correctamente', 'detail' => 'success'];
+
+        }catch (Exception $e){
             $respuesta = ["code" => 500, "msg" => $e->getMessage(), 'detail' => 'warning'];
         }
         return Response::json($respuesta);

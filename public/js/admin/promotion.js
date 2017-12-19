@@ -70,6 +70,33 @@ $(function () {
         $('#modalPromotion').modal('show');
     });
 
+    $('#deletePevious').on('click',function () {
+        swal({
+            title: '¿Estás seguro?',
+            text: "Esto no se puede revertir!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, deseo eliminarlo!',
+            cancelButtonText: "Lo pensaré"
+        }).then(function () {
+            ruta ='/panel/promociones/deletePrevious';
+            $.ajax({
+                url:ruta,
+                type:'post'
+            }).done(function(json){
+                if(json.code==200) {
+                    swal("Realizado", json.msg, json.detail);
+                }else{
+                    swal("Error", json.msg, json.detail);
+                }
+            }).fail(function(response){
+                swal("Error", "tuvimos un problema", "warning");
+            });
+        });
+    });
+
     $("#btnAceptarPromo").on("click",function () {
         var datos = new FormData(document.getElementById('promotionForm'));
         $('#promotions option').remove();
