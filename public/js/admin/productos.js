@@ -334,11 +334,7 @@ function updateProduct(id){
         if(json.code == 200) {
             swal("Realizado", json.msg, json.detail);
             $('#modalProduct').modal("hide");
-<<<<<<< HEAD
-            $('#productTable').dataTable().api().ajax.reload(null,false)
-=======
             $('#productTable').dataTable().api().ajax.reload(null, false);
->>>>>>> 33acb27066a3b3a17deae17ab73e9d45a8f39482
             reset();
         }else{
             console.log(json);
