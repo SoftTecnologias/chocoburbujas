@@ -21,7 +21,11 @@ $cookie = \Illuminate\Support\Facades\Cookie::get("cliente");
                         <option value="2">Ingles</option>
                     </select>
                 </div>
-                <div class="clearfix" align="right"><label  style="color: white; font-size: 20px;">Hora actual:  </label> <label id="time" style="color: white; font-size: 20px;"></label></div>
+                <?php
+                $hora = date('d M Y G:i:s');
+                ?>
+                <input type="hidden" value="{{$hora}}" id="htime">
+                <div class="clearfix" align="right"><div id="time" style="color: white; font-size: 20px;"></div></div>
             </div>
 
             <div class="box" align="center"></div>

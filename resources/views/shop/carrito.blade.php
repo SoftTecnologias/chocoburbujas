@@ -54,7 +54,7 @@
                                 $<span id="sb{{$i}}">{{$product['total']}}</span>
                                 <br>
                                 @if($product['item']['discount'] != 0)
-                                    <span>Usted Ahorra: {{($product['item']['price']*$product['cantidad'])-$product['total']}}</span>
+                                    <span>Usted Ahorra: {{round(($product['item']['price']*$product['cantidad'])-$product['total'],2)}}</span>
                                 @endif
                             </div>
                         </td>
@@ -62,7 +62,7 @@
                             <button class="btn btn-danger btn-sm " onclick="removeCarrito('{{$product['item']['codigo']}}','{{$i}}')"><i class="fa fa-trash-o"></i></button>
                         </td>
                     </tr>
-                        <?php $total += $product['total']; $i++; $subtotal+= $product['item']['price']*$product['cantidad'];?>
+                        <?php $total += $product['total']; $i++; $subtotal+= round($product['item']['price']*$product['cantidad'],2);?>
                     @endforeach
                     @else
                       <tr> No tienes ningun item en el carrito de compras </tr>
