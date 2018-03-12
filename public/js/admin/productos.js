@@ -311,7 +311,7 @@ function newProduct(){
         if(json.code == 200) {
             swal("Realizado", json.msg, json.detail);
             $('#modalProduct').modal("hide");
-            $('#productTable').dataTable().api().ajax.reload(null,false);
+            $('#productTable').dataTable().api().ajax.reload(null, false);
             reset();
         }else{
             swal("Error",json.msg,json.detail);

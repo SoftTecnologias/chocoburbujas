@@ -65,7 +65,7 @@ class BannerController extends Controller
                         "image" => "B".$bannerid.".".$img1->getClientOriginalExtension()
                     ]);
                     $product->save();
-                    $nombre="/Banner/"."B".$bannerid.".".$img1->getClientOriginalExtension();
+                    $nombre="/banner/"."B".$bannerid.".".$img1->getClientOriginalExtension();
                     Storage::disk('local')->put($nombre,  \File::get($img1));
                 }
             }else{
@@ -77,7 +77,7 @@ class BannerController extends Controller
                     "image" => $nombre
                 ]);
                 $product->save();
-                Storage::disk('local')->put("/Banner/".$nombre,  fopen($imgu1,'r'));
+                Storage::disk('local')->put("/banner/".$nombre,  fopen($imgu1,'r'));
             }
 
             $respuesta = ["code"=>200, "msg"=>'El banner fue creado exitosamente', 'detail' => 'success'];
@@ -129,9 +129,9 @@ class BannerController extends Controller
                 if($img1!=null){
                     $up["image"]="S".$id.".". $request->file("img1")->getClientOriginalExtension();
                     if($banner->img != "banner.png") {
-                        Storage::delete("/Banner/". $banner->img);
+                        Storage::delete("/banner/". $banner->img);
                     }
-                    $nombre="/Banner/"."S".$id.".".$img1->getClientOriginalExtension();
+                    $nombre="/banner/"."S".$id.".".$img1->getClientOriginalExtension();
                     Storage::disk('local')->put($nombre,  \File::get($img1));
                 }
             }else{
@@ -140,9 +140,9 @@ class BannerController extends Controller
                 $nombre="S".$id.".".$ext[sizeof($ext)-1];
                 $up['image'] = $nombre;
                 if($banner->img != "banner.png"){
-                    Storage::delete("/Banner/". $banner->img);
+                    Storage::delete("/banner/". $banner->img);
                 }
-                Storage::disk('local')->put("/Banner/".$nombre,  fopen($imgu1,'r'));
+                Storage::disk('local')->put("/banner/".$nombre,  fopen($imgu1,'r'));
             }
 
 
@@ -171,7 +171,7 @@ class BannerController extends Controller
             $id = base64_decode($id);
             $banner = Banner::findOrFail($id);
             if($banner->img != "banner.png") {
-                Storage::delete("/Banner/". $banner->img);
+                Storage::delete("/banner/". $banner->img);
             }
             $banner->delete();
 

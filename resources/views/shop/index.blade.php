@@ -36,14 +36,14 @@
                         @foreach($banner as $b)
                             @if($firstimg == true)
                                 <div class="item active">
-                                    <img src="images/Banner/{{$b->image}}" alt="Los Angeles" style="width:100%;">
+                                    <img src="images/banner/{{$b->image}}" alt="Los Angeles" style="width:100%;">
                                 </div>
                                 <?php
                                 $firstimg = false;
                                 ?>
                             @else
                                 <div class="item">
-                                    <img src="images/Banner/{{$b->image}}" alt="Chicago" style="width:100%;">
+                                    <img src="images/banner/{{$b->image}}" alt="Chicago" style="width:100%;">
                                 </div>
                             @endif
                         @endforeach

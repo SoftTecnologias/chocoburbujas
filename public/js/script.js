@@ -1,9 +1,9 @@
 $(function(){
     $("#cart").on("click", function() {
         $.ajax({
-           url:document.location.protocol+'//'+document.location.host+"/showItems",
-           type:'GET'
-           // 'Access-Control-Allow-Headers': '*'
+           url:document.location.protocol+"//"+document.location.host+"/"+"showItems",
+           type:'GET',
+            'Access-Control-Allow-Headers': '*'
         }).done(function(json){
             if(json.code === 200){
                 constructCart(json.msg);
@@ -17,7 +17,6 @@ $(function(){
     });
 });
 function addProducto(codigo){
-    console.log(document.location.protocol+'//'+document.location.host+'/addToCart');
     $.ajax({
         url:document.location.protocol+'//'+document.location.host+'/addToCart',/*quitar o agregar segun corresponda*/
         type: 'POST',
@@ -46,7 +45,7 @@ function constructCart(productos){
         $('<li>',{
             class:'clearfix'
         }).append($('<img>',{
-            src : document.location.protocol+'//'+document.location.host+'/images/productos/'+row.item['img1'],
+            src : document.location.protocol+"//"+document.location.host+'/images/productos/'+row.item['img1'],
             alt:'item'+(index+1),
             style:'height: 75px; width: 50px;'
         })).append($('<span>',{

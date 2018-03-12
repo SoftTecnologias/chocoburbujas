@@ -4,7 +4,7 @@
             <div class="menu_box">
                 <ul class="megamenu skyblue">
                     <li class="active grid"><a class="color2" href="{{route('shop.index')}}">Inicio</a></li>
-                    <li><a class="color10" href="#">Categorias</a>
+                    <li><a class="color2" href="#">Categorias</a>
                         <div class="megapanel">
                             <div class="row">
                                 @foreach(array_chunk($categorias,6) as $row)
@@ -23,7 +23,7 @@
                         </div>
                     </li>
 
-                    <li><a class="color7" href="#">Marcas</a>
+                    <li><a class="color2" href="#">Marcas</a>
                         <div class="megapanel">
                             <div class="row">
                                 @foreach(array_chunk($marcas,6) as $row)
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </li>
-                    <li><a class="color8" href="#">Blog</a></li>
+                    <li><a class="color2" href="#">Blog</a></li>
                     <div class="clearfix"> </div>
                 </ul>
             </div>
