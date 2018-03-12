@@ -739,10 +739,7 @@ class ProductosController extends Controller
             $marcas = DB::table('marcas')
                 ->orderBy('nombre', 'asc')
                 ->get();
-            foreach ($categorias as $categoria) {
-                $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
-                array_push($menu, [$categoria->id => $productos]);
-            }
+
             return view('shop.index', ['topselling' => $topselling,
                 'promociones' => $promociones,
                 'blogs' => $blogs,
@@ -894,6 +891,14 @@ class ProductosController extends Controller
                     $item->newprice = $item->precio1-(($promotion->descuento/100)*$item->precio1);
                 }
             }
+        }
+	foreach ($marcas as $marca) {
+          $marca->id = base64_encode($marca->id);
+        }
+        foreach ($categorias as $categoria) {
+          $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
+          $categoria->id = base64_encode($categoria->id);
+         # array_push($menu, [$categoria->id => $productos]);
         }
 
         return view('shop.busqueda', ['categorias' => $categorias, 'productos' => $resultado, 'marcas' => $marcas]);
