@@ -15,6 +15,8 @@
 /*Para Los administradores */
 Route::group(['prefix'=>'panel'],function (){
 
+    Route::post('/promociones/deletePrevious','PromotionsController@deletePrevious');
+
     Route::resource('/resource/banner','BannerController');
     Route::post('/resource/banner/{id}',[
         'uses' => 'BannerController@update',

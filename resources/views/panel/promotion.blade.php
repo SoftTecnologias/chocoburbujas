@@ -27,6 +27,7 @@
                             </div>
                             <div class="pull-right">
                                 <a class="btn btn-success" id="newPromo"><i class="fa fa-plus"></i>Agregar Promocion</a>
+                                <a class="btn btn-danger" id="deletePevious"><i class="fa fa-minus"></i>Eliminar Promociones Vencidas</a>
                             </div>
 
                         </div>
