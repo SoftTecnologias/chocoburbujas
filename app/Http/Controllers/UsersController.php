@@ -287,21 +287,21 @@ class UsersController extends Controller
        }
     }
     public function showInfoForm(Request $request){
-    try{
-        if($request->cookie('admin') != null) {
-            $cookie = Cookie::get('admin');
-            $user = User::where('id', $cookie['apikey'])->first();
-            $info = Informacion::all()->first();
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                $info = Informacion::all()->first();
 
-            return view('panel.info',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
-                'photo' => $user->img,
-                'username' => $user->username,
-                'permiso' => 'Administrador'],
-                'info' => $info
-            ]);
-        }else{
-            return view('user.login');
-        }
+                return view('panel.info',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador'],
+                    'info' => $info
+                ]);
+            }else{
+                return view('user.login');
+            }
         }catch(Exception $e){
 
         }
