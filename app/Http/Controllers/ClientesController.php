@@ -36,7 +36,6 @@ class ClientesController extends Controller
             $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
                 ->where('fin_promocion','>=',$hoy)
                 ->get();
-
             foreach ($topselling as $item){
                 $item->promo = 0;
                 foreach ($promotions as $promotion){
@@ -48,6 +47,7 @@ class ClientesController extends Controller
 
             }
             $promociones = DB::table('productos')->take(10)->where('promocion', 1)->orderBy('precio1', 'asc')->get();
+            
             $blogs = DB::table('blogs')->take(4)->orderBy('fecha', 'desc')->get();
             $banner = Banner::all();
             $categorias = DB::table('categorias')->take(4)->get();
