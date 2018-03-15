@@ -474,6 +474,14 @@ class ProductosController extends Controller
             $marcas = DB::table('marcas')
                 ->orderBy('nombre', 'asc')
                 ->get();
+            foreach ($marcas as $marca) {
+                $marca->id = base64_encode($marca->id);
+            }
+            foreach ($categorias as $categoria) {
+                $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
+                $categoria->id = base64_encode($categoria->id);
+                array_push($menu, [$categoria->id => $productos]);
+            }
             if ($cookie = $request->cookie('cliente')) {
                 $cart = $cookie['carrito'];
                 $user = Cliente::find(base64_decode($cookie['id']));
