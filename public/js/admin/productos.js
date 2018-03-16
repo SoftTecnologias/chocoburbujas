@@ -288,8 +288,6 @@ $(function(){
      });
  }
 
-
-
 //
 function productAction(){
     if($("#id").val()==""){

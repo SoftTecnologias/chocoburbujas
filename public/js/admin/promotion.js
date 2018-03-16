@@ -1,6 +1,47 @@
 
 $(function () {
-
+    hoy = new Date();
+    $('#promotionTable').DataTable({
+        'scrollY':'500px',
+        'scrollX':true,
+        'ajax':{
+            url: '/panel/api/promotions',
+            dataSrc: function (json){
+                return json;
+            }
+        },
+        'createdRow':function(row,data,index){
+            if(hoy >= new Date(data.inicio_promocion) && hoy <= new Date(data.fin_promocion)){
+                $('td',row).addClass("success");
+            }else{
+                if(hoy < new Date(data.inicio_promocion)  ){
+                    $('td', row).addClass("warning");
+                }else{
+                    $('td', row).addClass("danger");
+                }
+            }
+        },
+        'columns':[
+            {data:'nombre'},
+            {data:'descripcion'},
+            {data:'descuento'},
+            {data:'inicio_promocion'},
+            {data:'fin_promocion'},
+            {data:
+                function (row) {
+                    str = "<div align='center'>";
+                    str += "<div class='col-md-6'> <button id='btnEditar' class='btn btn-primary block' onclick='showPromotion(" + row['id'] +")'><i class='fa fa-pencil-square-o'></i></button> </div>";
+                    str += "<div class='col-md-6'> <button id='btnEliminar' class='btn btn-danger block' onclick='deletePromotion(" + row['id'] +")'><i class='fa fa-trash-o'></i></button> </div>";
+                    str += "</div>";
+                    return str;
+                }
+            }
+        ],
+        'language': {
+            url:'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json'
+        }
+    });
+     
     $('#promotions').on('change',function () {
        var id = $('#promotions').val();
        setInfo(id);
@@ -48,182 +89,69 @@ $(function () {
         });
     });
 
-    $.ajax({
-        url: '/panel/getpromotions/',
-        type: 'get'
-    }).done(function(json){
-        if(json.code===200){
-             $('<option></option>', {text: "Seleccione una Promocion"}).attr('value', "").appendTo('#promotions');
-            $.each(json.msg, function (i, row) {
-                $('<option></option>', {text: row.nombre}).attr('value', row.id).appendTo('#promotions');
-                $('.selectpicker').selectpicker('refresh');
-            });
-        }else{
-             $('<option></option>', {text: "No se obtuvieron resultados"}).attr('value', "").appendTo('#promotions');
-            $('.selectpicker').selectpicker('refresh');
-        }
-    });
-
-
     $("#newPromo").on('click',function () {
         clear();
         $('#modalPromotion').modal('show');
     });
 
-    $('#deletePevious').on('click',function () {
-        swal({
-            title: '¿Estás seguro?',
-            text: "Esto no se puede revertir!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, deseo eliminarlo!',
-            cancelButtonText: "Lo pensaré"
-        }).then(function () {
-            ruta ='/panel/promociones/deletePrevious';
-            $.ajax({
-                url:ruta,
-                type:'post'
-            }).done(function(json){
-                if(json.code==200) {
-                    swal("Realizado", json.msg, json.detail);
-                }else{
-                    swal("Error", json.msg, json.detail);
-                }
-            }).fail(function(response){
-                swal("Error", "tuvimos un problema", "warning");
-            });
-        });
+    $("#btnAceptarPromo").on('click',function(event){
+        $('#promotionForm').submit();
     });
+    jQuery.validator.addMethod("fechaFinal",function(value,element){
+        if(new Date($("#fechaFpromo").val()) < new Date($("#fechaIpromo").val()))
+            return false;
+        else
+            return true;
 
-    $("#btnAceptarPromo").on("click",function () {
-        var datos = new FormData(document.getElementById('promotionForm'));
-        $('#promotions option').remove();
-        $.ajax({
-            url: '/panel/api/promotions',
-            type: 'post',
-            data: datos,
-            contentType:false,
-            processData: false
-        }).done(function(json){
-            if(json.code===200){
-                swal("Realizado", json.msg, json.detail);
-                $('#modalPromotion').modal('hide');
-                $.ajax({
-                    url: '/panel/getpromotions/',
-                    type: 'get'
-                }).done(function(json){
-                    if(json.code===200){
-                        $('<option></option>', {text: "Seleccione una Promocion"}).attr('value', "").appendTo('#promotions');
-                        $.each(json.msg, function (i, row) {
-                            $('<option></option>', {text: row.nombre}).attr('value', row.id).appendTo('#promotions');
-                            $('.selectpicker').selectpicker('refresh');
-                        });
-                    }else{
-                        $('<option></option>', {text: "No se obtuvieron resultados"}).attr('value', "").appendTo('#promotions');
-                        $('.selectpicker').selectpicker('refresh');
-                    }
-                });
-            }else{
-                swal("Error", json.msg, json.detail);
-            }
-        });
-        $('.selectpicker').selectpicker('refresh');
-    });
+    },"La fecha de final  no puede ser antes o de la fecha de inicio");
 
-    $('#productTable').DataTable({
-        'scrollX':true,
-        'scrollY':'500px',
-        'ajax':{
-            url: 'api/productos',
-            dataSrc: function (json){
-                return json;
-            }
-        },
-        'createdRow':function(row,data,index){
-            if(data.stock <= 0 ){
-                $('td', row).addClass("danger");
-            }else{
-
-            }
-            if(parseInt(data.stock) >= parseInt(data.stock_max)){
-                $('td',row).addClass("success");
-            }
-            if(parseInt(data.stock) <= parseInt(data.stock_min)){
-                $('td',row).addClass("warning");
-            }
-
-        },
-        'columns':[
-            {data:function(row){
-                var str="";
-                str = "<div align='center col-md-3'>";
-                str += "<img class=\"img-responsive \" src='../images/productos/" + row['img1'] + "' alt='" + row['id'] + "'>";
-                str += "</div>";
-                return str;}
+    $('#promotionForm').validate({
+        rules: {
+            nombre: {
+                required: true
             },
-            {data:'nombre'},
-            {data:'marca'},
-            {data:function(row){
-                return '$ '+row['precio1'];
-            }
+            descripcion: {
+                required: true,
+                maxlength: 50
             },
-            {data:function (row) {
-                str = "<div align='center'>";
-                str = "<div class='col-md-6'> ";
-                str += " <button id='btnAgregar' class='btn btn-primary block' onclick='Agregar(" + row['id'] +");'><i class=\"fa fa-share\" aria-hidden=\"true\"></i></button> </div>";
-                str += "</div>";
-                return str;
+            descuento: {
+                required: true,
+                number: true,
+                rangelength: [1,100]
+            },
+            fechaIpromo: {
+                required: true,
+                date: true
+            },
+            fechaFpromo: {
+                required: true,
+                date:true,
+                fechaFinal: true
             }
-            }
-        ],
-        'language': {
-            url:'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json'
         }
-    });
-
-    var table = $('#promotionTable').DataTable({
-        'scrollX':true,
-        'scrollY':'500px',
-        'ajax':{
-            url: '/panel/api/promotions',
-            dataSrc: function (json){
-                return json;
+        ,
+        highlight: function (element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function (element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function (error, element) {
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
             }
         },
-        'createdRow':function(row,data,index){
-            if(data.stock <= 0 ){
-                $('td', row).addClass("danger");
-            }else{
-
-            }
-            if(parseInt(data.stock) >= parseInt(data.stock_max)){
-                $('td',row).addClass("success");
-            }
-            if(parseInt(data.stock) <= parseInt(data.stock_min)){
-                $('td',row).addClass("warning");
-            }
-
-        },
-        'columns':[
-            {data:'nombre'},
-            {data:function(row){
-                return '$ '+row['precio1'];
-            }
-            },
-            {data:function (row) {
-                str = "<div align='center'>";
-                str += "<div class='col-md-6'> <button id='btnEliminar' class='btn btn-danger block' onclick='deleteProduct(" + row['id'] +")'><i class='fa fa-trash-o'></i></button> </div>";
-                str += "</div>";
-                return str;
-            }
-            }
-        ],
-        'language': {
-            url:'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json'
+        submitHandler: function (form) {
+            promotionAction($("#promotionid").val());
+            return false;
         }
+
     });
+    
 });
 
 function Agregar(id) {
@@ -252,10 +180,11 @@ function clear() {
     $('#namepromo').val("");
     $('#descripcionpromo').val("");
     $('#descuentopromo').val("");
-    $('#fechapromo').val("");
+    $('#fechaIpromo').val("");
+    $('#fechaFpromo').val("");
 }
 
-function deleteProduct(id) {
+function deletePromotion(id) {
     swal({
         title: '¿Estás seguro?',
         text: "Esto no se puede revertir!",
@@ -266,7 +195,7 @@ function deleteProduct(id) {
         confirmButtonText: 'Si, deseo eliminarlo!',
         cancelButtonText: "Lo pensaré"
     }).then(function () {
-        ruta ='/panel/delete/productPromotion/'+id+"-"+$('#promotions').val();
+        ruta ='/panel/delete/productPromotion/'+id;
         $.ajax({
             url:ruta,
             type:'post'
@@ -294,5 +223,96 @@ function setInfo(id) {
         }else{
             console.log('nel');
         }
+    });
+}
+
+function promotionAction(id){
+    if(id != ""){
+        var datos = new FormData(document.getElementById('promotionForm'));
+        $.ajax({
+            url: '/panel/promotions/'+$("#promotionid").val(),
+            type: 'post',
+            data: datos,
+            contentType:false,
+            processData: false
+        }).done(function(json){
+            if(json.code===200){
+                swal("Realizado", json.msg, json.detail);
+                $('#modalPromotion').modal('hide');
+                $("#promotionTable").dataTable().api().ajax.reload(null, false);
+            }else{
+                swal("Error", json.msg, json.detail);
+            }
+        });
+        $('.selectpicker').selectpicker('refresh');   
+    }else{
+        var datos = new FormData(document.getElementById('promotionForm'));
+        console.log("Es promocion del mes: "+$("#is_promotion_month").val());
+        $.ajax({
+            url: '/panel/api/promotions',
+            type: 'post',
+            data: datos,
+            contentType:false,
+            processData: false
+        }).done(function(json){
+            if(json.code===200){
+                swal("Realizado", json.msg, json.detail);
+                $('#modalPromotion').modal('hide');
+                $("#promotionTable").dataTable().api().ajax.reload(null, false);
+            }else{
+                swal("Error", json.msg, json.detail);
+            }
+        });
+        $('.selectpicker').selectpicker('refresh');   
+    }
+}
+
+function showPromotion(id){
+    $.ajax({
+        url: "api/promotions/"+id,
+        type: 'GET'
+    }).done(function(response){
+        if(response.code==200){
+            clear();
+            promo=response.msg;
+            fechaI =new Date(promo.inicio_promocion);
+            fechaF =new Date(promo.fin_promocion);
+            if(fechaI.getDate() < 10){
+                dia = '0'+fechaI.getDate();
+            }else{
+                dia = fechaI.getDate();
+            }
+            if(fechaI.getMonth()+1< 10){
+                mes = '0'+(fechaI.getMonth()+1);
+            }else{
+                mes=(fechaI.getMonth()+1);
+            }
+            console.log(fechaI.getFullYear()+"-"+mes+"-"+dia);
+            $('#fechaIpromo').val(fechaI.getFullYear()+"-"+mes+"-"+dia);
+            if(fechaF.getDate() < 10){
+                dia = '0'+fechaF.getDate();
+            }else{
+                dia = fechaF.getDate();
+            }
+            if(fechaF.getMonth()+1< 10){
+                mes = '0'+(fechaF.getMonth()+1);
+            }else{
+                mes=(fechaF.getMonth()+1);
+            }
+            console.log(fechaF.getFullYear()+"-"+mes+"-"+dia);
+            $('#fechaFpromo').val(fechaF.getFullYear()+"-"+mes+"-"+dia);
+            $('#namepromo').val(promo.nombre);
+            $('#descripcionpromo').val(promo.descripcion);
+            $('#descuentopromo').val(promo.descuento);
+            $("#promotionid").val(promo.id);
+            $("#titulo-modal").text("Editar Promoción");
+            $("#modalPromotion").modal("show");
+            if(promo.is_promotion_month == 0)
+                $("#is_promotion_month").prop('checked', false);
+            else
+            $("#is_promotion_month").prop('checked', true);
+        }
+    }).fail(function(){
+        swal("Error","No pudimos recuperar los datos","warning");
     });
 }

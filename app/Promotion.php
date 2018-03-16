@@ -14,4 +14,9 @@ class Promotion extends Model
     protected $hidden=[];
 
     public $timestamps = false;
+
+    public function productPromotion(){
+        return $this->hasMany('App\Product_Promotion','idPromocion','id');
+    }
 }
+

@@ -14,4 +14,11 @@ class Product_Promotion extends Model
     protected $hidden=[];
 
     public $timestamps = false;
+
+    public function producto(){
+        return $this->hasOne('App\Producto','id','idProducto');
+    }
+    public function promotion(){
+        return $this->belongsTo('App\Promotion');
+    }
 }

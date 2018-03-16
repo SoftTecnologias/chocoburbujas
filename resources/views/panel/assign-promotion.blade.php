@@ -19,14 +19,11 @@
         </section>
         <section class="content">
             <div class="row">
-                <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+                <div class="col-xs-6">
                     <div class="box">
                         <div class="box-header">
                             <div class="pull-left">
-                                <h3 class="box-title">Promociones</h3>
-                            </div>
-                            <div class="pull-right">
-                                <a class="btn btn-success" id="newPromo"><i class="fa fa-plus"></i>Agregar Promocion</a>
+                                <h3 class="box-title">Productos</h3>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -38,50 +35,39 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="promotionTable" class="display nowrap table table-bordered table-hover dataTable table-responsive "
-                                               role="grid" aria-describedby="promotion_info" width="100%" >
+                                        <table id="productTable" class="display nowrap table table-bordered table-hover dataTable table-responsive "
+                                               role="grid" aria-describedby="productos_info" width="100%" >
                                             <thead>
-                                                <tr role="row">
-                                                    <th class="sorting_asc " tabindex="0"
-                                                        aria-controls="productTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="Nombre">
-                                                        Nombre
-                                                    </th>
-            
-                                                    <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="descipcion">
-                                                        Descripción
-                                                    </th>
-                                                
-                                                    <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="descuento">
-                                                        % Descuento
-                                                    </th>
+                                            <tr role="row">
+                                                <th class="sorting " tabindex="0" aria-controls="productTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending" aria-label="Muestra: Imagen del producto">
+                                                    Imagen Principal
+                                                </th>
+                                                <th class="sorting_asc " tabindex="0"
+                                                    aria-controls="productTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Nombre">
+                                                    Nombre
+                                                </th>
+                                                <th class="sorting_asc " tabindex="0"
+                                                    aria-controls="productTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Marca">
+                                                    Marca
+                                                </th>
+                                                <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Precio 1">
+                                                    Precio
+                                                </th>
 
-                                                    <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="descipcion">
-                                                        Fecha Inicial
-                                                    </th>
-
-                                                    <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="descipcion">
-                                                        Fecha Final
-                                                    </th>
-
-                                                    <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
-                                                        rowspan="1" colspan="1" aria-sort="ascending"
-                                                        aria-label="Acciones">
-                                                        Acciones
-                                                    </th>
-                                                   
+                                                <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Acciones">
+                                                    Acciones
+                                                </th>
                                             </tr>
                                             </thead>
-                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -91,6 +77,62 @@
                     </div>
                     <!-- /.box -->
                 </div>
+                <div class="col-xs-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="pull-left">
+                                <h3 class="box-title">Promociones</h3>
+                            </div>
+                            <div class="pull-right" id="app">
+                                <label for="promotions" id="infoP"></label>
+                                <select class="selectpicker"  name="promotions" id="promotions">
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div id="product_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div class="col-sm-6"></div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="promotionTable" class="display nowrap table table-bordered table-hover dataTable table-responsive "
+                                               role="grid" aria-describedby="productos_info" width="100%" >
+                                            <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc " tabindex="0"
+                                                    aria-controls="productTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Nombre">
+                                                    Nombre
+                                                </th>
+                                                <th class="sorting_asc " tabindex="0"
+                                                    aria-controls="productTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Precio">
+                                                    Precio Nuevo
+                                                </th>
+
+                                                <th class="sorting_asc " tabindex="0" aria-controls="brandTable"
+                                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                                    aria-label="Acciones">
+                                                    Acciones
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
             </div>
         </section>
         <!-- Formulario de productos-->
@@ -109,7 +151,7 @@
                         <fieldset>
                             <!-- Text input-->
                             {{csrf_field()}}
-                            <input type="hidden" id="promotionid" name="promotionid"/>
+                            <input type="hidden" id="idpromo" name="idpromo"/>
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="namepromo">Nombre Promocion</label>
                                 <div class="col-md-5">
@@ -136,30 +178,13 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="fechaIpromo">Fecha Inicio</label>
+                                <label class="col-md-4 control-label" for="descuentopromo">Descuento</label>
                                 <div class="col-md-5">
-                                    <input id="fechaIpromo" name="fechaIpromo" placeholder="" class="form-control input-md"
+                                    <input id="fechapromo" name="fechapromo" placeholder="" class="form-control input-md"
                                            type="date">
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="fechaFpromo">Fecha Vigencia</label>
-                                <div class="col-md-5">
-                                    <input id="fechaFpromo" name="fechaFpromo" placeholder="" class="form-control input-md"
-                                           type="date">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="checkboxes">Es Promoción del mes</label>
-                                <div class="col-md-4">
-                                  <label class="checkbox-inline" for="is_promotion_month">
-                                    <input type="checkbox" name="is_promotion_month" id="is_promotion_month" value="1">
-                                    
-                                  </label>
-                                </div>
-                              </div>
                         </fieldset>
                     </form>
                 </div>
@@ -178,5 +203,5 @@
     <script type="text/javascript" src="{{asset('js/plugins/jquery.validate.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/plugins/fileinput.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/additional-methods.min.js"></script>
-    <script src="{{asset('js/admin/promotion.js')}}"></script>
+    <script src="{{asset('js/admin/assign-promotion.js')}}"></script>
 @endsection
