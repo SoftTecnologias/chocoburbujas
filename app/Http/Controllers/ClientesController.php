@@ -30,12 +30,22 @@ class ClientesController extends Controller
      */
     public function index(Request $request){
         try {
-            $topselling = DB::table('productos')->where('mostrar',1)->get();
+            $topselling =DB::table('productos')->where('mostrar',1)->get();
+            
             $hoy =getdate();
             $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
-            $promotions = DB::table('producto_promocion')->join('promociones','idPromocion','=','idPromocion')
-                ->where('fin_promocion','>=',$hoy)
-                ->get();
+            $promotions = Promotion::where([
+                ['inicio_promocion', '<=',$hoy],
+                ['fin_promocion', '>=',$hoy],
+                ['is_promotion_month',0]
+            ])->get();
+              
+            $monthly = Promotion::where([
+                ['inicio_promocion', '<=',$hoy],
+                ['fin_promocion', '>=',$hoy],
+                ['is_promotion_month',1]
+            ])->get();
+            
             foreach ($topselling as $item){
                 $item->promo = 0;
                 foreach ($promotions as $promotion){
@@ -44,14 +54,11 @@ class ClientesController extends Controller
                         $item->newprice = $item->precio1-(($promotion->descuento/100)*$item->precio1);
                     }
                 }
-
             }
-            $promociones = DB::table('productos')->take(10)->where('promocion', 1)->orderBy('precio1', 'asc')->get();
-            
+
             $blogs = DB::table('blogs')->take(4)->orderBy('fecha', 'desc')->get();
             $banner = Banner::all();
             $categorias = DB::table('categorias')->take(4)->get();
-            $menu = array();
             $marcas = DB::table('marcas')
                 ->orderBy('nombre', 'asc')
                 ->get();
@@ -63,11 +70,14 @@ class ClientesController extends Controller
             foreach ($categorias as $categoria) {
                 $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
                 $categoria->id = base64_encode($categoria->id);
-                array_push($menu, [$categoria->id => $productos]);
+                #array_push($menu, [$categoria->id => $productos]);
             }
+           
+
             if($request->cookie('cliente')==null) {
                 return view('shop.index', ['topselling' => $topselling,
-                    'promociones' => $promociones,
+                    'promociones' => $promotions,
+                    'monthly' => $monthly,
                     'blogs' => $blogs,
                     'categorias' => $categorias,
                     'marcas' => $marcas,
@@ -80,7 +90,8 @@ class ClientesController extends Controller
                 $user = Cliente::find(base64_decode($cookie['id']));
                 return view('shop.index', ['topselling' => $topselling,
                     'secciones' => $secciones,
-                    'promociones' => $promociones,
+                    'promociones' => $promotions,
+                    'monthly' => $monthly,
                     'blogs' => $blogs,
                     'categorias' => $categorias,
                     'marcas' => $marcas,

@@ -131,14 +131,21 @@ Route::group(['prefix'=>'panel'],function (){
         'uses'=>'UsersController@showPromociones',
         'as' =>'panel.promociones',
     ]);
-
+    Route::get('/promotions/assign',[
+        'uses'=>'UsersController@getAssign',
+        'as'=>'panel.promociones.assign'    
+    ]);
+    Route::post('/promotions/{id}',[
+        'uses'=>'PromotionsController@update',
+        'as' => 'panel.promociones.update'
+    ]);
 
     /*Peticiones con un retorno json*/
     /*CRUD*/
     Route::resource('/api/costos','CostosController');
     Route::resource('/api/promotions','PromotionsController');
     Route::get('/promotions/{id}','PromotionsController@rellenaTabla');
-    Route::get('/getpromotions','PromotionsController@getPromotions');
+    Route::get('/getpromotions','PromotionsController@getPromotions');  
     Route::get('/getpromotions/info/{id}','PromotionsController@getPromotionsinfo');
     Route::post('/api/productPromotion','PromotionsController@productPromotion');
     Route::post('/delete/productPromotion/{id}','PromotionsController@destroy');

@@ -383,13 +383,10 @@ class UsersController extends Controller
             if($request->cookie('admin') != null) {
                 $cookie = Cookie::get('admin');
                 $user = User::where('id', $cookie['apikey'])->first();
-                $info = Informacion::all()->first();
-
                 return view('panel.promotion',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
                     'photo' => $user->img,
                     'username' => $user->username,
-                    'permiso' => 'Administrador'],
-                    'info' => $info
+                    'permiso' => 'Administrador']
                 ]);
             }else{
                 return view('user.login');
@@ -439,6 +436,23 @@ class UsersController extends Controller
             return "true";
         }else{
             return "false";
+        }
+    }
+    public function getAssign(Request $request){
+        try{
+            if($request->cookie('admin') != null) {
+                $cookie = Cookie::get('admin');
+                $user = User::where('id', $cookie['apikey'])->first();
+                return view('panel.assign-promotion',['datos' => ['name' => $user->nombre . ' ' . $user->ape_pat,
+                    'photo' => $user->img,
+                    'username' => $user->username,
+                    'permiso' => 'Administrador']
+                ]);
+            }else{
+                return view('user.login');
+            }
+        }catch(Exception $e){
+
         }
     }
 }

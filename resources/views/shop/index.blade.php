@@ -64,75 +64,133 @@
             @if ($secciones['promocionesM']->activo)
                 <!-- Promociones del Mes (promocionesM)-->
                 <div class="content_middle">
-                <ul class="promote">
-                <i class="promote_icon"> </i>
-                <li class="promote_head">
-                    <h3>{{$secciones['promocionesM']->nombre}}</h3></li>
-                </ul>
-                    <!-- Promociones -->
-                    @if(sizeof($promociones)> 0)
-                        <ul id="flexiselDemo3" >
-
-                    @foreach($promociones as $promocion)
-                        <li >
-                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                            <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                <p> $ {{$promocion->precio1}} </p>
-                                <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                <div class="ticket"></div>
+                        <div class="sellers_grid">
+                            <ul class="sellers">
+                                <i class="star"> </i>
+                                <li class="sellers_desc">
+                                    <h2>{{$secciones['promocionesM']->nombre}}</h2></li>
+                                <div class="clearfix"> </div>
+                            </ul>
+                        </div>
+                        <div id="carousel-productos" class="carousel slide grid_2" data-ride="carousel">
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <!-- Controls -->
+                                    <div class="controls pull-right ">
+                                        <a class="left fa fa-chevron-left btn btn-success" href="#carousel-productos"
+                                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success"
+                                                                href="#carousel-productos"
+                                                                data-slide="next"></a>
+                                    </div>
+                                </div>
                             </div>
-                        </li>
-                    @endforeach
-                </ul>
-                    @else
-                        <div class="container">
-                    <div class="callbacks_container">
-                        <ul class="rslides" id="slider">
-                            <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
-                        </ul>
-                    </div>
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <?php $items = 0; $indice = 0?>
+                                @foreach($monthly as $promocion)      
+                                    @foreach($promocion->productPromotion->chunk(4) as $chunk)
+                                        <div class="item {{($items==0)? "active" : "" }}">
+                                            <div class="row">
+                                                @foreach($chunk as $product)
+                                                    <div class="col-md-3 span_6">
+                                                        <div class="box_inner">
+                                                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->producto->img1}}" class="img-responsive"
+                                                                                                style="height: 250px; width: 200px;"/></div>
+                                                            <div class="sale-box"></div>
+                                                            <div class="desc">
+                                                                <h3>{{$product->producto->nombre}}</h3>
+                                                                <h4>De <strike>$ {{$product->producto->precio1}}</strike> a $ {{$product->producto->precio1-(($promocion->descuento/100)*$product->producto->precio1)}}</h4>                                                                
+                                                                <h4>$ {{$product->producto->precio1}}</h4>
+                                                                <ul class="list2">
+                                                                    <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->producto->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
+                                                                    </li>
+                                                                    <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
+                                                                                                         onclick="verProducto({{$product->producto->codigo}})">ver más</a></span>
+                                                                    </li>
+                                                                    <div class="clearfix"></div>
+                                                                </ul>
+                                                                <div class="heart"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <?php $items++; ?>
+                                    @endforeach
+                                @endforeach
+                            </div>  
+                        </div>
+                        <!-- Mas vendidos-->
+                        <div class="clearfix"> </div>
+                    </div>    
                 </div>
-                    @endif
-                    <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
-            </div>
             @endif
+            <!-- Promociones-->
             @if ($secciones['promociones']->activo)
                 <!-- Promociones (promociones)-->
                 <div class="content_middle">
-                <ul class="promote">
-                <i class="promote_icon"> </i>
-                <li class="promote_head">
-                    <h3>{{$secciones['promociones']->nombre}}</h3></li>
-            </ul>
-                <!-- Promociones -->
-                @if(sizeof($promociones)> 0)
-                    <ul id="flexiselDemo3" >
-
-                        @foreach($promociones as $promocion)
-                            <li >
-                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$promocion->img1}}" class="img-responsive" style=" height: 200px; width: 150px;" /></div>
-                                <div class="grid-flex"><h4> {{$promocion->nombre}} </h4>
-                                    <p> $ {{$promocion->precio1}} </p>
-                                    <div class="m_3"><a href="#" class="link1" onclick="verProducto({{$promocion->codigo}})">ver más detalles</a></div>
-                                    <div class="ticket"></div>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-
-                    <div class="container">
-                        <div class="callbacks_container">
-                            <ul class="rslides" id="slider">
-                                <li><img src="images/proximamente.png" class="img-responsive" alt="" style="height: 180px; widht: 888px"/></li>
+                        <div class="sellers_grid">
+                            <ul class="sellers">
+                                <i class="star"> </i>
+                                <li class="sellers_desc">
+                                    <h2>{{$secciones['promociones']->nombre}}</h2></li>
+                                <div class="clearfix"> </div>
                             </ul>
                         </div>
-                    </div>
-                @endif
-                <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
-            </div>
-            <!-- Mas vendidos-->
-                @endif
+                        <div id="carousel-productos" class="carousel slide grid_2" data-ride="carousel">
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <!-- Controls -->
+                                    <div class="controls pull-right ">
+                                        <a class="left fa fa-chevron-left btn btn-success" href="#carousel-productos"
+                                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success"
+                                                                href="#carousel-productos"
+                                                                data-slide="next"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner">
+                                <?php $items = 0; $indice = 0?>
+                                @foreach($promociones as $promocion)      
+                                    @foreach($promocion->productPromotion->chunk(4) as $chunk)
+                                        <div class="item {{($items==0)? "active" : "" }}">
+                                            <div class="row">
+                                                @foreach($chunk as $product)
+                                                    <div class="col-md-3 span_6">
+                                                        <div class="box_inner">
+                                                            <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->producto->img1}}" class="img-responsive"
+                                                                                                style="height: 250px; width: 200px;"/></div>
+                                                            <div class="sale-box"></div>
+                                                            <div class="desc">
+                                                                <h3>{{$product->producto->nombre}}</h3>
+                                                                <h4>De <strike>$ {{$product->producto->precio1}}</strike> a $ {{$product->producto->precio1-(($promocion->descuento/100)*$product->producto->precio1)}}</h4>                                                                
+                                                                <h4>$ {{$product->producto->precio1}}</h4>
+                                                                <ul class="list2">
+                                                                    <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->producto->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
+                                                                    </li>
+                                                                    <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
+                                                                                                         onclick="verProducto({{$product->producto->codigo}})">ver más</a></span>
+                                                                    </li>
+                                                                    <div class="clearfix"></div>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <?php $items++; ?>
+                                    @endforeach
+                                @endforeach
+                            </div>  
+                        </div>
+                        <!-- Mas vendidos-->
+                        <div class="clearfix"> </div>
+                    </div>    
+                </div>
+            @endif
             @if ($secciones['mVendidos']->activo)
                 <div class="content_middle">
                     <div class="sellers_grid">
@@ -143,63 +201,64 @@
                             <div class="clearfix"> </div>
                         </ul>
                     </div>
-                <div id="carousel-productos" class="carousel slide grid_2" data-ride="carousel">
-                    <div class="row">
-                        <div class="col-md-3 col-md-offset-9">
-                            <!-- Controls -->
-                            <div class="controls pull-right ">
-                                <a class="left fa fa-chevron-left btn btn-success" href="#carousel-productos"
-                                   data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success"
+                    <div id="carousel-productos" class="carousel slide grid_2" data-ride="carousel">
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-9">
+                                <!-- Controls -->
+                                <div class="controls pull-right ">
+                                    <a class="left fa fa-chevron-left btn btn-success" href="#carousel-productos"
+                                    data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success"
                                                             href="#carousel-productos"
                                                             data-slide="next"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <?php $items = 0; $indice = 0?>
-                        @foreach(array_chunk($topselling,4) as $chunk)
-                            <div class="item {{($items==0)? "active" : "" }}">
-                                <div class="row">
-                                    @foreach($chunk as $product)
-                                        <div class="col-md-3 span_6">
-                                            <div class="box_inner">
-                                                <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
-                                                                                            style="height: 250px; width: 200px;"/></div>
-                                                @if($product->promo == 1)
-                                                <div class="sale-box"></div>
-                                                @endif
-                                                <div class="desc">
-                                                    <h3>{{$product->nombre}}</h3>
-                                                    @if($product->promo == 1)
-                                                    <h4>De <strike>$ {{$product->precio1}}</strike> a $ {{$product->newprice}}</h4>
-                                                        @else
-                                                    <h4>$ {{$product->precio1}}</h4>
-                                                    @endif
-                                                    <ul class="list2">
-                                                        <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
-                                                        </li>
-                                                        <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
-                                                                                                     onclick="verProducto({{$product->codigo}})">ver más</a></span>
-                                                        </li>
-                                                        <div class="clearfix"></div>
-                                                    </ul>
-                                                    <div class="heart"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
                                 </div>
                             </div>
-                            <?php $items++; ?>
-                        @endforeach
+                        </div>
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <?php $items = 0; $indice = 0?>
+                            @foreach(array_chunk($topselling,4) as $chunk)
+                                <div class="item {{($items==0)? "active" : "" }}">
+                                    <div class="row">
+                                        @foreach($chunk as $product)
+                                            <div class="col-md-3 span_6">
+                                                <div class="box_inner">
+                                                    <div class="col-md-offset-1 col-md-11"><img src="images/productos/{{$product->img1}}" class="img-responsive"
+                                                                                            style="height: 250px; width: 200px;"/></div>
+                                                    @if($product->promo == 1)
+                                                        <div class="sale-box"></div>
+                                                    @endif
+                                                    <div class="desc">
+                                                        <h3>{{$product->nombre}}</h3>
+                                                        @if($product->promo == 1)
+                                                            <h4>De <strike>$ {{$product->precio1}}</strike> a $ {{$product->newprice}}</h4>
+                                                        @else
+                                                            <h4>$ {{$product->precio1}}</h4>
+                                                        @endif
+                                                        <ul class="list2">
+                                                            <li class="list2_left"><span class="m_1"><a href="#"  onclick="addProducto('{{$product->codigo}}')" class="link product addToCart">Añadir al carrito</a></span>
+                                                            </li>
+                                                            <li class="list2_right"><span class="m_2"><a href="#" class="link1 productdetail"
+                                                                                                     onclick="verProducto({{$product->codigo}})">ver más</a></span>
+                                                            </li>
+                                                            <div class="clearfix"></div>
+                                                        </ul>
+                                                        <div class="heart"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <?php $items++; ?>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
                     <!-- Mas vendidos-->
-            <div class="clearfix"> </div>
-        </div>
+                    <div class="clearfix"> </div>
+                </div>
             @endif
+            
             @if ($secciones['blog']->activo)
                 <!-- Blog (blog)-->
                 <div class="content_middle_bottom">
@@ -316,6 +375,7 @@
     </div>
 @endsection
 @section('scripts')
+    <script type="text/javascript" src="js/plugins/jquery.flexisel.js"></script>
     {{Html::script('js/shop/index.js')}}
 @endsection
 @section('partials.footer')

@@ -480,7 +480,7 @@ class ProductosController extends Controller
             foreach ($categorias as $categoria) {
                 $productos = DB::table('productos')->take(9)->where('categoria_id', $categoria->id)->orderBy('vendidos', 1)->get();
                 $categoria->id = base64_encode($categoria->id);
-                array_push($menu, [$categoria->id => $productos]);
+                #array_push($menu, [$categoria->id => $productos]);
             }
             if ($cookie = $request->cookie('cliente')) {
                 $cart = $cookie['carrito'];

@@ -66,4 +66,27 @@ $(function(){
         }
     });
 
+    $("#flexiselDemo4").flexisel({
+        visibleItems: 4,
+        animationSpeed: 1800,
+        autoPlay: true,
+        autoPlaySpeed:1500,
+        pauseOnHover: true,
+        enableResponsiveBreakpoints: true,
+        responsiveBreakpoints: {
+            portrait: {
+                changePoint: 480,
+                visibleItems: 1
+            },
+            landscape: {
+                changePoint: 640,
+                visibleItems: 2
+            },
+            tablet: {
+                changePoint: 768,
+                visibleItems: 3
+            }
+        }
+    });
+
 });

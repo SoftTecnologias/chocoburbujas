@@ -18,20 +18,49 @@ class PromotionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $product = DB::table('producto_promocion as pp')
+    public function index(){
+        /*$product = DB::table('producto_promocion as pp')
             ->select('p.nombre','p.precio1')
             ->join('productos as p','pp.idProducto','=','p.id')
             ->where('pp.idPromocion',0)
-            ->get();
-
-        return Response::json($product);
+            ->get();*/
+        try{
+            $promotion= Promotion::all();
+            $datos =[];
+            foreach ($promotion as $dato) {
+                foreach ($dato->productPromotion as $pp) {
+                    array_push($datos,[
+                        'id' => $pp->idPromocion,
+                        'nombre'=> $pp->producto->nombre,
+                        'precio1'=> $pp->producto->precio1
+                    ]);   
+                }
+            }
+            return Response::json(Promotion::all());
+        }catch(Exception $e){
+            dd($e);
+        }
     }
 
-    public function rellenaTabla($id)
-    {
-
+    public function indexDetails(){
+        try{
+            $promotion= Promotion::all();
+            $datos =[];
+            foreach ($promotion as $dato) {
+                foreach ($dato->productPromotion as $pp) {
+                    array_push($datos,[
+                        'id' => $pp->idPromocion,
+                        'nombre'=> $pp->producto->nombre,
+                        'precio1'=> $pp->producto->precio1
+                    ]);   
+                }
+            }
+            return Response::json($datos);
+        }catch(Exception $e){
+            dd($e);
+        }
+    }
+    public function rellenaTabla($id){
         $products = DB::table('producto_promocion as pp')
             ->select('p.nombre','p.precio1','pr.descuento','p.id')
             ->join('productos as p','pp.idProducto','=','p.id')
@@ -50,7 +79,6 @@ class PromotionsController extends Controller
     }
 
     public function getPromotions(){
-
         $hoy =getdate();
         $hoy = $hoy['year'].'-'.$hoy['mon'].'-'.$hoy['mday'];
         $mpo = DB::table('promociones')
@@ -91,15 +119,19 @@ class PromotionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         try{
-            DB::table('promociones')->insertGetId([
-                "nombre"=>$request->input('namepromo'),
-                "descripcion"=>$request->input('descripcionpromo'),
-                "descuento"=>$request->input('descuentopromo'),
-                "fin_promocion"=>$request->input('fechapromo')]);
-
+            $promocion = new Promotion();
+            $promocion->nombre = $request->input('namepromo');
+            $promocion->descripcion=$request->input('descripcionpromo');
+            $promocion->descuento=$request->input('descuentopromo');
+            $promocion->fin_promocion=$request->input('fechaFpromo');
+            $promocion->inicio_promocion=$request->input('fechaIpromo');
+            if ( $request->input('is_promotion_month') != null )
+                $promocion->is_promotion_month =  $request->input('is_promotion_month');
+            else
+                $promocion->is_promotion_month =  0;
+            $promocion->save();
             $respuesta = ['code' => 200, 'msg' => "Se agrego correctamente", 'detail' => 'success'];
         }catch (Exception $e){
             $respuesta = ['code' => 500, 'msg' => "Error al agregar", 'detail' => 'error'];
@@ -128,7 +160,8 @@ class PromotionsController extends Controller
      */
     public function show($id)
     {
-        //
+        $respuesta = ['code' => 200, 'msg' => Promotion::find($id), 'detail' => 'success'];
+        return Response::json($respuesta);
     }
 
     /**
@@ -139,7 +172,7 @@ class PromotionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -151,7 +184,23 @@ class PromotionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $promocion = Promotion::find($id);
+            $promocion->nombre = $request->input('namepromo');
+            $promocion->descripcion=$request->input('descripcionpromo');
+            $promocion->descuento=$request->input('descuentopromo');
+            $promocion->fin_promocion=$request->input('fechaFpromo');
+            $promocion->inicio_promocion=$request->input('fechaIpromo');
+            if ( $request->input('is_promotion_month') != null )
+                $promocion->is_promotion_month =  $request->input('is_promotion_month');
+            else
+                $promocion->is_promotion_month =  0;
+            $promocion->save();
+            $respuesta = ['code' => 200, 'msg' => "Se actualizo correctamente", 'detail' => 'success'];
+        }catch (Exception $e){
+            $respuesta = ['code' => 500, 'msg' => "Error al agregar", 'detail' => 'error'];
+        }
+        return Response::json($respuesta);
     }
 
     /**
@@ -163,14 +212,13 @@ class PromotionsController extends Controller
     public function destroy($id)
     {
         try {
-            $array = explode("-",$id);
+            $promotion = Promotion::find($id);
+            foreach ($promotion->productPromotion as $detalle) {
+                $detalle->delete();
+            }
+            $promotion->delete();
 
-            $product = DB::table('producto_promocion')
-                ->where('idProducto',$array[0])
-                ->where('idPromocion',$array[1])
-                ->delete();
-
-            $respuesta = ["code" => 200, "msg" => 'El producto ha sido eliminado', 'detail' => 'success'];
+            $respuesta = ["code" => 200, "msg" => 'La promoción ha sido eliminado', 'detail' => 'success'];
         } catch (Exception $e) {
             $respuesta = ["code" => 500, "msg" => $e->getMessage(), 'detail' => 'warning'];
         }
