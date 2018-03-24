@@ -17,63 +17,47 @@
                         <strong><span>Comprar por</span></strong>
                     </div>
                     <div class="block-content">
-
-                        <div>
-                            <div class="panel panel-default sidebar-menu">
-
-                                <div class="panel-heading">
-                                    <h3 class="panel-title clearfix">Precios</h3>
-                                        <span class="hidden-sm">Limpiar filtros</span></a>
-                                </div>
-
-                                <div class="panel-body">
-                                    <ul class="nav nav-pills nav-stacked price">
-                                        <li data-val="MC0zOTk="><a href="#"  class="fprice" data-val="MC0zOTk=">$ 0.00 - $ 399.00 </a>
-                                        </li>
-                                        <li data-val="NDAwLTc5OQ=="><a href="#"  class="fprice" data-val="NDAwLTc5OQ==">$ 400.00 - $ 799.00 </a>
-                                        </li>
-                                        <li data-val="ODAwLTExOTk=" ><a href="#" class="fprice" data-val="ODAwLTExOTk=">$ 800.00 - $ 1199.00 </a>
-                                        </li>
-                                        <li data-val="MTIwMC0xNTk5"><a href="#"  class="fprice" data-val="MTIwMC0xNTk5">$ 1200.00 - $ 1599.00 </a>
-                                        </li>
-                                        <li data-val="MTYwMC0xOTk5"><a href="#" class="fprice" data-val="MTYwMC0xOTk5">$ 1600.00 - $ 1999.00 </a>
-                                        </li>
-                                        <li data-val="MjAwMA=="><a href="#"  class="fprice" data-val="MjAwMA==">$ 2000.00 + </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="panel panel-default sidebar-menu">
-
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Categorias</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <ul class="nav nav-pills nav-stacked category">
-                                        @foreach($categorias as $categoria)
+                        <dl id="narrow-by-list">
+                            <dt class="odd">Precios</dt>
+                            <dd class="odd">
+                                <ol>
+                                    <li>
+                                        <a href="#" data-val="1" class="fprice"><span class="price1">$&nbsp;0,00</span> - <span class="price1">$&nbsp;99,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="2" class="fprice"><span class="price1">$&nbsp;100,00</span> - <span class="price1">$&nbsp;199,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="3" class="fprice"><span class="price1">$&nbsp;200,00</span> - <span class="price1">$&nbsp;299,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="4" class="fprice"><span class="price1">$&nbsp;300,00</span> - <span class="price1">$&nbsp;399,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="5" class="fprice"><span class="price1">$&nbsp;400,00</span> - <span class="price1">$&nbsp;499,99</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-val="6" class="fprice"><span class="price1">+ $&nbsp;500,00</span></a>
+                                    </li>
+                                </ol>
+                            </dd>
+                            <dt class="even">Categorias</dt>
+                            <dd class="even">
+                                <ol>
+                                    @foreach($categorias as $categoria)
                                             <li data-val="{{$categoria->id}}">
                                                 <a   data-val="{{$categoria->id}}" href="#" class="fcategory">{{$categoria->nombre}}<span class="badge pull-right"></span></a>
                                             </li>
                                         @endforeach
-                                    </ul>
 
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="block block-cart">
-                    <div class="block-title">
-                        <strong><span>Carrito</span></strong>
-                    </div>
-                    <div class="block-content">
-                        <p class="empty">No tienes productos en tu carrito de compra </p>
+                                </ol>
+                            </dd>
+                        </dl>
                     </div>
                 </div>
             </div>
             <div class="col-md-9">
-                <h1>Se encontraron {{sizeof($productos)}} productos</h1>
+                <h1>Se encontraron {{$productos->total()}} productos</h1>
                 <div class="mens-toolbar">
                     <div class="clearfix"></div>
                 </div>
