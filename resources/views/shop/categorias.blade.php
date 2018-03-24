@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <h1>Se encontraron {{sizeof($productos)}} productos</h1>
+                <h1>Se encontraron {{$productos->total()}} productos</h1>
                 <div class="mens-toolbar">
                     <div class="clearfix"></div>
                 </div>

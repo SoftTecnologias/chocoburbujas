@@ -256,47 +256,100 @@ class ClientesController extends Controller
             }
 
             /* ************************************************************* */
-            if (array_key_exists('precio', $busqueda)) {
-                try {
-                    //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
-                    if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
-                        switch ((Integer)$busqueda['precio']) {
-                            case 1:
-                                $precio = array(0, 99.99);
-                                break;
-                            case 2:
-                                $precio = array(100, 199.99);
-                                break;
-                            case 3:
-                                $precio = array(200, 299.99);
-                                break;
-                            case 4:
-                                $precio = array(300, 399.99);
-                                break;
-                            case 5:
-                                $precio = array(400, 499.99);
-                                break;
-                        }
-                        $resultado = DB::table('productos')
-                            ->where('marca_id', $id)
-                            ->whereBetween('precio1', $precio)
-                            ->paginate(9);
+            if (!array_key_exists('precio', $busqueda) && !array_key_exists('categoria', $busqueda)) { //no existen ambos filtros
+                $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
+            } else {
+                //revisamos si existen los dos o solo alguno
+                if (array_key_exists('precio', $busqueda) && array_key_exists('categoria', $busqueda)) { //existen ambas y por tanto se hace la consulta
+                    $categoria_id = base64_decode($busqueda['categoria']); //obtenemos el id de la marca que pasamos
+                    try {
+                        //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                        if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                            switch ((Integer)$busqueda['precio']) {
+                                case 1:
+                                    $precio = array(0, 99.99);
+                                    break;
+                                case 2:
+                                    $precio = array(100, 199.99);
+                                    break;
+                                case 3:
+                                    $precio = array(200, 299.99);
+                                    break;
+                                case 4:
+                                    $precio = array(300, 399.99);
+                                    break;
+                                case 5:
+                                    $precio = array(400, 499.99);
+                                    break;
+                            }
+                            $resultado = DB::table('productos')
+                                ->where('marca_id', $id)
+                                ->where('categoria_id', $categoria_id)
+                                ->whereBetween('precio1', $precio)
+                                ->paginate(9);
 
-                    } else { // se tomará automaticamente +500
+                        } else { // se tomará automaticamente +500
+                            $resultado = DB::table('productos')
+                                ->where('marca_id', $id)
+                                ->where('precio1', '>=', 500)
+                                ->paginate(9);
+                        }
+                    } catch (Exception $e) {
+                        //ignoramos entonces el criterio de busqueda y lo tomamos a +500
                         $resultado = DB::table('productos')
                             ->where('marca_id', $id)
                             ->where('precio1', '>=', 500)
                             ->paginate(9);
                     }
-                } catch (Exception $e) {
-                    //ignoramos entonces el criterio de busqueda y lo tomamos a +500
-                    $resultado = DB::table('productos')
-                        ->where('marca_id', $id)
-                        ->where('precio1', '>=', 500)
-                        ->paginate(9);
+                } else { // solo existe una
+                    if (array_key_exists('precio', $busqueda)) {
+                        try {
+                            //revisamos que esté dentro de 1 - 5 si no la consulta debe ser diferente
+                            if ((Integer)$busqueda['precio'] >= 1 && (Integer)$busqueda['precio'] <= 5) {
+                                switch ((Integer)$busqueda['precio']) {
+                                    case 1:
+                                        $precio = array(0, 99.99);
+                                        break;
+                                    case 2:
+                                        $precio = array(100, 199.99);
+                                        break;
+                                    case 3:
+                                        $precio = array(200, 299.99);
+                                        break;
+                                    case 4:
+                                        $precio = array(300, 399.99);
+                                        break;
+                                    case 5:
+                                        $precio = array(400, 499.99);
+                                        break;
+                                }
+                                $resultado = DB::table('productos')
+                                    ->where('marca_id', $id)
+                                    ->whereBetween('precio1', $precio)
+                                    ->paginate(9);
+
+                            } else { // se tomará automaticamente +500
+                                $resultado = DB::table('productos')
+                                    ->where('marca_id', $id)
+                                    ->where('precio1', '>=', 500)
+                                    ->paginate(9);
+                            }
+                        } catch (Exception $e) {
+                            //ignoramos entonces el criterio de busqueda y lo tomamos a +500
+                            $resultado = DB::table('productos')
+                                ->where('marca_id', $id)
+                                ->where('precio1', '>=', 500)
+                                ->paginate(9);
+                        }
+                    } elseif (array_key_exists('categoria', $busqueda)) {
+                        $categoria_id = base64_decode($busqueda['categoria']); //obtenemos el id de la marca que pasamos
+                        $resultado = DB::table('productos')
+                            ->where('marca_id', $id)
+                            ->where('categoria_id', $categoria_id)
+                            ->paginate(9);
+                    }
+
                 }
-            } else {
-                $resultado = DB::table('productos')->where('marca_id', $id)->paginate(9);
             }
 
             $hoy =getdate();
